@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="../asstes/images/USVis-pixelart.png?v=1">
+    <script src="https://unpkg.com/gojs@2.3.3/release/go.js"></script>
+</head>
+<body>
+<main>
+    <h1>Usporiadaný zoznam</h1>
+    <div id="myDiagramDiv" class="diagramDiv"></div>
+
+
+
+    <div style="margin-bottom: 5px; padding: 5px; background-color: aliceblue">
+        <span style="display: inline-block; vertical-align: top; padding: 5px">
+                    <b>Tree Style</b>
+                    <br>
+                    <select name="style" id="style" onchange="layout()">
+                        <option value="Layered" selected="selected">Layered</option>
+                        <option value="Alternating">Alternating</option>
+                        <option value="LastParents">LastParents</option>
+                        <option value="RootOnly">RootOnly</option>
+                    </select>
+                    <br>
+                    <b>Layer Style</b>
+                    <br>
+                    <select name="layerStyle" id="layerStyle" onchange="layout()">
+                        <option value="Individual" selected="selected">Individual</option>
+                        <option value="Siblings">Siblings</option>
+                        <option value="Uniform">Uniform</option>
+                    </select>
+                    <br>
+                    <br>
+                    <b>New Tree</b>
+                    <br> MinNodes: <input type="number" width="2" id="minNodes" value="20">
+                    <br> MaxNodes: <input type="number" width="2" id="maxNodes" value="100">
+                    <br> MinChildren: <input type="number" width="2" id="minChil" value="1">
+                    <br> MaxChildren: <input type="number" width="2" id="maxChil" value="3">
+                    <br> Random Sizes: <input type="checkbox" id="randomSizes">
+                    <br>
+                    <button type="button" onclick="rebuildGraph()">Generate Tree</button>
+                </span>
+        <span style="display: inline-block; vertical-align: top; padding: 5px">
+                    <b>Default Properties</b>
+                    <br> Angle: <input type="radio" name="angle" onclick="layout()" value="0" checked="checked">Right <input type="radio" name="angle" onclick="layout()" value="90">Down <input type="radio" name="angle" onclick="layout()" value="180">Left <input type="radio" name="angle" onclick="layout()" value="270">Up <br> Alignment: <select name="align" id="align" onchange="layout()">
+                        <option value="CenterChildren" selected="selected">CenterChildren</option>
+                        <option value="CenterSubtrees">CenterSubtrees</option>
+                        <option value="Start">Start</option>
+                        <option value="End">End</option>
+                        <option value="Bus">Bus</option>
+                        <option value="BusBranching">BusBranching</option>
+                        <option value="TopLeftBus">TopLeftBus</option>
+                        <option value="BottomRightBus">BottomRightBus</option>
+                    </select>
+                    <br> NodeSpacing: <input type="number" size="2" id="nodeSpacing" value="20" onchange="layout()"> (negative causes overlaps) <br> NodeIndent: <input type="number" size="2" id="nodeIndent" value="0" onchange="layout()"> (when Start or End; &gt;= 0) <br> NodeIndentPastParent: <input type="number" size="2" id="nodeIndentPastParent" value="0" onchange="layout()"> (fraction; 0-1) <br> LayerSpacing: <input type="number" size="2" id="layerSpacing" value="50" onchange="layout()"> (negative causes overlaps) <br> LayerSpacingParentOverlap: <input type="number" size="2" id="layerSpacingParentOverlap" value="0" onchange="layout()"> (fraction; 0-1) <br> Sorting: <select name="sorting" id="sorting" onchange="layout()">
+                        <option value="Forwards" selected="selected">Forwards</option>
+                        <option value="Reverse">Reverse</option>
+                        <option value="Ascending">Ascending</option>
+                        <option value="Descending">Descending</option>
+                    </select>
+                    <br> Compaction: <input type="radio" name="compaction" onclick="layout()" value="Block" checked="checked"> Block <input type="radio" name="compaction" onclick="layout()" value="None"> None <br> BreadthLimit: <input type="number" size="2" id="breadthLimit" value="0" onchange="layout()"> (0 means no limit) <br> RowSpacing: <input type="number" size="2" id="rowSpacing" value="25" onchange="layout()"> (negative causes overlaps) <br> RowIndent: <input type="number" size="2" id="rowIndent" value="10" onchange="layout()"> (&gt;= 0) <br> SetsPortSpot: <input type="checkbox" id="setsPortSpot" checked="checked" onclick="layout()"> SetsChildPortSpot: <input type="checkbox" id="setsChildPortSpot" checked="checked" onclick="layout()">
+                    <br>
+                </span>
+        <span style="display: inline-block; vertical-align: top; padding: 5px">
+                    <b>Alternates</b> (only when TreeStyle is not Layered) <br> Angle: <input type="radio" name="altAngle" onclick="layout()" value="0" checked="checked">Right <input type="radio" name="altAngle" onclick="layout()" value="90">Down <input type="radio" name="altAngle" onclick="layout()" value="180">Left <input type="radio" name="altAngle" onclick="layout()" value="270">Up <br> Alignment: <select name="altAlign" id="altAlign" onchange="layout()">
+                        <option value="CenterChildren" selected="selected">CenterChildren</option>
+                        <option value="CenterSubtrees">CenterSubtrees</option>
+                        <option value="Start">Start</option>
+                        <option value="End">End</option>
+                        <option value="Bus">Bus</option>
+                        <option value="BusBranching">BusBranching</option>
+                        <option value="TopLeftBus">TopLeftBus</option>
+                        <option value="BottomRightBus">BottomRightBus</option>
+                    </select>
+                    <br> NodeSpacing: <input type="number" size="2" id="altNodeSpacing" value="20" onchange="layout()"> (negative causes overlaps) <br> NodeIndent: <input type="number" size="2" id="altNodeIndent" value="0" onchange="layout()"> (when Start or End; &gt;= 0) <br> NodeIndentPastParent: <input type="number" size="2" id="altNodeIndentPastParent" value="0" onchange="layout()"> (fraction; 0-1) <br> LayerSpacing: <input type="number" size="2" id="altLayerSpacing" value="50" onchange="layout()"> (negative causes overlaps) <br> LayerSpacingParentOverlap: <input type="number" size="2" id="altLayerSpacingParentOverlap" value="0" onchange="layout()"> (fraction; 0-1) <br> Sorting: <select name="altSorting" id="altSorting" onchange="layout()">
+                        <option value="Forwards" selected="selected">Forwards</option>
+                        <option value="Reverse">Reverse</option>
+                        <option value="Ascending">Ascending</option>
+                        <option value="Descending">Descending</option>
+                    </select>
+                    <br> Compaction: <input type="radio" name="altCompaction" onclick="layout()" value="Block" checked="checked"> Block <input type="radio" name="altCompaction" onclick="layout()" value="None"> None <br> BreadthLimit: <input type="number" size="2" id="altBreadthLimit" value="0" onchange="layout()"> (0 means no limit) <br> RowSpacing: <input type="number" size="2" id="altRowSpacing" value="25" onchange="layout()"> (negative causes overlaps) <br> RowIndent: <input type="number" size="2" id="altRowIndent" value="10" onchange="layout()"> (&gt;= 0) <br> SetsPortSpot: <input type="checkbox" id="altSetsPortSpot" checked="checked" onclick="layout()"> SetsChildPortSpot: <input type="checkbox" id="altSetsChildPortSpot" checked="checked" onclick="layout()">
+                    <br>
+                </span>
+    </div>
+    <div id='theirDiagramDiv' class="diagramDiv"></div>
+</main>
+<script src="script.js"></script>
+<script src="diagramTreeLayout.js"></script>
+</body>
+</html>
