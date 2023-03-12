@@ -6,7 +6,7 @@ let options = {
     padding: 30, // padding on fit
     circle: false, // put depths in concentric circles if true, put depths top down if false
     grid: false, // whether to create an even grid into which the DAG is placed (circle:false only)
-    spacingFactor: 1.75, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
+    spacingFactor: 1.2, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
     boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
     avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
     nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
@@ -48,8 +48,15 @@ var cy = cytoscape({
         {
             selector: 'node',
             style: {
-                'background-color': '#666',
-                'label': 'data(id)'
+                'shape': 'rectangle',
+                'background-color': '#ddd',
+                'label': 'data(label)',
+/*                'width': '150px',
+                'height': '50px',*/
+                'text-wrap': 'wrap',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'font-size': '24px',
             }
         },
 
@@ -57,8 +64,8 @@ var cy = cytoscape({
             selector: 'edge',
             style: {
                 'width': 3,
-                'line-color': '#ccc',
-                'target-arrow-color': '#ccc',
+                'line-color': '#000000',
+                'target-arrow-color': '#000000',
                 'target-arrow-shape': 'triangle',
                 'curve-style': 'bezier'
             }
@@ -86,9 +93,7 @@ var cy = cytoscape({
 }*/
 
 let level = 5
-let root = addTreeNode(cy, level, padLeft("", level, "_"));
-
-// cy.layout(options);
+let root = addTreeNode(cy, level, padLeft("", level - 1, "_"));
 
 options.roots = [root.data.id];
 
@@ -98,19 +103,21 @@ layout.run();
 cy.elements("node[id != 'mama']").forEach(console.log)
 
 function addTreeNode(diagram, level, tag) {
-    let node = { group: 'nodes', data: { id: tag } };
+    let node = { group: 'nodes', data: { id: tag , value: null, label: tag.toString()} };
     diagram.add( node );
 
     if (level > 0) {
         for (let i = 0; i < 2; i++)
         {
-            let childTag = replaceAt(tag,tag.length - level - 1, i.toString());
+            let childTag = replaceAt(tag,tag.length - level, i.toString());
             let child = addTreeNode(diagram, level - 1, childTag);
             diagram.add( { group: 'edges', data: { id: tag + "-" + childTag , source: tag, target: childTag } } );
         }
     }
     else {
         // diagram.add( { group: 'nodes', data: { id: tag + "\nval", parent: tag} })
+        node.data.value = (Math.random() + 1).toString(36).substring(7);
+        node.data.label = node.data.id.toString() + "\n" + node.data.value;
     }
 
     return node;

@@ -28,7 +28,10 @@ function theirInit() {
                 new go.Binding("desiredSize", "size"),
                 new go.Binding("fill", "fill")),
             $(go.TextBlock,
-                new go.Binding("text", "text"))
+                new go.Binding("text", "text")),
+            $(go.TextBlock,
+                new go.Binding("text", "text2"))
+
         );
 
     // define the Link template
@@ -162,8 +165,11 @@ function initTllTree() {
                 },
                 new go.Binding("desiredSize", "size"),
                 new go.Binding("fill", "fill")),
-            $(go.TextBlock,
-                new go.Binding("text", "text")),
+            $(go.Panel, "Vertical",
+                { background: "lightgray", isOpposite: true },
+                $(go.TextBlock, "0", { margin: 5, background: "lightgreen" }),
+                $(go.TextBlock, "1", { margin: 5, background: "lightgreen" }),
+            )
         );
 
     // define the Link template
