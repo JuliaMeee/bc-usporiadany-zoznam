@@ -2,27 +2,12 @@
 var cy = cytoscape({
     container: document.getElementById("cy"),
 
-    elements: [ // list of graph elements to start with
-/*        {data: { id: 10}},
-        {data: { id: 11}},
-        {data: { id: 'a' , parent: 10}},
-        {data: { id: 'b' , parent: 11}},
-        {data: { id: 'c' }},
-        {data: { id: 'd' }},
-        {data: { id: 'e' }},
-
-        {data: { id: 'ab', source: 10, target: 'b' }},
-        {data: { id: 'ac', source: 10, target: 'c' }},
-        {data: { id: 'ad', source: 10, target: 'd' }},
-        {data: { id: 'ae', source: 10, target: 'e' }},*/
-    ],
-
     style: [ // the stylesheet for the graph
         {
             selector: 'node',
             style: {
-                'shape': 'rectangle',
-                'background-color': '#ddd',
+                'shape': 'round-rectangle',
+                'background-color': 'data(color)',
                 'label': 'data(label)',
                 'width': '100px',
                 'height': '50px',
@@ -30,6 +15,21 @@ var cy = cytoscape({
                 'text-valign': 'center',
                 'text-halign': 'center',
                 'font-size': '24px',
+                'border': '1px solid black',
+            }
+        },
+
+        {
+            selector: 'node[!value]',
+            style: {
+                'font-style': 'italic',
+            }
+        },
+
+        {
+            selector: 'node[value]',
+            style: {
+                // 'font-weight': 'bold',
             }
         },
 
@@ -65,11 +65,11 @@ var cy = cytoscape({
     }
 }*/
 
-let level = 4
+let level = 5
 let root = addTreeNode(cy, level, padLeft("", level - 1, "_"));
 root.data.col = 10.5;
 
-console.log(root.data);
+// console.log(root.data);
 
 options = LayoutOptions.breadthfirst;
 
@@ -87,10 +87,10 @@ layout.run();
 
 
 
-cy.nodes().forEach(node => console.log(node.data()));
-cy.edges().forEach(edge => console.log(edge.data('source')))
+// cy.nodes().forEach(node => console.log(node.data()));
+// cy.edges().forEach(edge => console.log(edge.data('source')))
 function addTreeNode(diagram, level, tag) {
-    let node = { group: 'nodes', data: { id: tag , value: null, label: tag.toString()} };
+    let node = { group: 'nodes', data: { id: tag , label: tag.toString(), color: 'lightgray'} };
     diagram.add( node );
 
     if (level > 0) {
@@ -102,10 +102,15 @@ function addTreeNode(diagram, level, tag) {
         }
     }
     else {
-        // diagram.add( { group: 'nodes', data: { id: tag + "\nval", parent: tag} })
-        node.data.value = (Math.random() + 1).toString(36).substring(7);
-        node.data.label = node.data.id.toString() + "\n" + node.data.value;
-        node.position = {x: 1000, y: 500}
+        if (Math.random() > 0.6) {
+            let childTag = tag + "val";
+            let child = { group: 'nodes', data: { id: childTag, /*parent: tag,*/ value: (Math.random() + 1).toString(36).substring(7), color: randomColor()}};
+            child.data.label = child.data.value;
+            diagram.add(child);
+            diagram.add( { group: 'edges', data: { id: tag + "-" + childTag, source: tag, target: childTag}} )
+
+
+        }
     }
 
     return node;
@@ -118,4 +123,25 @@ function padLeft(str, length, char) {
 function replaceAt(str, index, char) {
     return str.substring(0, index) + char + str.substring(index + char.length);
 }
+
+function randomColor() {
+    return hslToHex(Math.random() * 1000, 50, 70)
+    return Math.floor(Math.random()*(16777215 - 4473924) + 4473924).toString(16);
+}
+
+// https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
+function hslToHex(h, s, l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+console.log("dodod", "totot");
+
+
 

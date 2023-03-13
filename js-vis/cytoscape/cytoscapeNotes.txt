@@ -10,3 +10,9 @@ node.data can hold arbitrary data
 
 node.data.id has to be unique
 
+how to define each node:
+    type: tag / value
+    root-id: root.id
+    id:  root-id + tag
+    tag:
+    value:

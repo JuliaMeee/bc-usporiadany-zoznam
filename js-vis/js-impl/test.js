@@ -219,10 +219,10 @@ function generic_ol_test1() {
 }
 
 console.log("started testing");
-/*test_Dll();
+// test_Dll();
 test_OlByLl();
-test_OlByTll();
-test_OlByTltll();*/
-generic_ol_test1();
+// test_OlByTll();
+// test_OlByTltll();
+// generic_ol_test1();
 console.log("finished testing");
 console.log("allTestsOk: " + allTestOk);

@@ -153,7 +153,7 @@ class OlByTltll {
     toString() {
         let text = "OlByTltll ";
         for (let rep of this.reps) {
-            text += rep.toString();
+            text += rep.toString() + "  ";
         }
 
         return text;
