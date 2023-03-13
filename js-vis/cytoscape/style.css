@@ -1,7 +1,36 @@
 #cy {
-    width: 2500px;
-    height: 600px;
+    width: 100%;
+    height: 800px;
     display: block;
+    /*border-top: 10px solid black;*/
+    /*border-bottom: 10px solid black;*/
+    background-color: aliceblue;
+}
+
+#menu {
+    /*padding: 40px;*/
+    /*align-content: center;*/
+}
+
+#menu > div {
+    display: inline;
+    /*padding-bottom: 20px;*/
+    /*width: 30%;*/
+}
 
 
+.menu {
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    background-color: darkslateblue;
+    font-family: Almarai;
+    font-size: x-large;
+    color: aliceblue;
 }

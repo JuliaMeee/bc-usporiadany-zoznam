@@ -1,30 +1,3 @@
-let options = {
-    name: 'breadthfirst',
-
-    fit: true, // whether to fit the viewport to the graph
-    directed: true, // whether the tree is directed downwards (or edges can point in any direction if false)
-    padding: 30, // padding on fit
-    circle: false, // put depths in concentric circles if true, put depths top down if false
-    grid: false, // whether to create an even grid into which the DAG is placed (circle:false only)
-    spacingFactor: 1.2, // positive spacing factor, larger => more space between nodes (N.B. n/a if causes overlap)
-    boundingBox: undefined, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
-    avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-    nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
-    roots: undefined, // the roots of the trees
-    maximal: false, // whether to shift nodes down their natural BFS depths in order to avoid upwards edges (DAGS only)
-    depthSort: undefined, // a sorting function to order nodes at equal depth. e.g. function(a, b){ return a.data('weight') - b.data('weight') }
-    animate: false, // whether to transition the node positions
-    animationDuration: 500, // duration of animation in ms if enabled
-    animationEasing: undefined, // easing of animation if enabled,
-    animateFilter: function ( node, i ){ return true; }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
-    ready: undefined, // callback on layoutready
-    stop: undefined, // callback on layoutstop
-    transform: function (node, position ){ return position; } // transform a given node position. Useful for changing flow direction in discrete layouts
-};
-
-// var layout = cy.layout( options );
-
-
 
 var cy = cytoscape({
     container: document.getElementById("cy"),
@@ -51,8 +24,8 @@ var cy = cytoscape({
                 'shape': 'rectangle',
                 'background-color': '#ddd',
                 'label': 'data(label)',
-/*                'width': '150px',
-                'height': '50px',*/
+                'width': '100px',
+                'height': '50px',
                 'text-wrap': 'wrap',
                 'text-valign': 'center',
                 'text-halign': 'center',
@@ -92,16 +65,30 @@ var cy = cytoscape({
     }
 }*/
 
-let level = 5
+let level = 4
 let root = addTreeNode(cy, level, padLeft("", level - 1, "_"));
+root.data.col = 10.5;
+
+console.log(root.data);
+
+options = LayoutOptions.breadthfirst;
 
 options.roots = [root.data.id];
 
-var layout = cy.elements().layout(options);
+let layout = cy.elements().layout(options);
 layout.run();
 
-cy.elements("node[id != 'mama']").forEach(console.log)
+// let layout = cy.elements().layout({
+//     name:'grid',
+//     rows: 5,
+//     cols: 32,
+//     fit:false});
+// layout.run();
 
+
+
+cy.nodes().forEach(node => console.log(node.data()));
+cy.edges().forEach(edge => console.log(edge.data('source')))
 function addTreeNode(diagram, level, tag) {
     let node = { group: 'nodes', data: { id: tag , value: null, label: tag.toString()} };
     diagram.add( node );
@@ -118,6 +105,7 @@ function addTreeNode(diagram, level, tag) {
         // diagram.add( { group: 'nodes', data: { id: tag + "\nval", parent: tag} })
         node.data.value = (Math.random() + 1).toString(36).substring(7);
         node.data.label = node.data.id.toString() + "\n" + node.data.value;
+        node.position = {x: 1000, y: 500}
     }
 
     return node;

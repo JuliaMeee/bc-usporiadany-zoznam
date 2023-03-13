@@ -1,0 +1,12 @@
+cy.nodes() => iterate over nodes
+cy.edges() => iterate over edges
+
+node.data() => returns data
+node.position() => returns position
+
+node.data('field') => returns 'field' property
+
+node.data can hold arbitrary data
+
+node.data.id has to be unique
+
