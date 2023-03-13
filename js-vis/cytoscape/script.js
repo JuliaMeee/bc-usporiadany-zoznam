@@ -15,7 +15,6 @@ var cy = cytoscape({
                 'text-valign': 'center',
                 'text-halign': 'center',
                 'font-size': '24px',
-                'border': '1px solid black',
             }
         },
 

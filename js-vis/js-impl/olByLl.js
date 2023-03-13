@@ -7,21 +7,40 @@ class OlByLl {
   }
 
   insert(x, y) {
-    vis.message("Insert(" + x + ", " + y + ")",'blue');
+    vis.addSequence();
+    vis.logMessage("Insert( " + x + ", " + y + " )",'blue');
+    vis.addMessageIndent(1);
+
     this.value_to_node[y] = new Node(y);
+    vis.highlight(node => node.data.value == x, true, 'blue', false);
     this.linked_list.insertAfter(this.value_to_node[x], this.value_to_node[y]);
-    vis.message("DONE", 'green');
+    vis.refresh(true);
+    vis.highlight(node => node.data.value == y, true, 'green', false);
+
+    vis.logMessage("inserted " + y + " after " + x, 'green');
+    vis.addMessageIndent(-1);
+    vis.process();
   }
 
   delete(x) {
-    vis.message("Delete(" + x + ")", 'blue');
+    vis.addSequence();
+    vis.logMessage("Delete( " + x + " )", 'blue');
+    vis.addMessageIndent(1);
+
+    vis.highlight((node => node.data.value === x), 'red', false, false);
+
     this.linked_list.remove(this.value_to_node[x]);
     delete this.value_to_node[x];
-    vis.message("DONE", 'green');
+
+    vis.refresh(true);
+    vis.logMessage("deleted " + x, 'green', false);
+    vis.addMessageIndent(-1);
+    vis.process();
   }
 
   order(x, y) {
-    vis.message("Order(" + x + ", " + y + ")", 'green');
+    vis.addSequence();
+    vis.logMessage("Order( " + x + ", " + y + " )", 'green');
     vis.addMessageIndent(1);
 
     let x_node = this.value_to_node[x];
@@ -29,23 +48,27 @@ class OlByLl {
 
     let result = false;
 
-    vis.message("traverse list and search for nodes " + x + ", " + y);
+    vis.logMessage("traverse list and search for nodes " + x + ", " + y);
+    vis.addMessageIndent(1);
 
     for (let node of this.linked_list) {
+      vis.highlight((n => n.data.value === node.value), 'blue', true, true);
       if (Object.is(node, x_node)) {
+        vis.logMessage("found node " + x + " before " + y, "blue", false);
         result = true;
         break;
       }
 
       if (Object.is(node, y_node)) {
+        vis.logMessage("found node " + y + " before " + x, "blue", false);
         result = false;
         break;
       }
     }
     vis.addMessageIndent(-1);
-
-    vis.message("DONE", 'green');
-
+    vis.logMessage("order returned: " + result, 'green');
+    vis.addMessageIndent(-1);
+    vis.process();
     return result;
   }
 
