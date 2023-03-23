@@ -1,3 +1,80 @@
+body {
+    margin: 0;
+    background-color: darkslateblue;
+    font-family: Almarai;
+    font-size: 1vw;
+    color: aliceblue;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2em;
+}
+
+button {
+    display: inline-block;
+    padding: 10px 15px;
+    background: transparent;
+    border: 2px solid aliceblue;
+    color: aliceblue;
+    min-width: 7vw;
+}
+
+button:hover{
+    filter: opacity(0.9) drop-shadow(0 0 0 blue);
+}
+
+input, #initializeTypeSelect {
+    display: inline-block;
+    padding: 10px 15px;
+    background: transparent;
+    border: 2px solid lightsteelblue;
+    color: aliceblue;
+    font-style: italic;
+}
+
+input::placeholder {
+    color: lightsteelblue;
+}
+
+option {
+    background-color: darkslateblue;
+    color: aliceblue;
+}
+
+.controlPanel {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    height: 200px;
+}
+
+#messages {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    background-color: aliceblue;
+    color: darkslateblue;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 30vw;
+}
+
+#ol-properties {
+    display: flex;
+    flex-direction: row;
+    background-color: aliceblue;
+    color: darkslateblue;
+    border: 2px solid darkslateblue;
+    padding: 3vh 3vw;
+}
+
+#ol-properties > div {
+    margin-right: 3vw;
+}
+
 #cy {
     width: 100%;
     height: 800px;
@@ -5,33 +82,4 @@
     background-color: aliceblue;
 }
 
-#menu > div {
-    /*display: inline;*/
-    /*padding-bottom: 20px;*/
-    /*width: 30%;*/
-}
 
-#messages {
-    height: 200px;
-    width: 700px;
-    overflow: scroll;
-    background-color: aliceblue;
-    color: darkslateblue;
-}
-
-
-.menu {
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-body {
-    margin: 0;
-    background-color: darkslateblue;
-    font-family: Almarai;
-    font-size: x-large;
-    color: aliceblue;
-}

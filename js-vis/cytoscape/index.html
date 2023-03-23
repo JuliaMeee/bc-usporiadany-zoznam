@@ -3,22 +3,59 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/x-icon" href="../asstes/images/ol-favicon.png">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.15.2/cytoscape.min.js"></script>
 
     </head>
     <body>
         <main>
-            <div id="menu" class="menu">
-                <div><h1>Usporiadaný zoznam</h1></div>
-                <div id="operationsInput" class="menu">Operations Input</div>
-                <div id="animControls" class="menu">Animation Controls</div>
+            <div class="controlPanel">
+                <div id="operationsInput">
+                    <div>
+                        <button id="initializeButton" type="button">Initialize</button>
+                        <input id="initializeXInput" type="text" placeholder="x">
+                        <select id="initializeTypeSelect">
+                            <option value="olByLl">OL by linked list</option>
+                            <option value="olByTll">OL by taggel linked list</option>
+                            <option value="olByTltll">OL by two-level taggel linked list</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button id="insertButton" type="button">Insert</button>
+                        <input id="insertXInput" type="text" placeholder="x">
+                        <input id="insertYInput" type="text" placeholder="y">
+                    </div>
+                    <div>
+                        <button id="deleteButton" type="button">Delete</button>
+                        <input id="deleteXInput" type="text" placeholder="x">
+                    </div>
+                    <div>
+                        <button id="orderButton" type="button">Order</button>
+                        <input id="orderXInput" type="text" placeholder="x">
+                        <input id="orderYInput" type="text" placeholder="y">
+                    </div>
+                </div>
+                <div id="animControls">
+                    <div>
+                        <label for="stepTimeInput">Step time:</label>
+                        <input id="stepTimeInput" class="animButton" type="number" min="0.1" max="2" step="0.1" value="0.5">
+                    </div>
+                    <div>
+                        <button id="playButton" type="button">Play</button>
+                        <button id="stopButton" type="button">Stop</button>
+                        <button id="skipButton" type="button">Skip</button>
+                    </div>
+                    <div>
+                        <button id="switchTagBaseButton" type="button">Set tag base to 2</button>
+                        <button id="switchTreeViewButton" type="button">Turn on tree view</button>
+                    </div>
+                </div>
                 <div id="messages" class="menu"></div>
-
             </div>
-
-
-
+            <div id="ol-properties">
+                <div> Ordered list by two level linked list </div><div> n: 30 </div><div> N: 26 </div><div> N_s: 16 </div><div> u_s: 64 </div><div> N_r: 8 </div><div> u_r: 32</div>
+            </div>
             <div class="container" id="cy">
             </div>
 
@@ -26,8 +63,10 @@
 
 
 
+        <script src="utils.js"></script>
         <script src="layoutOptions.js"></script>
         <script src="script.js"></script>
+        <script src="visualisationController.js"></script>
         <script src="main.js"></script>
 
         <script src="../js-impl/doublyLinkedList.js"></script>
