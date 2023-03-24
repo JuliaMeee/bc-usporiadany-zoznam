@@ -6,14 +6,14 @@ class VisualisationController {
     messageIndent = 0
     messagesWindow = document.getElementById("messages")
 
-    highlight(predicate, color, clearHighlight, isNewStep = true) {
+    highlight(predicate, color, clearHighlight, isNewStep) {
         this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._highlight, this, [predicate, color, clearHighlight])} );
     }
-    _highlight( predicate, color = 'blue', clearHighlight= false, isNewStep = true) {
+    _highlight( predicate, color, clearHighlight, isNewStep) {
 
     }
 
-    logMessage(text, color='blue', isNewStep = true) {
+    logMessage(text, color, isNewStep) {
         this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._logMessage, this, [text, color])} )
     }
 
@@ -24,9 +24,9 @@ class VisualisationController {
         this.messageIndent = savedIndent;
     }
 
-    _logMessage(text, color='blue') {
+    _logMessage(text, color) {
         if (this.messagesWindow.children.length > 0) {
-            text = /*"<br>" + */"--".repeat(this.messageIndent) + text;
+            text = /*"<br>" + */"|&nbsp;".repeat(this.messageIndent) + text;
         }
 
         this.messagesWindow.insertAdjacentHTML(
@@ -45,11 +45,11 @@ class VisualisationController {
         this.messageIndent += n;
     }
 
-    refresh(isNewStep = true) {
-        this.addStep({ isNewStep: isNewStep, func: this._refresh});
+    refresh(isNewStep) {
+        this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties()])});
     }
-    _refresh() {
-
+    _refresh(properties) {
+        this._setOlProperiesText(properties);
     }
 
     addSequence() {
@@ -99,6 +99,27 @@ class VisualisationController {
         this.processing = false;
         this.doStepsInstantly = false;
     }
+
+    _setOlProperiesText(properties)
+    {
+        olPropertiesText.innerHTML = "";
+
+        for (let i = 0; i < properties.length; i++) {
+            const propertyDiv = document.createElement("div");
+            propertyDiv.innerText = properties[i];
+            olPropertiesText.appendChild(propertyDiv);
+        }
+    }
+
+    toGraph(u, nodes) {
+        let graph = {};
+
+        for (let i = 0; i < u; i++) {
+
+        }
+    }
 }
 
 var visualisation = new VisualisationController();
+
+var ol = null;

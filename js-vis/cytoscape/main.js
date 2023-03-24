@@ -103,4 +103,4 @@ var orderYInput = document.getElementById("orderYInput");
 var stepTimeInput = document.getElementById("stepTimeInput");
 stepTimeInput.addEventListener("change", (event) => {setStepTime();});
 
-var ol = null;
+var olPropertiesText = document.getElementById("olProperties");

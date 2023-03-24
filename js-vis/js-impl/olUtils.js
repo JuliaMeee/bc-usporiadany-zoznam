@@ -1,6 +1,5 @@
 class OlUtils {
     static assignNewTags(minNode, nodesCount, minTag, maxTag) {
-        console.log("assign new tags: ", minNode, nodesCount, minTag, maxTag);
         let tagOffset = (Math.floor((1 + maxTag - minTag) / nodesCount));
         let tag = minTag;
         let node = minNode;
@@ -37,20 +36,36 @@ class OlUtils {
     }
 
     static relabel(xNode, n, u) {
-        console.log("relabel");
         let T = this.calculateT(n, u);
-        console.log("T: ", T);
+        visualisation.logMessage("overflow constant T = " + T, "blue", true);
+        visualisation.highlight(node => node.value === xNode.value, "blue", true, false);
+        visualisation.logMessage("searching for smallest enclosing tag interval not in overflow", "blue", false);
+        visualisation.addMessageIndent(1);
         let interval = new TagInterval(xNode);
         interval.increase();
 
         while (interval.density() > this.overflowThreshold(T, interval.level)) {
-            console.log("interval:", interval.minTag, "-", interval.maxTagExcl, "n:", interval.nodesCount);
+            visualisation.logMessage("interval: [" + interval.minTag + "; " + interval.maxTagExcl + "), level = " + interval.level, "blue", true);
+            visualisation.addMessageIndent(1);
+            visualisation.logMessage("density = " + interval.density() + " >  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", false)
+            visualisation.addMessageIndent(-1);
+            visualisation.highlight(node => interval.minTag <= node.tag && node.tag < interval.maxTagExcl, "blue", false, false);
             interval.increase();
         }
+        visualisation.logMessage("interval: [" + interval.minTag + "; " + interval.maxTagExcl + "), level = " + interval.level, "blue", true);
+        visualisation.addMessageIndent(1);
+        visualisation.logMessage("density = " + interval.density() + " <=  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", false)
+        visualisation.addMessageIndent(-1);
+        visualisation.highlight(node => interval.minTag <= node.tag && node.tag < interval.maxTagExcl, "blue", false, false);
 
-        console.log("interval:", interval.minTag, "-", interval.maxTagExcl, "n:", interval.nodesCount);
+        visualisation.addMessageIndent(-1);
+
+        visualisation.logMessage("relabel interval [" + interval.minTag + "; " + interval.maxTagExcl + ")", "blue", true);
 
         this.assignNewTags(interval.minNode, interval.nodesCount, interval.minTag, interval.maxTagExcl - 1);
+
+        visualisation.refresh(true);
+        visualisation.highlight(node => interval.minTag <= node.tag && node.tag < interval.maxTagExcl, "blue", true, false);
     }
 
     static calculateT(n, u) {
@@ -74,7 +89,11 @@ class OlUtils {
     }
 
     static violatesInvariant1(n, N) {
-        return !(N / 2 < n && n < 2 * N);
+        return !(N / 2 <= n && n <= 2 * N);
+    }
+
+    static violatesInvariant2(nSublist, NSublist) {
+        return !(0 < nSublist && nSublist <= 2 * NSublist);
     }
 
     static calculateU(N) {

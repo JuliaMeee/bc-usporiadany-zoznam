@@ -1,5 +1,10 @@
 class OlByTltll {
     constructor(x) {
+        ol = this;
+        visualisation.addSequence();
+        visualisation.logMessage("Initialize(" + x + ")", "blue", false);
+        visualisation.addMessageIndent(1);
+
         this.reps = new DoublyLinkedList();
         this.valueToNode = new Map();
         let xNode = new TaggedNodeWithRep(x, 0);
@@ -10,26 +15,48 @@ class OlByTltll {
         this.reps.insert(xRep);
         this.n = 1;
         this.N = 2;
+
+        visualisation.refresh(true);
+        visualisation.logMessage("initialized new ordered list with value " + x, 'green', false);
+        visualisation.addMessageIndent(-1);
+        visualisation.process();
     }
 
     insert(x, y) {
+        visualisation.addSequence();
+        visualisation.logMessage("Insert(" + x + ", " + y + ")","blue", false);
+        visualisation.addMessageIndent(1);
+
         let xNode = this.valueToNode.get(x);
+        visualisation.highlight(node => node.data.value === x, true, "blue", false);
 
         if (OlUtils.violatesInvariant1(this.n + 1, this.N)) {
+            visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n + 1 > 2 * N, violating invariant 1)", "blue", true);
+            visualisation.addMessageIndent(1);
             this.rebuild();
+            visualisation.addMessageIndent(-1);
+            visualisation.highlight(node => node.data.value === x, true, "blue", false);
         }
 
         let xSublist = xNode.rep.value;
 
-        if (this.violatesInvariant2(xSublist.length + 1, this.sublistN())) {
+        if (OlUtils.violatesInvariant2(xSublist.length + 1, this.sublistN())) {
+            visualisation.logMessage("split sublist in half (n_s = " + xSublist.length + ", N_s = " + this.sublistN() + ", n_s + 1 > 2 * N_s, violating invariant 2)", "blue", true);
+            visualisation.addMessageIndent(1);
             this.splitSublist(xSublist);
             xSublist = xNode.rep.value;
+            visualisation.addMessageIndent(-1);
+            visualisation.highlight(node => node.data.value === x, true, "blue", false);
         }
 
         let sublistU = OlUtils.calculateU(this.sublistN());
 
         if (!OlUtils.availableTagAfter(xNode, sublistU)) {
+            visualisation.logMessage("relabel (no available tag after " + x + ")", "blue", true);
+            visualisation.addMessageIndent(1);
             OlUtils.relabel(xNode, xSublist.length, sublistU);
+            visualisation.addMessageIndent(-1);
+            visualisation.highlight(node => node.data.value === x, true, "blue", false);
         }
 
         let yNode = new TaggedNodeWithRep(y, OlUtils.getNewTagAfter(xNode, sublistU));
@@ -37,34 +64,72 @@ class OlByTltll {
         xSublist.insertAfter(xNode, yNode);
         yNode.rep = xNode.rep;
         this.n += 1;
+
+        visualisation.refresh(true);
+        visualisation.highlight(node => node.data.value === y, "green", false);
+        visualisation.logMessage("inserted " + y + " with tag " + yNode.tag + " after " + x + " in sublist with tag " + yNode.rep.tag, "green", false);
+        visualisation.addMessageIndent(-1);
+        visualisation.process();
     }
 
     delete(x) {
+        visualisation.addSequence();
+        visualisation.logMessage("Delete(" + x + ")", "blue", false);
+        visualisation.addMessageIndent(1);
+        visualisation.highlight((node => node.data.value === x), "red", false, false);
         let xNode = this.valueToNode.get(x);
         let xSublist = xNode.rep.value;
 
         if (OlUtils.violatesInvariant1(this.n - 1, this.N)) {
+            visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 < n - 1, violating invariant 1)", "blue", true);
+            visualisation.addMessageIndent(1);
             this.rebuild();
+            visualisation.addMessageIndent(-1);
+            visualisation.highlight((node => node.data.value === x), "red", false, false);
         }
 
-        if (this.violatesInvariant2(xSublist.length - 1, this.sublistN())) {
+        let xNodeRep = xNode.rep;
+        if (OlUtils.violatesInvariant2(xSublist.length - 1, this.sublistN())) {
+            visualisation.logMessage("delete sublist rep (sublist is empty, violating invariant 2)", "blue", true);
             this.reps.remove(xNode.rep);
         }
 
         xSublist.remove(xNode);
         this.valueToNode.delete(x);
         this.n -= 1;
+
+        visualisation.refresh(true);
+        visualisation.logMessage("deleted " + x, "green", false);
+        visualisation.addMessageIndent(-1);
+        visualisation.process();
     }
 
     order(x, y) {
+        visualisation.addSequence();
+        visualisation.logMessage("Order(" + x + ", " + y + ")", "blue", false);
+        visualisation.addMessageIndent(1);
+
         let xNode = this.valueToNode.get(x);
         let yNode = this.valueToNode.get(y);
+        let result = false;
 
         if (xNode.rep.tag === yNode.rep.tag) {
-            return xNode.tag < yNode.tag;
+            visualisation.logMessage("rep(" + x + ").tag == rep(" + y + ").tag", "blue", true);
+            visualisation.addMessageIndent(1);
+            result = xNode.tag < yNode.tag;
+            visualisation.logMessage("node(" + x + ").tag " + (result ? "<" : ">") + " node(" + y + ").tag", "blue", true);
+            visualisation.addMessageIndent(-1);
         }
 
-        return xNode.rep.tag < yNode.rep.tag;
+        else {
+            result = xNode.rep.tag < yNode.rep.tag;
+            visualisation.logMessage("rep(" + x + ").tag " + (result ? "<" : ">") + " rep(" + y + ").tag", "blue", true);
+        }
+
+        visualisation.logMessage("order returned: " + result, "green");
+        visualisation.addMessageIndent(-1);
+        visualisation.process();
+        return result;
     }
 
     sublistN() {
@@ -83,13 +148,17 @@ class OlByTltll {
         return this.N / this.sublistN();
     }
 
-    violatesInvariant2(nSublist, NSublist) {
-        return !(0 < nSublist && nSublist <= 2 * NSublist);
-    }
-
     splitSublist(sublist) {
         let firstHalfRep = sublist.head.rep;
         firstHalfRep.value = new DoublyLinkedList();
+
+        if (!OlUtils.availableTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()))) {
+            visualisation.logMessage("relabel reps (no available tag for new sublist rep)", "blue", true);
+            OlUtils.relabel(firstHalfRep, this.reps.length, OlUtils.calculateU(this.repN()));
+            visualisation.refresh(true);
+        }
+
+
         let secondHalfRep = new TaggedNode(new DoublyLinkedList(), 0);
         let halfCount = Math.floor(sublist.length / 2);
         let node = sublist.head;
@@ -106,17 +175,26 @@ class OlByTltll {
         OlUtils.assignNewTags(firstHalfRep.value.head, halfCount, 0, sublistU);
         OlUtils.assignNewTags(secondHalfRep.value.head, halfCount, 0, sublistU);
 
-        if (!OlUtils.availableTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()))) {
-            OlUtils.relabel(firstHalfRep, this.reps.length, OlUtils.calculateU(this.repN()));
-        }
+        // if (!OlUtils.availableTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()))) {
+        //     visualisation.logMessage("relabel reps (no available tag for new sublist rep)", "blue", true);
+        //     OlUtils.relabel(firstHalfRep, this.reps.length, OlUtils.calculateU(this.repN()));
+        // }
 
         secondHalfRep.tag = OlUtils.getNewTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()));
         this.reps.insertAfter(firstHalfRep, secondHalfRep);
+
+        visualisation.logMessage("split sublist into 2", "green", true);
+        visualisation.refresh(false);
     }
 
     rebuild() {
-        console.log("rebuild");
         this.N = this.n;
+        visualisation.logMessage("set new N = n =" + this.N, "blue", true);
+        visualisation.logMessage("set new N_s = log(N) = " + this.sublistN(), "blue", false);
+        visualisation.logMessage("set new u_s = N_s ^ 3 = " + OlUtils.calculateU(this.sublistN()), "blue", false);
+        visualisation.logMessage("set new N_r = N / N_s = " + this.repN(), "blue", false);
+        visualisation.logMessage("set new u_r = N_r ^ 3 = " + OlUtils.calculateU(this.repN()), "blue", false);
+
         let sublistN = this.sublistN();
         let repN = this.repN();
         let oldRep = this.reps.head;
@@ -148,6 +226,11 @@ class OlByTltll {
         }
 
         OlUtils.assignNewTags(this.reps.head, this.reps.length, 0, OlUtils.calculateU(repN));
+
+        visualisation.refresh(true);
+        visualisation.logMessage("evenly distributed nodes into " + this.reps.length + " sublists", "blue", false);
+        visualisation.logMessage("set new (evenly distributed) tags for all reps", "blue", false);
+        visualisation.logMessage("set new (evenly distributed) tags for all sublist nodes", "blue", false);
     }
 
     toString() {
@@ -161,5 +244,19 @@ class OlByTltll {
 
     contains(x) {
         return this.valueToNode.has(x);
+    }
+
+    getProperties() {
+        let properties = [
+            "Ordered list by tagged linked list",
+            "n: " + this.n,
+            "N: " + this.N,
+            "N_s: " + this.sublistN(),
+            "u_s: " + OlUtils.calculateU(this.sublistN()),
+            "N_r: " + this.repN(),
+            "u_r: " + OlUtils.calculateU(this.repN()),
+        ]
+
+        return properties;
     }
 }

@@ -49,6 +49,12 @@ function test_OlByLl() {
 
     assert(!ol.order(4, 3));
 
+    ol.delete(0);
+    ol.delete(2);
+    ol.delete(4);
+
+    assert(ol.order(1, 3));
+
     console.log("test_OlByLl done");
 }
 
@@ -220,11 +226,8 @@ function generic_ol_test1() {
 
 console.log("started testing");
 // test_Dll();
-test_OlByLl();
+// test_OlByLl();
 test_OlByTll();
-test_OlByTltll();
-generic_ol_test1();
-// test_OlByTll();
 // test_OlByTltll();
 // generic_ol_test1();
 console.log("finished testing");
