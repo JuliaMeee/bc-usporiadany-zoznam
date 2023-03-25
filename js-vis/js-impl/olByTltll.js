@@ -1,6 +1,7 @@
 class OlByTltll {
     constructor(x) {
         ol = this;
+        visualisation.clearMessages();
         visualisation.addSequence();
         visualisation.logMessage("Initialize(" + x + ")", "blue", false);
         visualisation.addMessageIndent(1);
@@ -16,7 +17,7 @@ class OlByTltll {
         this.n = 1;
         this.N = 2;
 
-        visualisation.refresh(true);
+        visualisation.refresh(false);
         visualisation.logMessage("initialized new ordered list with value " + x, 'green', false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -191,9 +192,9 @@ class OlByTltll {
         this.N = this.n;
         visualisation.logMessage("set new N = n =" + this.N, "blue", true);
         visualisation.logMessage("set new N_s = log(N) = " + this.sublistN(), "blue", false);
-        visualisation.logMessage("set new u_s = N_s ^ 3 = " + OlUtils.calculateU(this.sublistN()), "blue", false);
+        visualisation.logMessage("set new u_s = 2 * N_s ^ 2 = " + OlUtils.calculateU(this.sublistN()), "blue", false);
         visualisation.logMessage("set new N_r = N / N_s = " + this.repN(), "blue", false);
-        visualisation.logMessage("set new u_r = N_r ^ 3 = " + OlUtils.calculateU(this.repN()), "blue", false);
+        visualisation.logMessage("set new u_r = 2 * N_r ^ 2 = " + OlUtils.calculateU(this.repN()), "blue", false);
 
         let sublistN = this.sublistN();
         let repN = this.repN();
@@ -258,5 +259,9 @@ class OlByTltll {
         ]
 
         return properties;
+    }
+
+    toGraph() {
+        return OlToGraph.toGraphTltll();
     }
 }

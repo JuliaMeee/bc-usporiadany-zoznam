@@ -16,8 +16,8 @@ function replaceAt(str, index, char) {
 }
 
 function randomColor() {
-    return hslToHex(Math.random() * 1000, 50, 70)
-    return Math.floor(Math.random()*(16777215 - 4473924) + 4473924).toString(16);
+    return hslToHex(Math.random() * 1000, 50, 80);
+    // return Math.floor(Math.random()*(16777215 - 4473924) + 4473924).toString(16);
 }
 
 // https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex

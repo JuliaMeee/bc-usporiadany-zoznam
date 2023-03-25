@@ -37,26 +37,29 @@ class OlUtils {
 
     static relabel(xNode, n, u) {
         let T = this.calculateT(n, u);
-        visualisation.logMessage("overflow constant T = " + T, "blue", true);
-        visualisation.highlight(node => node.value === xNode.value, "blue", true, false);
+
+        visualisation.highlight(node => node.value === xNode.value, "blue", true, true);
         visualisation.logMessage("searching for smallest enclosing tag interval not in overflow", "blue", false);
+        visualisation.logMessage("overflow constant T = " + T, "blue", true);
         visualisation.addMessageIndent(1);
         let interval = new TagInterval(xNode);
         interval.increase();
 
         while (interval.density() > this.overflowThreshold(T, interval.level)) {
             visualisation.logMessage("interval: [" + interval.minTag + "; " + interval.maxTagExcl + "), level = " + interval.level, "blue", true);
+            let minTag = interval.minTag;
+            let maxTag = interval.maxTagExcl;
+            visualisation.highlight(node => minTag <= node.data().tag && node.data().tag < maxTag, "blue", false, false);
             visualisation.addMessageIndent(1);
-            visualisation.logMessage("density = " + interval.density() + " >  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", false)
+            visualisation.logMessage("density = " + interval.density() + " >  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", true);
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => interval.minTag <= node.tag && node.tag < interval.maxTagExcl, "blue", false, false);
             interval.increase();
         }
         visualisation.logMessage("interval: [" + interval.minTag + "; " + interval.maxTagExcl + "), level = " + interval.level, "blue", true);
         visualisation.addMessageIndent(1);
         visualisation.logMessage("density = " + interval.density() + " <=  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", false)
         visualisation.addMessageIndent(-1);
-        visualisation.highlight(node => interval.minTag <= node.tag && node.tag < interval.maxTagExcl, "blue", false, false);
+        visualisation.highlight(node => interval.minTag <= node.data().tag && node.data().tag < interval.maxTagExcl, "blue", false, false);
 
         visualisation.addMessageIndent(-1);
 
@@ -65,7 +68,7 @@ class OlUtils {
         this.assignNewTags(interval.minNode, interval.nodesCount, interval.minTag, interval.maxTagExcl - 1);
 
         visualisation.refresh(true);
-        visualisation.highlight(node => interval.minTag <= node.tag && node.tag < interval.maxTagExcl, "blue", true, false);
+        visualisation.highlight(node => interval.minTag <= node.data().tag && node.data().tag < interval.maxTagExcl, "blue", true, false);
     }
 
     static calculateT(n, u) {

@@ -64,6 +64,8 @@ var cy = cytoscape({
     }
 }*/
 
+console.log(cy.extent());
+
 let level = 5
 let root = addTreeNode(cy, level, padLeft("", level - 1, "_"));
 root.data.col = 10.5;
@@ -76,6 +78,56 @@ options.roots = [root.data.id];
 
 let layout = cy.elements().layout(options);
 layout.run();
+
+console.log(cy.extent());
+
+cy = cytoscape({
+    container: document.getElementById("cy"),
+
+    style: [ // the stylesheet for the graph
+        {
+            selector: 'node',
+            style: {
+                'shape': 'round-rectangle',
+                'background-color': 'data(color)',
+                'label': 'data(label)',
+                'width': '100px',
+                'height': '50px',
+                'text-wrap': 'wrap',
+                'text-valign': 'center',
+                'text-halign': 'center',
+                'font-size': '24px',
+            }
+        },
+
+        {
+            selector: 'node[!value]',
+            style: {
+                'font-style': 'italic',
+            }
+        },
+
+        {
+            selector: 'node[value]',
+            style: {
+                // 'font-weight': 'bold',
+            }
+        },
+
+        {
+            selector: 'edge',
+            style: {
+                'width': 3,
+                'line-color': '#000000',
+                'target-arrow-color': '#000000',
+                'target-arrow-shape': 'triangle',
+                'curve-style': 'bezier'
+            }
+        }
+    ],
+});
+
+addNodeList(cy);
 
 // let layout = cy.elements().layout({
 //     name:'grid',
@@ -103,7 +155,7 @@ function addTreeNode(diagram, level, tag) {
     else {
         if (Math.random() > 0.6) {
             let childTag = tag + "val";
-            let child = { group: 'nodes', data: { id: childTag, /*parent: tag,*/ value: (Math.random() + 1).toString(36).substring(7), color: randomColor()}};
+            let child = { group: 'nodes', data: { id: childTag, /*parent: tag,*/ value: "xx\n" + (Math.random() + 1).toString(36).substring(7), color: randomColor()}};
             child.data.label = child.data.value;
             diagram.add(child);
             diagram.add( { group: 'edges', data: { id: tag + "-" + childTag, source: tag, target: childTag}} )
@@ -113,6 +165,24 @@ function addTreeNode(diagram, level, tag) {
     }
 
     return node;
+}
+
+function addNodeList(diagram) {
+    for (let i = 0; i < 100; i++) {
+        diagram.add({
+            group: 'nodes',
+            data: {
+                id: i,
+                color: randomColor(),
+            },
+            position: {
+                x: i * -110,
+                y: 100,
+            }
+        })
+    }
+
+    diagram.fit();
 }
 
 

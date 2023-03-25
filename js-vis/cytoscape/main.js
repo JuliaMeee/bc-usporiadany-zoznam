@@ -1,15 +1,15 @@
 function initializeButtonClick() {
+    console.log("initialize button click");
     if (visualisation.isBusy()) {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
         return;
     }
 
-    console.log("initialize button click");
     let x = initializeXInput.value.trim();
-    if (x.length == 0)
+    if (x.length === 0)
     {
-        visualisation.logMessage("Initialize error: invalid (empty) value of x", "red", true);
-        visualisation.process();
+        visualisation.logMessage(" !! Initialize error: invalid (empty) value of x !!", "red", true);
+        return;
     }
 
     let olType = initializeTypeSelect.value;
@@ -24,26 +24,68 @@ function initializeButtonClick() {
             ol = new OlByTltll(x);
             break;
     }
-    
-    console.log(ol);
-    console.log(ol.toString());
 }
 
 function insertButtonClick() {
-    let x = insertXInput.value;
-    let y = insertYInput.value;
     console.log("insert button click");
+    if (visualisation.isBusy()) {
+        visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
+        return;
+    }
+
+    let x = insertXInput.value.trim();
+    let y = insertYInput.value.trim();
+    if (!ol.contains(x)) {
+        visualisation.logMessageInstantly(" !! Insert error: ordered list does not contain '" + x + "' !!", "red", true);
+        return;
+    }
+    if (y.length === 0) {
+        visualisation.logMessageInstantly(" !! Insert error: invalid (empty) value of y !!", "red", true);
+        return;
+    }
+    if (ol.contains(y)) {
+        visualisation.logMessageInstantly(" !! Insert error: ordered list already contains '" + y + "' !!", "red", true);
+        return;
+    }
+
+    ol.insert(x, y);
 }
 
 function deleteButtonClick() {
-    let x = deleteXInput.value;
     console.log("delete button click");
+    if (visualisation.isBusy()) {
+        visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
+        return;
+    }
+
+    let x = deleteXInput.value.trim();
+    if (!ol.contains(x)) {
+        visualisation.logMessageInstantly(" !! Delete error: ordered list does not contain '" + x + "' !!", "red", true);
+        return;
+    }
+
+    ol.delete(x);
 }
 
 function orderButtonClick() {
-    let x = orderXInput.value;
-    let y = orderYInput.value;
     console.log("order button click");
+    if (visualisation.isBusy()) {
+        visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
+        return;
+    }
+
+    let x = orderXInput.value.trim();
+    let y = orderYInput.value.trim();
+    if (!ol.contains(x)) {
+        visualisation.logMessageInstantly(" !! Order error: ordered list does not contain '" + x + "' !!", "red", true);
+        return;
+    }
+    if (!ol.contains(y)) {
+        visualisation.logMessageInstantly(" !! Order error: ordered list does not contain '" + y + "' !!", "red", true);
+        return;
+    }
+
+    ol.order(x, y);
 }
 
 function setStepTime() {
@@ -54,6 +96,7 @@ function setStepTime() {
 
 function playButtonClick() {
     console.log("play button click");
+    visualisation.process();
 }
 
 function stopButtonClick() {
@@ -102,5 +145,9 @@ var orderXInput = document.getElementById("orderXInput");
 var orderYInput = document.getElementById("orderYInput");
 var stepTimeInput = document.getElementById("stepTimeInput");
 stepTimeInput.addEventListener("change", (event) => {setStepTime();});
+setStepTime();
+
 
 var olPropertiesText = document.getElementById("olProperties");
+
+var cyContainer = document.getElementById("cy");

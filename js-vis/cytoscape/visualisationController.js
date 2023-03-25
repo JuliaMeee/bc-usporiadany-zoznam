@@ -1,6 +1,6 @@
 class VisualisationController {
     sequences = []
-    stepTime = 500
+    stepTime = 1000
     doStepsInstantly = false
     processing = false
     messageIndent = 0
@@ -9,8 +9,17 @@ class VisualisationController {
     highlight(predicate, color, clearHighlight, isNewStep) {
         this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._highlight, this, [predicate, color, clearHighlight])} );
     }
-    _highlight( predicate, color, clearHighlight, isNewStep) {
+    _highlight( predicate, color, clearHighlight) {
+        for (let node of graph.nodes()){
+            if (predicate(node)) {
+                node.data().highlight = color;
+            }
+            else if (clearHighlight) {
+                node.data().highlight = 'none';
+            }
+        };
 
+        graph.style(OlToGraph.graphStyle);
     }
 
     logMessage(text, color, isNewStep) {
@@ -37,6 +46,10 @@ class VisualisationController {
         this.messagesWindow.scrollTop = this.messagesWindow.scrollHeight;
     }
 
+    clearMessages() {
+        this.messagesWindow.innerHTML = "";
+    }
+
     addMessageIndent(n) {
         this.addStep({ isNewStep: false, func: wrapFunction(this._addMessageIndent, this, [n])});
     }
@@ -46,10 +59,14 @@ class VisualisationController {
     }
 
     refresh(isNewStep) {
-        this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties()])});
+        this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph()])});
     }
-    _refresh(properties) {
+    _refresh(properties, graphEles) {
         this._setOlProperiesText(properties);
+
+        graph = OlToGraph.buildGraph(graphEles.nodes, graphEles.edges);
+        graph.style(OlToGraph.graphStyle);
+        graph.center();
     }
 
     addSequence() {
@@ -78,13 +95,16 @@ class VisualisationController {
             console.log("Error: vis already processing")
             return;
         }
+        if (!this.sequences) {
+            return;
+        }
 
         this.processing = true;
 
         while (this.sequences.length > 0) {
-            let sequence = this.sequences.shift();
+            let sequence = this.sequences[0];
             while (sequence.length > 0) {
-                let step = sequence.shift();
+                let step = sequence[0];
 
                 if (step.isNewStep) {
                     if (!this.doStepsInstantly){
@@ -93,7 +113,9 @@ class VisualisationController {
                 }
 
                 step.func();
+                sequence.shift();
             }
+            this.sequences.shift();
         }
 
         this.processing = false;
@@ -110,16 +132,10 @@ class VisualisationController {
             olPropertiesText.appendChild(propertyDiv);
         }
     }
-
-    toGraph(u, nodes) {
-        let graph = {};
-
-        for (let i = 0; i < u; i++) {
-
-        }
-    }
 }
 
 var visualisation = new VisualisationController();
 
 var ol = null;
+
+var graph = null;

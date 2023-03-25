@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
     --font-size: 1.5rem;
@@ -9,7 +9,8 @@
 body {
     margin: 0;
     background-color: darkslateblue;
-    font-family: Almarai;
+    /*font-family: Almarai;*/
+    font-family: Inconsolata;
     font-size: var(--font-size);
     color: aliceblue;
 }
@@ -22,6 +23,7 @@ button {
     color: aliceblue;
     min-width: 7vw;
     font-size: var(--font-size);
+    font-family: Inconsolata;
 }
 
 button:hover{
@@ -36,6 +38,12 @@ input, #initializeTypeSelect {
     color: aliceblue;
     font-style: italic;
     font-size: var(--font-size);
+    font-family: Inconsolata;
+    width: 20%;
+}
+
+#initializeTypeSelect {
+    width: 30%;
 }
 
 input::placeholder {
@@ -65,7 +73,7 @@ option {
     align-items: flex-start;
     justify-content: flex-start;
     min-width: 40vw;
-    font-family: "Nanum Gothic Coding";
+    font-family: 'Inconsolata', monospace;
     font-weight: bold;
 }
 
@@ -91,6 +99,7 @@ option {
     height: 800px;
     display: block;
     background-color: aliceblue;
+    font-family: 'Inconsolata', monospace;
 }
 
 

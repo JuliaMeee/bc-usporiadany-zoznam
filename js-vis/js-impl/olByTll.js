@@ -1,6 +1,7 @@
 class OlByTll {
     constructor(x) {
         ol = this;
+        visualisation.clearMessages();
         visualisation.addSequence();
         visualisation.logMessage("Initialize(" + x + ")", "blue", false);
         visualisation.addMessageIndent(1);
@@ -13,7 +14,7 @@ class OlByTll {
         this.valueToNode.set(x, new TaggedNode(x, 0));
         this.linkedList.insert(this.valueToNode.get(x));
 
-        visualisation.refresh(true);
+        visualisation.refresh(false);
         visualisation.logMessage("initialized new ordered list with value " + x, 'green', false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -25,14 +26,16 @@ class OlByTll {
         visualisation.addMessageIndent(1);
 
         let xNode = this.valueToNode.get(x);
-        visualisation.highlight(node => node.data.value === x, true, "blue", false);
+        visualisation.highlight(node => node.data().value === x, true, "blue", false);
+
+        console.log("here 2");
 
         if (OlUtils.violatesInvariant1(this.n + 1, this.N)) {
             visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n + 1 > 2 * N, violating invariant 1)", "blue", true);
             visualisation.addMessageIndent(1);
             this.rebuild();
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data.value === x, true, "blue", false);
+            visualisation.highlight(node => node.data().value === x, true, "blue", false);
         }
 
         if (!OlUtils.availableTagAfter(xNode, this.u)) {
@@ -40,7 +43,7 @@ class OlByTll {
             visualisation.addMessageIndent(1);
             OlUtils.relabel(xNode, this.n, this.u);
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data.value === x, true, "blue", false);
+            visualisation.highlight(node => node.data().value === x, true, "blue", true);
         }
 
         let yNode = new TaggedNode(y, OlUtils.getNewTagAfter(xNode, this.u));
@@ -49,7 +52,7 @@ class OlByTll {
         this.n += 1;
 
         visualisation.refresh(true);
-        visualisation.highlight(node => node.data.value === y, "green", false);
+        visualisation.highlight(node => node.data().value === y, "green", false);
         visualisation.logMessage("inserted " + y + " with tag " + yNode.tag + " after " + x, "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -59,13 +62,13 @@ class OlByTll {
         visualisation.addSequence();
         visualisation.logMessage("Delete(" + x + ")", "blue", false);
         visualisation.addMessageIndent(1);
-        visualisation.highlight((node => node.data.value === x), "red", false, false);
+        visualisation.highlight((node => node.data().value === x), "red", false, false);
         if (OlUtils.violatesInvariant1(this.n - 1, this.N)) {
             visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 < n - 1, violating invariant 1)", "blue", true);
             visualisation.addMessageIndent(1);
             this.rebuild();
             visualisation.addMessageIndent(-1);
-            visualisation.highlight((node => node.data.value === x), "red", false, false);
+            visualisation.highlight((node => node.data().value === x), "red", false, false);
         }
 
         let xNode = this.valueToNode.get(x);
@@ -99,8 +102,8 @@ class OlByTll {
     rebuild() {
         this.N = this.n;
         this.u = OlUtils.calculateU(this.N);
-        visualisation.logMessage("set new N = n =" + this.N, "blue", true);
-        visualisation.logMessage("set new u = N ^ 3  = " + this.u, "blue", false);
+        visualisation.logMessage("set new N = n = " + this.N, "blue", true);
+        visualisation.logMessage("set new u = 2 * N ^ 2  = " + this.u, "blue", false);
         OlUtils.assignNewTags(this.linkedList.head, this.n, 0, this.u);
         visualisation.refresh(true);
         visualisation.logMessage("set new (evenly distributed) tags for all nodes", "blue", false);
@@ -123,6 +126,10 @@ class OlByTll {
         ]
 
         return properties;
+    }
+
+    toGraph() {
+        return OlToGraph.toGraphTll(this.linkedList);
     }
 
 }
