@@ -10,20 +10,20 @@ body {
     margin: 0;
     background-color: darkslateblue;
     /*font-family: Almarai;*/
-    font-family: Inconsolata;
+    font-family: "Inconsolata", monospace;
     font-size: var(--font-size);
-    color: aliceblue;
+    color: white;
 }
 
 button {
     display: inline-block;
     padding: 10px 15px;
     background: transparent;
-    border: 2px solid aliceblue;
-    color: aliceblue;
+    border: 2px solid white;
+    color: white;
     min-width: 7vw;
     font-size: var(--font-size);
-    font-family: Inconsolata;
+    font-family: "Inconsolata", monospace;
 }
 
 button:hover{
@@ -38,7 +38,7 @@ input, #initializeTypeSelect {
     color: aliceblue;
     font-style: italic;
     font-size: var(--font-size);
-    font-family: Inconsolata;
+    font-family: "Inconsolata", monospace;
     width: 20%;
 }
 
@@ -66,7 +66,7 @@ option {
 #messages {
     overflow-y: scroll;
     overflow-x: scroll;
-    background-color: aliceblue;
+    background-color: white;
     color: darkslateblue;
     display: flex;
     flex-direction: column;
@@ -84,7 +84,7 @@ option {
 #olProperties {
     display: flex;
     flex-direction: row;
-    background-color: aliceblue;
+    background-color: white;
     color: darkslateblue;
     border: 2px solid darkslateblue;
     padding: 1vh 1vw;
@@ -98,8 +98,22 @@ option {
     width: 100%;
     height: 800px;
     display: block;
-    background-color: aliceblue;
+    background-color: white;
     font-family: 'Inconsolata', monospace;
+}
+
+.nodeTag {
+    font-style: italic;
+    font-size: 24px;
+    color: black;
+    text-align: center;
+}
+
+.nodeValue {
+    font-style: normal;
+    font-size: 30px;
+    color: black;
+    text-align: center;
 }
 
 

@@ -26,16 +26,14 @@ class OlByTll {
         visualisation.addMessageIndent(1);
 
         let xNode = this.valueToNode.get(x);
-        visualisation.highlight(node => node.data().value === x, true, "blue", false);
-
-        console.log("here 2");
+        visualisation.highlight(node => node.data().value === x, "blue", true, false);
 
         if (OlUtils.violatesInvariant1(this.n + 1, this.N)) {
             visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n + 1 > 2 * N, violating invariant 1)", "blue", true);
             visualisation.addMessageIndent(1);
             this.rebuild();
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data().value === x, true, "blue", false);
+            visualisation.highlight(node => node.data().value === x, "blue", true, false);
         }
 
         if (!OlUtils.availableTagAfter(xNode, this.u)) {
@@ -43,7 +41,7 @@ class OlByTll {
             visualisation.addMessageIndent(1);
             OlUtils.relabel(xNode, this.n, this.u);
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data().value === x, true, "blue", true);
+            visualisation.highlight(node => node.data().value === x, "blue", true,true);
         }
 
         let yNode = new TaggedNode(y, OlUtils.getNewTagAfter(xNode, this.u));
@@ -52,7 +50,7 @@ class OlByTll {
         this.n += 1;
 
         visualisation.refresh(true);
-        visualisation.highlight(node => node.data().value === y, "green", false);
+        visualisation.highlight(node => node.data().value === y, "green", false, false);
         visualisation.logMessage("inserted " + y + " with tag " + yNode.tag + " after " + x, "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -129,7 +127,8 @@ class OlByTll {
     }
 
     toGraph() {
-        return OlToGraph.toGraphTll(this.linkedList);
+        return OlToGraph.toGraphTllTree(this.linkedList, this.u);
+        // return OlToGraph.toGraphTll(this.linkedList);
     }
 
 }

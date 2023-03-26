@@ -48,8 +48,8 @@ class OlUtils {
         while (interval.density() > this.overflowThreshold(T, interval.level)) {
             visualisation.logMessage("interval: [" + interval.minTag + "; " + interval.maxTagExcl + "), level = " + interval.level, "blue", true);
             let minTag = interval.minTag;
-            let maxTag = interval.maxTagExcl;
-            visualisation.highlight(node => minTag <= node.data().tag && node.data().tag < maxTag, "blue", false, false);
+            let maxTagExcl = interval.maxTagExcl;
+            visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl), "blue", false, false);
             visualisation.addMessageIndent(1);
             visualisation.logMessage("density = " + interval.density() + " >  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", true);
             visualisation.addMessageIndent(-1);

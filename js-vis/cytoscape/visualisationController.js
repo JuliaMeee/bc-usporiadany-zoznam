@@ -60,13 +60,25 @@ class VisualisationController {
 
     refresh(isNewStep) {
         this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph()])});
+        console.log("refresh staged");
     }
     _refresh(properties, graphEles) {
+        console.log("refresh start");
         this._setOlProperiesText(properties);
 
         graph = OlToGraph.buildGraph(graphEles.nodes, graphEles.edges);
         graph.style(OlToGraph.graphStyle);
-        graph.center();
+        graph.nodeHtmlLabel(OlToGraph.htmlLabelStyle);
+
+        /*if (OlToGraph.isGraphOutOfView(graph)) {
+            graph.fit();
+        }
+        graph.resize();
+        graph.center();*/
+
+        graph.fit();
+
+        console.log("refresh end");
     }
 
     addSequence() {

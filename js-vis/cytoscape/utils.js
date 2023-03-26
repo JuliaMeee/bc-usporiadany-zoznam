@@ -7,9 +7,9 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function padLeft(str, length, char) {
+/*function padLeft(str, length, char) {
     return char.repeat(length - str.length) + str;
-}
+}*/
 
 function replaceAt(str, index, char) {
     return str.substring(0, index) + char + str.substring(index + char.length);
