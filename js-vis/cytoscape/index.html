@@ -13,50 +13,50 @@
     <body>
         <main>
             <div class="controlPanel">
-                <div id="operationsInput">
+                <div class="operationsInput">
                     <div>
-                        <button id="initializeButton" type="button">Initialize</button>
+                        <label for="initializeButton">Initialize</label>
                         <input id="initializeXInput" type="text" placeholder="x">
                         <select id="initializeTypeSelect">
-                            <option value="olByLl">OL by linked list</option>
-                            <option value="olByTll">OL by taggel linked list</option>
-                            <option value="olByTltll">OL by two-level taggel linked list</option>
+                            <option value="olByLl">linked list</option>
+                            <option value="olByTll">tagged linked list</option>
+                            <option value="olByTltll">two-level taggel linked list</option>
                         </select>
+                        <button id="initializeButton" type="button">Start</button>
                     </div>
                     <div>
-                        <button id="insertButton" type="button">Insert</button>
+                        <label for="insertButton">Insert</label>
                         <input id="insertXInput" type="text" placeholder="x">
                         <input id="insertYInput" type="text" placeholder="y">
+                        <button id="insertButton" type="button">Start</button>
                     </div>
                     <div>
-                        <button id="deleteButton" type="button">Delete</button>
+                        <label for="deleteButton">Delete</label>
                         <input id="deleteXInput" type="text" placeholder="x">
+                        <div></div>
+                        <button id="deleteButton" type="button">Start</button>
                     </div>
                     <div>
-                        <button id="orderButton" type="button">Order</button>
+                        <label for="orderButton">Order</label>
                         <input id="orderXInput" type="text" placeholder="x">
                         <input id="orderYInput" type="text" placeholder="y">
+                        <button id="orderButton" type="button">Start</button>
                     </div>
                 </div>
-                <div id="animControls">
+                <div class="visualisationInput">
                     <div>
-                        <label for="stepTimeInput">Step time:</label>
-                        <input id="stepTimeInput" class="animButton" type="number" min="0.1" max="2" step="0.1" value="0.5">
+                        <button id="treeViewButton" type="button">Tree view: on</button>
                     </div>
                     <div>
-                        <button id="playButton" type="button">Play</button>
-                        <button id="stopButton" type="button">Stop</button>
-                        <button id="skipButton" type="button">Skip</button>
+                        <button id="continueButton" type="button">Continue</button>
                     </div>
                     <div>
-                        <button id="switchTagBaseButton" type="button">Set tag base to 2</button>
-                        <button id="switchTreeViewButton" type="button">Turn on tree view</button>
+                        <button id="skipButton" type="button">Finish</button>
                     </div>
                 </div>
                 <div id="messages" class="menu"></div>
             </div>
             <div id="olProperties">
-                <div> Ordered list by two level linked list </div><div> n: 30 </div><div> N: 26 </div><div> N_s: 16 </div><div> u_s: 64 </div><div> N_r: 8 </div><div> u_r: 32</div>
             </div>
             <div class="container" id="cy">
             </div>

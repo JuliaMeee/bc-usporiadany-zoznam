@@ -64,7 +64,7 @@ var cy = cytoscape({
     }
 }*/
 
-console.log(cy.extent());
+/*console.log(cy.extent());
 
 let level = 5
 let root = addTreeNode(cy, level, padLeft("", level - 1, "_"));
@@ -79,7 +79,7 @@ options.roots = [root.data.id];
 let layout = cy.elements().layout(options);
 layout.run();
 
-console.log(cy.extent());
+console.log(cy.extent());*/
 
 cy = cytoscape({
     container: document.getElementById("cy"),
@@ -127,7 +127,7 @@ cy = cytoscape({
     ],
 });
 
-addNodeList(cy);
+/*addNodeList(cy);
 
 // let layout = cy.elements().layout({
 //     name:'grid',
@@ -155,7 +155,7 @@ function addTreeNode(diagram, level, tag) {
     else {
         if (Math.random() > 0.6) {
             let childTag = tag + "val";
-            let child = { group: 'nodes', data: { id: childTag, /*parent: tag,*/ value: "xx\n" + (Math.random() + 1).toString(36).substring(7), color: randomColor()}};
+            let child = { group: 'nodes', data: { id: childTag, /!*parent: tag,*!/ value: "xx\n" + (Math.random() + 1).toString(36).substring(7), color: randomColor()}};
             child.data.label = child.data.value;
             diagram.add(child);
             diagram.add( { group: 'edges', data: { id: tag + "-" + childTag, source: tag, target: childTag}} )
@@ -183,7 +183,7 @@ function addNodeList(diagram) {
     }
 
     diagram.fit();
-}
+}*/
 
 
 

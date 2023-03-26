@@ -12,6 +12,8 @@ function initializeButtonClick() {
         return;
     }
 
+
+    hideGroup(operationsControls);
     let olType = initializeTypeSelect.value;
     switch (olType) {
         case "olByLl":
@@ -48,6 +50,7 @@ function insertButtonClick() {
         return;
     }
 
+    hideGroup(operationsControls);
     ol.insert(x, y);
 }
 
@@ -64,6 +67,7 @@ function deleteButtonClick() {
         return;
     }
 
+    hideGroup(operationsControls);
     ol.delete(x);
 }
 
@@ -85,35 +89,34 @@ function orderButtonClick() {
         return;
     }
 
+    hideGroup(operationsControls);
     ol.order(x, y);
 }
 
-function setStepTime() {
-    let stepTime = parseFloat(stepTimeInput.value) * 1000; // convert sec to milisec
-    visualisation.setStepTime(stepTime);
-    console.log("changed step time to " + stepTime);
-}
-
-function playButtonClick() {
-    console.log("play button click");
-    visualisation.process();
-}
-
-function stopButtonClick() {
-    console.log("stop button click");
-}
-
 function skipButtonClick() {
-    visualisation.skip();
     console.log("skip button click");
+    visualisation.skip();
+    hideGroup(visualisationControls);
 }
 
-function switchTagBaseButtonClick() {
-    console.log("switch tag base button click");
+function continueButtonClick() {
+    console.log("skip button click");
+    visualisation.process(true, false);
+}
+function treeViewButtonClick() {
+    console.log("tree view checkbox click");
 }
 
-function switchTreeViewButtonClick() {
-    console.log("switch tree view button click");
+function hideGroup(group) {
+    if (group === operationsControls) {
+        visualisationControls.forEach(item => item.classList.remove('hidden'));
+        operationsControls.forEach(item => item.classList.add('hidden'));
+    }
+
+    else {
+        operationsControls.forEach(item => item.classList.remove('hidden'));
+        visualisationControls.forEach(item => item.classList.add('hidden'));
+    }
 }
 
 // Bind buttons
@@ -125,16 +128,14 @@ var deleteButton = document.getElementById("deleteButton");
 deleteButton.addEventListener("click", deleteButtonClick);
 var orderButton = document.getElementById("orderButton");
 orderButton.addEventListener("click", orderButtonClick);
-var playButton = document.getElementById("playButton");
-playButton.addEventListener("click", playButtonClick);
-var stopButton = document.getElementById("stopButton");
-stopButton.addEventListener("click", stopButtonClick);
+
 var skipButton = document.getElementById("skipButton");
 skipButton.addEventListener("click", skipButtonClick);
-var switchTagBaseButton = document.getElementById("switchTagBaseButton");
-switchTagBaseButton.addEventListener("click", switchTagBaseButtonClick);
-var switchTreeViewButton = document.getElementById("switchTreeViewButton");
-switchTreeViewButton.addEventListener("click", switchTreeViewButtonClick);
+var continueButton = document.getElementById("continueButton");
+continueButton.addEventListener("click", continueButtonClick);
+
+var treeViewButton = document.getElementById("treeViewButton");
+treeViewButton.addEventListener("change", treeViewButtonClick);
 
 var initializeXInput = document.getElementById("initializeXInput");
 var initializeTypeSelect = document.getElementById("initializeTypeSelect");
@@ -143,11 +144,23 @@ var insertYInput = document.getElementById("insertYInput");
 var deleteXInput = document.getElementById("deleteXInput");
 var orderXInput = document.getElementById("orderXInput");
 var orderYInput = document.getElementById("orderYInput");
-var stepTimeInput = document.getElementById("stepTimeInput");
-stepTimeInput.addEventListener("change", (event) => {setStepTime();});
-setStepTime();
 
 
 var olPropertiesText = document.getElementById("olProperties");
 
 var cyContainer = document.getElementById("cy");
+
+
+var visualisationControls = [
+    continueButton,
+    skipButton,
+]
+var operationsControls = [
+    initializeButton,
+    insertButton,
+    deleteButton,
+    orderButton,
+    treeViewButton,
+]
+
+hideGroup(visualisationControls);

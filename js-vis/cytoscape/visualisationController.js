@@ -1,7 +1,5 @@
 class VisualisationController {
     sequences = []
-    stepTime = 1000
-    doStepsInstantly = false
     processing = false
     messageIndent = 0
     messagesWindow = document.getElementById("messages")
@@ -70,13 +68,8 @@ class VisualisationController {
         graph.style(OlToGraph.graphStyle);
         graph.nodeHtmlLabel(OlToGraph.htmlLabelStyle);
 
-        /*if (OlToGraph.isGraphOutOfView(graph)) {
-            graph.fit();
-        }
-        graph.resize();
-        graph.center();*/
-
-        graph.fit();
+        graph.maxZoom(0.9);
+        graph.fit(20);
 
         console.log("refresh end");
     }
@@ -90,48 +83,53 @@ class VisualisationController {
     }
 
     skip() {
-        this.doStepsInstantly = true;
-        this.process();
-    }
-
-    setStepTime(timeInMs) {
-        this.stepTime = timeInMs;
+        this.process(true, true);
     }
 
     isBusy() {
         return this.processing;
     }
 
-    async process() {
+    process(userInduced = false, skip = false) {
+        // if (!userInduced) {
+        //     return;
+        // }
         if (this.processing) {
-            console.log("Error: vis already processing")
+            console.log("Error: visualisation already processing.");
             return;
         }
         if (!this.sequences) {
+            console.log("Error: nothing to visualise.");
+            return;
+        }
+
+        let sequence = this.sequences[0];
+        if (sequence.length === 0) {
+            this.sequences.shift();
             return;
         }
 
         this.processing = true;
+        sequence[0].isNewStep = false;
+        while (sequence.length > 0) {
+            let step = sequence[0];
 
-        while (this.sequences.length > 0) {
-            let sequence = this.sequences[0];
-            while (sequence.length > 0) {
-                let step = sequence[0];
-
-                if (step.isNewStep) {
-                    if (!this.doStepsInstantly){
-                        await sleep(this.stepTime);
-                    }
-                }
-
-                step.func();
-                sequence.shift();
+            if (!skip && step.isNewStep) {
+                this.processing = false;
+                return;
             }
-            this.sequences.shift();
+
+            step.func();
+            sequence.shift();
+
         }
 
         this.processing = false;
-        this.doStepsInstantly = false;
+        this.sequences.shift();
+
+        if (this.sequences.length === 0) {
+            hideGroup(visualisationControls);
+        }
     }
 
     _setOlProperiesText(properties)

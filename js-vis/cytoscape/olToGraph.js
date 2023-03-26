@@ -9,9 +9,9 @@ const nodeTypeTagValue = 'nodeTypeTagValue';
 const nodeTypeValue = 'nodeTypeValue';
 
 class OlToGraph {
-    static xOffset = 15;
+    static xOffset = 20;
     static xSize = 100;
-    static yOffset = 20;
+    static yOffset = 30;
     static ySize = 50;
     static nodeFontSize = 24;
 
@@ -314,7 +314,7 @@ class OlToGraph {
     }
 
     static tagToBinaryString(tag, level, length) {
-        if (level == length) return "_".repeat(length);
+        if (level === length) return "_".repeat(length);
         return tag.toString(2).padStart(length - level, "0").padEnd(length, "_");
     }
 
