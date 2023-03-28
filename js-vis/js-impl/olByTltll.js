@@ -29,14 +29,14 @@ class OlByTltll {
         visualisation.addMessageIndent(1);
 
         let xNode = this.valueToNode.get(x);
-        visualisation.highlight(node => node.data.value === x, true, "blue", false);
+        visualisation.highlight(node => node.data().value === x, "blue", true, false);
 
         if (OlUtils.violatesInvariant1(this.n + 1, this.N)) {
             visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n + 1 > 2 * N, violating invariant 1)", "blue", true);
             visualisation.addMessageIndent(1);
             this.rebuild();
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data.value === x, true, "blue", false);
+            visualisation.highlight(node => node.data().value === x, "blue",true,  false);
         }
 
         let xSublist = xNode.rep.value;
@@ -47,7 +47,7 @@ class OlByTltll {
             this.splitSublist(xSublist);
             xSublist = xNode.rep.value;
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data.value === x, true, "blue", false);
+            visualisation.highlight(node => node.data().value === x,"blue",  true, false);
         }
 
         let sublistU = OlUtils.calculateU(this.sublistN());
@@ -57,7 +57,7 @@ class OlByTltll {
             visualisation.addMessageIndent(1);
             OlUtils.relabel(xNode, xSublist.length, sublistU);
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data.value === x, true, "blue", false);
+            visualisation.highlight(node => node.data().value === x, "blue",true,  false);
         }
 
         let yNode = new TaggedNodeWithRep(y, OlUtils.getNewTagAfter(xNode, sublistU));
@@ -67,7 +67,7 @@ class OlByTltll {
         this.n += 1;
 
         visualisation.refresh(true);
-        visualisation.highlight(node => node.data.value === y, "green", false);
+        visualisation.highlight(node => node.data().value === y, "green", false, false);
         visualisation.logMessage("inserted " + y + " with tag " + yNode.tag + " after " + x + " in sublist with tag " + yNode.rep.tag, "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -77,21 +77,22 @@ class OlByTltll {
         visualisation.addSequence();
         visualisation.logMessage("Delete(" + x + ")", "blue", false);
         visualisation.addMessageIndent(1);
-        visualisation.highlight((node => node.data.value === x), "red", false, false);
+        visualisation.highlight((node => node.data().value === x), "red", false, false);
         let xNode = this.valueToNode.get(x);
-        let xSublist = xNode.rep.value;
 
         if (OlUtils.violatesInvariant1(this.n - 1, this.N)) {
             visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 < n - 1, violating invariant 1)", "blue", true);
             visualisation.addMessageIndent(1);
             this.rebuild();
             visualisation.addMessageIndent(-1);
-            visualisation.highlight((node => node.data.value === x), "red", false, false);
+            visualisation.highlight((node => node.data().value === x), "red", false, false);
         }
 
-        let xNodeRep = xNode.rep;
+        let xSublist = xNode.rep.value;
+
         if (OlUtils.violatesInvariant2(xSublist.length - 1, this.sublistN())) {
-            visualisation.logMessage("delete sublist rep (sublist is empty, violating invariant 2)", "blue", true);
+            visualisation.logMessage("also delete sublist rep (sublist is empty, violating invariant 2)", "blue", true);
+            visualisation.highlight((node => node.data().tag === xNode.rep.tag && node.data().value === "sublistRep"), "red", false, false);
             this.reps.remove(xNode.rep);
         }
 
@@ -247,6 +248,10 @@ class OlByTltll {
         return this.valueToNode.has(x);
     }
 
+    getNumberOfElements() {
+        return this.n;
+    }
+
     getProperties() {
         let properties = [
             "Ordered list by tagged linked list",
@@ -261,7 +266,10 @@ class OlByTltll {
         return properties;
     }
 
-    toGraph() {
-        return OlToGraph.toGraphTltll();
+    toGraph(treeViewOn) {
+        if (treeViewOn) {
+            return OlToGraph.toGraphTltllTree(this.reps, OlUtils.calculateU(this.repN()), OlUtils.calculateU(this.sublistN()));
+        }
+        return OlToGraph.toGraphTltll(this.reps);
     }
 }

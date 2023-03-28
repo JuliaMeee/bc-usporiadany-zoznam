@@ -57,6 +57,14 @@ class OlToGraph {
                 'target-arrow-color': '#000000',
                 'target-arrow-shape': 'triangle',
                 'curve-style': 'bezier',
+
+
+            }
+        },
+
+        {
+            selector: 'edge[label]',
+            style: {
                 'label': 'data(label)',
                 "text-background-opacity": 1,
                 "color": "#000",
@@ -98,37 +106,34 @@ class OlToGraph {
 
         return cy;
     }
-    static createNode(treeId, level, tag, value) {
+    static createNode(treeId, level, tag, value, binaryTagText = false, binaryTagLength = 0) {
         let nodeClass;
-        let label = '';
         if (tag === null) {
             nodeClass = nodeTypeValue;
-            label = "'" + value.toString() + "'";
         }
         else if (value === null) {
             nodeClass = nodeTypeTag;
-            label = tag.toString();
         }
         else {
             nodeClass = nodeTypeTagValue;
-            label = tag.toString() + "\n'" + value.toString() + "'";
+        }
+
+        if (value instanceof DoublyLinkedList) {
+            value = "sublistRep";
         }
 
         let height = OlToGraph.ySize * (nodeClass === nodeTypeTagValue ? 1.5 : 1);
-        return {
+        let graphNode = {
             group: 'nodes',
             data: {
-                id: treeId + "-" + level + "-" + (tag? tag : '') + "-" + (value? value : ''),
                 treeId: treeId,
                 value: value,
                 tag: tag,
-                tagText: tag,
+                tagText: (binaryTagText ? OlToGraph.tagToBinaryString(tag, level, binaryTagLength) : (tag === null ? '' : tag)),
                 level: level,
-                // label: label,
                 color: (nodeClass !== nodeTypeTag ? '#EAEAEA' : '#fff'),
                 highlight: 'none',
                 height: height,
-                width: Math.max(OlToGraph.xSize, OlToGraph.nodeFontSize * label.length * 0.5 + 20),
                 fontSize: OlToGraph.nodeFontSize,
             },
             position: {
@@ -137,22 +142,14 @@ class OlToGraph {
             },
             classes: nodeClass,
         };
+
+        OlToGraph.assignNodeId(graphNode.data);
+        graphNode.data.width = OlToGraph.calculateNodeWidth(graphNode.data);
+
+        return graphNode;
     }
 
-    static createRepNode(node, sublistTreeLevel) {
-        return {
-            group: 'nodes',
-            data: {
-                id: "rep-" + node.tag,
-                value: "rep",
-                sublist: null, // TODO
-                type: "rep",
-                color: randomColor(),
-            }
-        };
-    }
-
-    static toGraphLl(nodes) {
+    static toGraphLl(nodes, treeId = "root") {
         let graphEles = {
             nodes: [],
             edges: [],
@@ -162,7 +159,7 @@ class OlToGraph {
         let lastNode = null;
 
         for (let node of nodes) {
-            let graphNode = OlToGraph.createNode("root", 0, null, node.value);
+            let graphNode = OlToGraph.createNode(treeId, 0, null, node.value, false, 0);
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
             x += OlToGraph.xOffset + graphNode.data.width / 2;
@@ -185,7 +182,7 @@ class OlToGraph {
         return graphEles;
     }
 
-    static toGraphTll(nodes) {
+    static toGraphTll(nodes, treeId = "root") {
         let graphEles = {
             nodes: [],
             edges: [],
@@ -195,7 +192,7 @@ class OlToGraph {
         let lastNode = null;
 
         for (let node of nodes) {
-            let graphNode = OlToGraph.createNode("root", 0, node.tag, node.value);
+            let graphNode = OlToGraph.createNode(treeId, 0, node.tag, node.value, false, 0);
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
             x += OlToGraph.xOffset + graphNode.data.width / 2;
@@ -218,7 +215,7 @@ class OlToGraph {
         return graphEles;
     }
 
-    static toGraphTllTree(nodes, u) {
+    static toGraphTllTree(nodes, u, treeId = "root") {
         let graphEles = {
             nodes: [],
             edges: [],
@@ -227,12 +224,12 @@ class OlToGraph {
         // create layer0 tags
         let layers = [[]];
         for (let i = 0; i < u; i++) {
-            layers[0].push(OlToGraph.createNode("root", 0, i, null));
+            layers[0].push(OlToGraph.createNode(treeId, 0, i, null, true, Math.log2(u)));
         }
 
         // add layer0 values
         for (let node of nodes) {
-            layers[0][node.tag] = OlToGraph.createNode("root", 0, node.tag, node.value);;
+            layers[0][node.tag] = OlToGraph.createNode(treeId, 0, node.tag, node.value, true, Math.log2(u));;
         }
 
         // set layer0 positions
@@ -250,7 +247,7 @@ class OlToGraph {
             let layer = [];
 
             for (let i = 0; i < layerBelow.length / 2; i++) {
-                let graphNode = OlToGraph.createNode("root", layers.length, i, null);
+                let graphNode = OlToGraph.createNode(treeId, layers.length, i, null, true, Math.log2(u));
                 let childLeft = layerBelow[i * 2];
                 let childRight = layerBelow[i * 2 + 1];
                 graphNode.position.x = (childLeft.position.x + childRight.position.x) / 2;
@@ -287,16 +284,171 @@ class OlToGraph {
             graphEles.nodes = graphEles.nodes.concat(layers[i]);
         }
 
-        // set node tag to binary
-        for (let graphNode of graphEles.nodes) {
-            graphNode.data.tagText = OlToGraph.tagToBinaryString(graphNode.data.tag, graphNode.data.level, layers.length - 1);
-        }
-
         return graphEles;
     }
 
-    static toGraphTltll() {
-        return null;
+    static toGraphTltll(reps, treeId = "root") {
+        console.log("toGraphTltll");
+
+        // make sublist nodes and edges
+        let sublistGraphs = [];
+        for (let rep of reps) {
+            sublistGraphs.push(OlToGraph.toGraphTll(rep.value, rep.tag));
+        }
+
+        // make reps nodes and edges
+        let repToSublistEdges = [];
+        let repsGraph = OlToGraph.toGraphTll(reps, treeId);
+        for (let i = 0; i < repsGraph.nodes.length; i++) {
+            let repGraphNode = repsGraph.nodes[i];
+            repGraphNode.data.value = "sublistRep";
+            repGraphNode.data.width = this.calculateNodeWidth(repGraphNode.data);
+
+            // connect to sublist
+            repToSublistEdges.push({
+                group: 'edges',
+                data: {
+                    id: repGraphNode.data.id + "-" + sublistGraphs[i].nodes[0].data.id,
+                    source: repGraphNode.data.id,
+                    target: sublistGraphs[i].nodes[0].data.id,
+                }
+            })
+            for (let sublisGraphNode of sublistGraphs[i].nodes) {
+                sublisGraphNode.data.treeId = repGraphNode.data.tag;
+            }
+        }
+
+
+        // set rep nodes width
+        for (let i = 0; i < repsGraph.nodes.length; i++) {
+            let repGraphNode = repsGraph.nodes[i];
+            let sublistGraph = sublistGraphs[i];
+            let minXNode = sublistGraph.nodes[0];
+            let maxXNode = sublistGraph.nodes[sublistGraph.nodes.length - 1];
+            repGraphNode.data.width = Math.max(repGraphNode.data.width, (maxXNode.position.x + maxXNode.data.width / 2) - (minXNode.position.x - minXNode.data.width / 2));
+        }
+
+        // position sublists and reps
+        let xShift = 0;
+        for (let i = 0; i < repsGraph.nodes.length; i++) {
+            let repGraphNode = repsGraph.nodes[i];
+            repGraphNode.position.x = xShift + repGraphNode.data.width / 2;
+            repGraphNode.position.y = - OlToGraph.yOffset * 2 - OlToGraph.ySize;
+            for (let graphNode of sublistGraphs[i].nodes) {
+                graphNode.position.x += xShift;
+            }
+
+            xShift += repGraphNode.data.width + OlToGraph.xOffset * 2;
+        }
+
+        // put everything into one graph
+        let graph = {
+            nodes: [],
+            edges: [],
+        }
+
+        graph.nodes = graph.nodes.concat(repsGraph.nodes);
+        graph.edges = graph.edges.concat(repsGraph.edges);
+        graph.edges = graph.edges.concat(repToSublistEdges);
+        for (let i = 0; i < sublistGraphs.length; i++) {
+            graph.nodes = graph.nodes.concat(sublistGraphs[i].nodes);
+            graph.edges = graph.edges.concat(sublistGraphs[i].edges);
+        }
+
+        console.log("reps:");
+        console.log(repsGraph);
+        console.log(graph);
+
+        return graph;
+    }
+
+    static toGraphTltllTree(reps, repsU, sublistU, treeId = "root") {
+        console.log("toGraphTltllTree");
+
+        // make sublist tree nodes and edges
+        let sublistGraphs = [];
+        for (let rep of reps) {
+            sublistGraphs.push(OlToGraph.toGraphTllTree(rep.value, sublistU, rep.tag));
+        }
+
+        let repsGraph = OlToGraph.toGraphTllTree(reps, repsU, treeId);
+
+        // link reps to sublist trees (add edges)
+        let repToSublistEdges = [];
+        let repGraphNodesFiltered = repsGraph.nodes.filter(node => node.data.value);
+        for (let i = 0; i < sublistGraphs.length; i++) {
+            let sublistGraphNodes = sublistGraphs[i].nodes;
+            let repGraphNode = repGraphNodesFiltered[i];
+            let sublistGraphRootNode = sublistGraphNodes.find(node => node.data.level === Math.log2(sublistU));
+            repToSublistEdges.push({
+                group: 'edges',
+                data: {
+                    id: repGraphNode.data.id + "-" + sublistGraphRootNode.data.id,
+                    source: repGraphNode.data.id,
+                    target: sublistGraphRootNode.data.id,
+                }
+            });
+        }
+
+        // set rep nodes width
+        for (let repGraphNode of repsGraph.nodes.filter(node => node.data.level === 0)) {
+            let sublistGraph = sublistGraphs.find(graph => graph.nodes[0].data.treeId === repGraphNode.data.tag);
+
+            if (sublistGraph) {
+                let firstSublistNode = sublistGraph.nodes.find(node => node.data.level === 0 && node.data.tag === 0);
+                let lastSublistNode = sublistGraph.nodes.find(node => node.data.level === 0 && node.data.tag === sublistU - 1);
+                repGraphNode.data.width = (lastSublistNode.position.x + lastSublistNode.data.width) - (firstSublistNode.position.x - firstSublistNode.data.width / 2);
+            }
+        }
+
+        // set positions for rep tree layer0 + sublist trees
+        let yShift = (1 + Math.log2(sublistU)) * (OlToGraph.yOffset + OlToGraph.ySize) + 2 * OlToGraph.yOffset;
+        let x = 0;
+        for (let repGraphNode of repsGraph.nodes.filter(node => node.data.level === 0)) {
+            x += repGraphNode.data.width / 2;
+            repGraphNode.position.x = x;
+
+            let sublistGraph = sublistGraphs.find(graph => graph.nodes[0].data.treeId === repGraphNode.data.tag);
+            if (sublistGraph) {
+                let root = sublistGraph.nodes.find(node => node.data.level === Math.log2(sublistU));
+                let xShift = x - root.position.x;
+                sublistGraph.nodes.forEach(node => {
+                    node.position.x += xShift;
+                    node.position.y += yShift;
+                });
+            }
+
+            x += OlToGraph.xOffset + repGraphNode.data.width / 2;
+        }
+
+        // set positions for higher rep tree layers
+        OlToGraph.setHigherLevelNodesPositions(repsGraph.nodes, Math.log2(repsU) + 1)
+
+        // put everything into one graph
+        let graph = {
+            nodes: [],
+            edges: [],
+        }
+        graph.nodes = graph.nodes.concat(repsGraph.nodes);
+        graph.edges = graph.edges.concat(repsGraph.edges);
+        graph.edges = graph.edges.concat(repToSublistEdges);
+        for (let i = 0; i < sublistGraphs.length; i++) {
+            graph.nodes = graph.nodes.concat(sublistGraphs[i].nodes);
+            graph.edges = graph.edges.concat(sublistGraphs[i].edges);
+        }
+
+        return graph;
+    }
+
+    static setHigherLevelNodesPositions(graphNodes, totalLevelsCount) {
+        for (let i = 1; i < totalLevelsCount; i++) {
+            for (let graphNode of graphNodes.filter(node => node.data.level === i)) {
+                let childLeft = graphNodes.find(node => node.data.level === i - 1 && node.data.tag === graphNode.data.tag * 2);
+                let childRight = graphNodes.find(node => node.data.level === i - 1 && node.data.tag === graphNode.data.tag * 2 + 1);
+                graphNode.position.x = (childLeft.position.x + childRight.position.x) / 2;
+                graphNode.position.y = i * (-OlToGraph.ySize - OlToGraph.yOffset) - OlToGraph.yOffset;
+            }
+        }
     }
 
     static isGaphNodeTagInInterval(data, intervalMin, intervalMaxExcl) {
@@ -318,14 +470,12 @@ class OlToGraph {
         return tag.toString(2).padStart(length - level, "0").padEnd(length, "_");
     }
 
-    /*static isGraphOutOfView(graph) {
-        let graphExtent = graph.extent();
-        console.log("graphExtent:");
-        console.log(graphExtent);
+    static calculateNodeWidth(data) {
+        let labelLength = Math.max((data.value === null ? 0 : data.value.toString().length), data.tagText.toString().length);
+        return Math.max(OlToGraph.xSize, OlToGraph.nodeFontSize * labelLength * 0.63 + 20);
+    }
 
-        let outOfView = false;
-        graph.nodes().forEach(node => outOfView ||
-            (node.x < graphExtent.x1) || (node.y < graphExtent.y1) || (node.x > graphExtent.x2) || (node.y > graphExtent.y2));
-        return outOfView;
-    }*/
+    static assignNodeId(data) {
+        data.id = data.treeId + "-" + data.level + "-" + data.tagText + "-" + (data.value === null ? '' : data.value);
+    }
 }

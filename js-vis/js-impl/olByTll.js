@@ -115,6 +115,10 @@ class OlByTll {
         return this.valueToNode.has(x);
     }
 
+    getNumberOfElements() {
+        return this.n;
+    }
+
     getProperties() {
         let properties = [
             "Ordered list by tagged linked list",
@@ -126,9 +130,12 @@ class OlByTll {
         return properties;
     }
 
-    toGraph() {
-        return OlToGraph.toGraphTllTree(this.linkedList, this.u);
-        // return OlToGraph.toGraphTll(this.linkedList);
+    toGraph(treeViewOn) {
+        if (treeViewOn) {
+            return OlToGraph.toGraphTllTree(this.linkedList, this.u);
+        }
+
+        return OlToGraph.toGraphTll(this.linkedList);
     }
 
 }

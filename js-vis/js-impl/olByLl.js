@@ -95,6 +95,10 @@ class OlByLl {
     return this.valueToNode.has(x);
   }
 
+  getNumberOfElements() {
+    return this.linkedList.length;
+  }
+
   getProperties() {
     let properties = [
         "Ordered list by linked list",

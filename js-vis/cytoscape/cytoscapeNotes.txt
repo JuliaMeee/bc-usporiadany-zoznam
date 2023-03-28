@@ -10,9 +10,17 @@ node.data can hold arbitrary data
 
 node.data.id has to be unique
 
-how to define each node:
-    type: tag / value
-    root-id: root.id
-    id:  root-id + tag
-    tag:
-    value:
+
+food chain illustration ideas:
+prey&predator:
+    snakes
+    fish
+    orol -> had -> jašterica -> škorpión -> pavúk -> mucha
+
+    vták -> ryba
+
+    človek -> žralok -> tuniak -> makrela -> sardinka -> kreveta -> plankton
+
+    Sun → Grass → Grasshopper → Mouse → Snake → Hawk → Coyote → Cougar → Wolf → Brown bear
+
+    (veľký biely) žralok -> kosatka -> delfín -> tuniak -> losos/makrela/mečúň -> kalmár -> ančovička/sardinka -> zooplankton -> algae -> sun

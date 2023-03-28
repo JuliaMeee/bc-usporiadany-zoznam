@@ -2,6 +2,8 @@ class VisualisationController {
     sequences = []
     processing = false
     messageIndent = 0
+    visualisationOn = true;
+    treeViewOn = false;
     messagesWindow = document.getElementById("messages")
 
     highlight(predicate, color, clearHighlight, isNewStep) {
@@ -10,12 +12,15 @@ class VisualisationController {
     _highlight( predicate, color, clearHighlight) {
         for (let node of graph.nodes()){
             if (predicate(node)) {
+                console.log("YES predicate: ");
+                console.log(node.data());
                 node.data().highlight = color;
             }
             else if (clearHighlight) {
+                console.log("clear highlight");
                 node.data().highlight = 'none';
             }
-        };
+        }
 
         graph.style(OlToGraph.graphStyle);
     }
@@ -57,43 +62,40 @@ class VisualisationController {
     }
 
     refresh(isNewStep) {
-        this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph()])});
-        console.log("refresh staged");
+        this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph(this.treeViewOn)])});
     }
     _refresh(properties, graphEles) {
-        console.log("refresh start");
         this._setOlProperiesText(properties);
 
         graph = OlToGraph.buildGraph(graphEles.nodes, graphEles.edges);
-        graph.style(OlToGraph.graphStyle);
         graph.nodeHtmlLabel(OlToGraph.htmlLabelStyle);
+        graph.style(OlToGraph.graphStyle);
 
         graph.maxZoom(0.9);
         graph.fit(20);
-
-        console.log("refresh end");
     }
 
     addSequence() {
-        this.sequences.push([])
+        if (this.visualisationOn) {
+            this.sequences.push([]);
+        }
     }
 
     addStep(step) {
-        this.sequences.at(-1).push(step)
+        if (this.visualisationOn) {
+            this.sequences.at(-1).push(step);
+        }
     }
 
     skip() {
-        this.process(true, true);
+        this.process(true);
     }
 
     isBusy() {
         return this.processing;
     }
 
-    process(userInduced = false, skip = false) {
-        // if (!userInduced) {
-        //     return;
-        // }
+    process(skip = false) {
         if (this.processing) {
             console.log("Error: visualisation already processing.");
             return;

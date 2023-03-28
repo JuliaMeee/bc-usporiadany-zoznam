@@ -67,6 +67,11 @@ function deleteButtonClick() {
         return;
     }
 
+    if (ol.getNumberOfElements() < 2) {
+        visualisation.logMessageInstantly(" !! Delete error: cannot reduce number of elements to 0 !!", "red", true);
+        return;
+    }
+
     hideGroup(operationsControls);
     ol.delete(x);
 }
@@ -101,10 +106,22 @@ function skipButtonClick() {
 
 function continueButtonClick() {
     console.log("skip button click");
-    visualisation.process(true, false);
+    visualisation.process( false);
 }
 function treeViewButtonClick() {
     console.log("tree view checkbox click");
+    visualisation.treeViewOn = !visualisation.treeViewOn;
+    setTreeViewButtonText();
+
+    if (ol) {
+        visualisation.addSequence();
+        visualisation.refresh(false);
+        visualisation.process(true);
+    }
+}
+
+function setTreeViewButtonText() {
+    treeViewButton.innerText = "Tree view: " + (visualisation.treeViewOn ? "on" : "off");
 }
 
 function hideGroup(group) {
@@ -135,7 +152,8 @@ var continueButton = document.getElementById("continueButton");
 continueButton.addEventListener("click", continueButtonClick);
 
 var treeViewButton = document.getElementById("treeViewButton");
-treeViewButton.addEventListener("change", treeViewButtonClick);
+treeViewButton.addEventListener("click", treeViewButtonClick);
+setTreeViewButtonText();
 
 var initializeXInput = document.getElementById("initializeXInput");
 var initializeTypeSelect = document.getElementById("initializeTypeSelect");
