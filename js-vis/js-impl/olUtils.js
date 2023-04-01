@@ -35,23 +35,28 @@ class OlUtils {
         return newTag;
     }
 
-    static relabel(xNode, n, u) {
+    static relabel(xNode, n, u, treeIdForHighlight = rootTreeId) {
         let T = this.calculateT(n, u);
+        console.log("relabel treeIdForHighlight: " + treeIdForHighlight);
+        console.log("relabel node tag: " + xNode.tag);
 
-        visualisation.highlight(node => node.value === xNode.value, "blue", true, true);
+        // visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), xNode.tag, xNode.tag + 1) && node.data().level === 0 && node.data().treeId === treeIdForHighlight, "blue", true, true);
         visualisation.logMessage("searching for smallest enclosing tag interval not in overflow", "blue", false);
         visualisation.logMessage("overflow constant T = " + T, "blue", true);
         visualisation.addMessageIndent(1);
         let interval = new TagInterval(xNode);
+        let minTag1 = interval.minTag;
+        let maxTagExcl1 = interval.maxTagExcl;
+        visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag1, maxTagExcl1, treeIdForHighlight), "blue", false, false);
         interval.increase();
 
         while (interval.density() > this.overflowThreshold(T, interval.level)) {
             visualisation.logMessage("interval: [" + interval.minTag + "; " + interval.maxTagExcl + "), level = " + interval.level, "blue", true);
             let minTag = interval.minTag;
             let maxTagExcl = interval.maxTagExcl;
-            visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl), "blue", false, false);
+            visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl, treeIdForHighlight), "blue", false, false);
             visualisation.addMessageIndent(1);
-            visualisation.logMessage("density = " + interval.density() + " >  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", true);
+            visualisation.logMessage("density = " + interval.density() + " >  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", false);
             visualisation.addMessageIndent(-1);
             interval.increase();
         }
@@ -59,7 +64,9 @@ class OlUtils {
         visualisation.addMessageIndent(1);
         visualisation.logMessage("density = " + interval.density() + " <=  overflow threshold = T ^ (-level) = " + this.overflowThreshold(T, interval.level), "blue", false)
         visualisation.addMessageIndent(-1);
-        visualisation.highlight(node => interval.minTag <= node.data().tag && node.data().tag < interval.maxTagExcl, "blue", false, false);
+        let minTag = interval.minTag;
+        let maxTagExcl = interval.maxTagExcl;
+        visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl, treeIdForHighlight), "blue", false, false);
 
         visualisation.addMessageIndent(-1);
 
@@ -67,8 +74,11 @@ class OlUtils {
 
         this.assignNewTags(interval.minNode, interval.nodesCount, interval.minTag, interval.maxTagExcl - 1);
 
-        visualisation.refresh(true);
-        visualisation.highlight(node => interval.minTag <= node.data().tag && node.data().tag < interval.maxTagExcl, "blue", true, false);
+        console.log("end of relabel result: ");
+        console.log(ol.toString());
+        console.log(ol);
+        visualisation.refresh(false);
+        visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl) && node.data().treeId === treeIdForHighlight, "blue", true, false);
     }
 
     static calculateT(n, u) {

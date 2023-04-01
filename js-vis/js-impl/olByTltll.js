@@ -55,7 +55,7 @@ class OlByTltll {
         if (!OlUtils.availableTagAfter(xNode, sublistU)) {
             visualisation.logMessage("relabel (no available tag after " + x + ")", "blue", true);
             visualisation.addMessageIndent(1);
-            OlUtils.relabel(xNode, xSublist.length, sublistU);
+            OlUtils.relabel(xNode, xSublist.length, sublistU, xNode.rep.tag);
             visualisation.addMessageIndent(-1);
             visualisation.highlight(node => node.data().value === x, "blue",true,  false);
         }
@@ -152,7 +152,6 @@ class OlByTltll {
 
     splitSublist(sublist) {
         let firstHalfRep = sublist.head.rep;
-        firstHalfRep.value = new DoublyLinkedList();
 
         if (!OlUtils.availableTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()))) {
             visualisation.logMessage("relabel reps (no available tag for new sublist rep)", "blue", true);
@@ -160,7 +159,7 @@ class OlByTltll {
             visualisation.refresh(true);
         }
 
-
+        firstHalfRep.value = new DoublyLinkedList();
         let secondHalfRep = new TaggedNode(new DoublyLinkedList(), 0);
         let halfCount = Math.floor(sublist.length / 2);
         let node = sublist.head;

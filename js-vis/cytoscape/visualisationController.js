@@ -10,6 +10,7 @@ class VisualisationController {
         this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._highlight, this, [predicate, color, clearHighlight])} );
     }
     _highlight( predicate, color, clearHighlight) {
+        console.log("highlight step");
         for (let node of graph.nodes()){
             if (predicate(node)) {
                 console.log("YES predicate: ");
@@ -65,6 +66,7 @@ class VisualisationController {
         this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph(this.treeViewOn)])});
     }
     _refresh(properties, graphEles) {
+        console.log("refresh step");
         this._setOlProperiesText(properties);
 
         graph = OlToGraph.buildGraph(graphEles.nodes, graphEles.edges);

@@ -8,6 +8,8 @@ const nodeTypeTag = 'nodeTypeTag';
 const nodeTypeTagValue = 'nodeTypeTagValue';
 const nodeTypeValue = 'nodeTypeValue';
 
+const rootTreeId = -1;
+
 class OlToGraph {
     static xOffset = 20;
     static xSize = 100;
@@ -149,7 +151,7 @@ class OlToGraph {
         return graphNode;
     }
 
-    static toGraphLl(nodes, treeId = "root") {
+    static toGraphLl(nodes, treeId = rootTreeId) {
         let graphEles = {
             nodes: [],
             edges: [],
@@ -182,7 +184,7 @@ class OlToGraph {
         return graphEles;
     }
 
-    static toGraphTll(nodes, treeId = "root") {
+    static toGraphTll(nodes, treeId = rootTreeId) {
         let graphEles = {
             nodes: [],
             edges: [],
@@ -215,7 +217,7 @@ class OlToGraph {
         return graphEles;
     }
 
-    static toGraphTllTree(nodes, u, treeId = "root") {
+    static toGraphTllTree(nodes, u, treeId = rootTreeId) {
         let graphEles = {
             nodes: [],
             edges: [],
@@ -287,8 +289,10 @@ class OlToGraph {
         return graphEles;
     }
 
-    static toGraphTltll(reps, treeId = "root") {
+    static toGraphTltll(reps, treeId = rootTreeId) {
         console.log("toGraphTltll");
+        console.log("reps (input):");
+        console.log(reps);
 
         // make sublist nodes and edges
         let sublistGraphs = [];
@@ -299,6 +303,13 @@ class OlToGraph {
         // make reps nodes and edges
         let repToSublistEdges = [];
         let repsGraph = OlToGraph.toGraphTll(reps, treeId);
+
+
+        console.log("reps graph: ");
+        console.log(repsGraph);
+        console.log("sublist graphs: ");
+        console.log(sublistGraphs);
+
         for (let i = 0; i < repsGraph.nodes.length; i++) {
             let repGraphNode = repsGraph.nodes[i];
             repGraphNode.data.value = "sublistRep";
@@ -355,14 +366,10 @@ class OlToGraph {
             graph.edges = graph.edges.concat(sublistGraphs[i].edges);
         }
 
-        console.log("reps:");
-        console.log(repsGraph);
-        console.log(graph);
-
         return graph;
     }
 
-    static toGraphTltllTree(reps, repsU, sublistU, treeId = "root") {
+    static toGraphTltllTree(reps, repsU, sublistU, treeId = rootTreeId) {
         console.log("toGraphTltllTree");
 
         // make sublist tree nodes and edges
@@ -451,16 +458,15 @@ class OlToGraph {
         }
     }
 
-    static isGaphNodeTagInInterval(data, intervalMin, intervalMaxExcl) {
+    static isGaphNodeTagInInterval(data, intervalMin, intervalMaxExcl, treeId = rootTreeId) {
         if (data.tag === null || data.tag === undefined) return false;
+
+        if (data.treeId !== rootTreeId) return false;
 
         let tagMin = data.tag * (Math.pow(2, data.level));
         let tagMax = (data.tag + 1) * (Math.pow(2, data.level)) - 1;
 
         let result = intervalMin <= tagMin && tagMax < intervalMaxExcl;
-
-        console.log("interval: " + intervalMin + " - " + intervalMaxExcl);
-        console.log("tag: " + data.tag + " level: " + data.level + " min: " + tagMin + " max: " + tagMax + "in interval: " + result);
 
         return result;
     }

@@ -103,7 +103,7 @@ class OlByTll {
         visualisation.logMessage("set new N = n = " + this.N, "blue", true);
         visualisation.logMessage("set new u = 2 * N ^ 2  = " + this.u, "blue", false);
         OlUtils.assignNewTags(this.linkedList.head, this.n, 0, this.u);
-        visualisation.refresh(true);
+        visualisation.refresh(false);
         visualisation.logMessage("set new (evenly distributed) tags for all nodes", "blue", false);
     }
 
