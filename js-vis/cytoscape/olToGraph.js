@@ -461,7 +461,7 @@ class OlToGraph {
     static isGaphNodeTagInInterval(data, intervalMin, intervalMaxExcl, treeId = rootTreeId) {
         if (data.tag === null || data.tag === undefined) return false;
 
-        if (data.treeId !== rootTreeId) return false;
+        if (data.treeId !== treeId) return false;
 
         let tagMin = data.tag * (Math.pow(2, data.level));
         let tagMax = (data.tag + 1) * (Math.pow(2, data.level)) - 1;

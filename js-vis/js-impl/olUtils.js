@@ -41,8 +41,8 @@ class OlUtils {
         console.log("relabel node tag: " + xNode.tag);
 
         // visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), xNode.tag, xNode.tag + 1) && node.data().level === 0 && node.data().treeId === treeIdForHighlight, "blue", true, true);
+        visualisation.logMessage("overflow constant T = " + T, "blue", false);
         visualisation.logMessage("searching for smallest enclosing tag interval not in overflow", "blue", false);
-        visualisation.logMessage("overflow constant T = " + T, "blue", true);
         visualisation.addMessageIndent(1);
         let interval = new TagInterval(xNode);
         let minTag1 = interval.minTag;
@@ -78,7 +78,7 @@ class OlUtils {
         console.log(ol.toString());
         console.log(ol);
         visualisation.refresh(false);
-        visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl) && node.data().treeId === treeIdForHighlight, "blue", true, false);
+        visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl, treeIdForHighlight), "blue", true, false);
     }
 
     static calculateT(n, u) {
@@ -110,7 +110,8 @@ class OlUtils {
     }
 
     static calculateU(N) {
-        return Math.pow(2, 1 + Math.floor(Math.log2(Math.pow(N, 2))));
+        return Math.max(Math.pow(N, 2), 4 * N);
+        // return Math.pow(2, 1 + Math.floor(Math.log2(Math.pow(N, 2))));
     }
 }
 

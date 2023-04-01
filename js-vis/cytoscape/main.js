@@ -34,6 +34,10 @@ function insertButtonClick() {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
         return;
     }
+    if (!ol) {
+        visualisation.logMessageInstantly(" !! Insert error: ordered list has not been initialized !!", "red", true);
+        return;
+    }
 
     let x = insertXInput.value.trim();
     let y = insertYInput.value.trim();
@@ -60,6 +64,10 @@ function deleteButtonClick() {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
         return;
     }
+    if (!ol) {
+        visualisation.logMessageInstantly(" !! Delete error: ordered list has not been initialized !!", "red", true);
+        return;
+    }
 
     let x = deleteXInput.value.trim();
     if (!ol.contains(x)) {
@@ -80,6 +88,10 @@ function orderButtonClick() {
     console.log("order button click");
     if (visualisation.isBusy()) {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
+        return;
+    }
+    if (!ol) {
+        visualisation.logMessageInstantly(" !! Order error: ordered list has not been initialized !!", "red", true);
         return;
     }
 

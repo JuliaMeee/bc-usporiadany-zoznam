@@ -51,7 +51,7 @@ class OlByTll {
 
         visualisation.refresh(true);
         visualisation.highlight(node => node.data().value === y, "green", false, false);
-        visualisation.logMessage("inserted " + y + " with tag " + yNode.tag + " after " + x, "green", false);
+        visualisation.logMessage("inserted " + y + " after " + x, "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
     }
@@ -60,7 +60,7 @@ class OlByTll {
         visualisation.addSequence();
         visualisation.logMessage("Delete(" + x + ")", "blue", false);
         visualisation.addMessageIndent(1);
-        visualisation.highlight((node => node.data().value === x), "red", false, false);
+        visualisation.highlight((node => node.data().value === x), "red", true, false);
         if (OlUtils.violatesInvariant1(this.n - 1, this.N)) {
             visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 < n - 1, violating invariant 1)", "blue", true);
             visualisation.addMessageIndent(1);
@@ -84,14 +84,16 @@ class OlByTll {
         visualisation.addSequence();
         visualisation.logMessage("Order(" + x + ", " + y + ")", "blue", false);
         visualisation.addMessageIndent(1);
+        visualisation.highlight((node => node.data().value === x), "blue", true, false);
+        visualisation.highlight((node => node.data().value === y), "blue", false, false);
 
         let xNode = this.valueToNode.get(x);
         let yNode = this.valueToNode.get(y);
 
         let result = xNode.tag < yNode.tag;
-        visualisation.logMessage("node(" + x + ").tag " + (result ? "<" : ">") + " node(" + y + ").tag", "blue", true);
+        visualisation.logMessage(x + ".tag " + (result ? "<" : ">") + " " + y + ".tag", "blue", true);
 
-        visualisation.logMessage("order returned: " + result, "green");
+        visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " > ") + y, "green", true);
         visualisation.addMessageIndent(-1);
         visualisation.process();
         return result;

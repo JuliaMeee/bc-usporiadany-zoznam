@@ -84,6 +84,9 @@ class VisualisationController {
     }
 
     addStep(step) {
+        if (this.sequences.length === 0) {
+            this.addSequence();
+        }
         if (this.visualisationOn) {
             this.sequences.at(-1).push(step);
         }
@@ -98,11 +101,14 @@ class VisualisationController {
     }
 
     process(skip = false) {
+        if (!this.visualisationOn) {
+            return;
+        }
         if (this.processing) {
             console.log("Error: visualisation already processing.");
             return;
         }
-        if (!this.sequences) {
+        if (!this.sequences || this.sequences.length === 0) {
             console.log("Error: nothing to visualise.");
             return;
         }

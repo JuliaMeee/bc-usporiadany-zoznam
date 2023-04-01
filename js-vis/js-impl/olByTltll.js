@@ -53,11 +53,11 @@ class OlByTltll {
         let sublistU = OlUtils.calculateU(this.sublistN());
 
         if (!OlUtils.availableTagAfter(xNode, sublistU)) {
-            visualisation.logMessage("relabel (no available tag after " + x + ")", "blue", true);
+            visualisation.logMessage("relabel (no available tag after " + x, "blue", true);
             visualisation.addMessageIndent(1);
             OlUtils.relabel(xNode, xSublist.length, sublistU, xNode.rep.tag);
             visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data().value === x, "blue",true,  false);
+            visualisation.highlight(node => node.data().value === x, "blue",true,  true);
         }
 
         let yNode = new TaggedNodeWithRep(y, OlUtils.getNewTagAfter(xNode, sublistU));
@@ -68,7 +68,7 @@ class OlByTltll {
 
         visualisation.refresh(true);
         visualisation.highlight(node => node.data().value === y, "green", false, false);
-        visualisation.logMessage("inserted " + y + " with tag " + yNode.tag + " after " + x + " in sublist with tag " + yNode.rep.tag, "green", false);
+        visualisation.logMessage("inserted " + y + " after " + x , "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
     }
@@ -77,7 +77,7 @@ class OlByTltll {
         visualisation.addSequence();
         visualisation.logMessage("Delete(" + x + ")", "blue", false);
         visualisation.addMessageIndent(1);
-        visualisation.highlight((node => node.data().value === x), "red", false, false);
+        visualisation.highlight((node => node.data().value === x), "red", true, false);
         let xNode = this.valueToNode.get(x);
 
         if (OlUtils.violatesInvariant1(this.n - 1, this.N)) {
@@ -110,25 +110,27 @@ class OlByTltll {
         visualisation.addSequence();
         visualisation.logMessage("Order(" + x + ", " + y + ")", "blue", false);
         visualisation.addMessageIndent(1);
+        visualisation.highlight((node => node.data().value === x), "blue", true, false);
+        visualisation.highlight((node => node.data().value === y), "blue", false, false);
 
         let xNode = this.valueToNode.get(x);
         let yNode = this.valueToNode.get(y);
         let result = false;
 
         if (xNode.rep.tag === yNode.rep.tag) {
-            visualisation.logMessage("rep(" + x + ").tag == rep(" + y + ").tag", "blue", true);
+            visualisation.logMessage(x + ".rep.tag == " + y + ".rep.tag", "blue", true);
             visualisation.addMessageIndent(1);
             result = xNode.tag < yNode.tag;
-            visualisation.logMessage("node(" + x + ").tag " + (result ? "<" : ">") + " node(" + y + ").tag", "blue", true);
+            visualisation.logMessage(x + ".tag " + (result ? "<" : ">") + " " + y + ".tag", "blue", true);
             visualisation.addMessageIndent(-1);
         }
 
         else {
             result = xNode.rep.tag < yNode.rep.tag;
-            visualisation.logMessage("rep(" + x + ").tag " + (result ? "<" : ">") + " rep(" + y + ").tag", "blue", true);
+            visualisation.logMessage(x + ".rep.tag " + (result ? "<" : ">") + " " + y + ".rep.tag", "blue", true);
         }
 
-        visualisation.logMessage("order returned: " + result, "green");
+        visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " > ") + y, "green", true);
         visualisation.addMessageIndent(-1);
         visualisation.process();
         return result;
@@ -139,7 +141,7 @@ class OlByTltll {
             return 1;
         }
 
-        return Math.log2(this.N);
+        return Math.ceil(Math.log2(this.N));
     }
 
     repN() {
@@ -147,7 +149,7 @@ class OlByTltll {
             return 1;
         }
 
-        return this.N / this.sublistN();
+        return Math.ceil(this.N / this.sublistN());
     }
 
     splitSublist(sublist) {
@@ -156,7 +158,7 @@ class OlByTltll {
         if (!OlUtils.availableTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()))) {
             visualisation.logMessage("relabel reps (no available tag for new sublist rep)", "blue", true);
             OlUtils.relabel(firstHalfRep, this.reps.length, OlUtils.calculateU(this.repN()));
-            visualisation.refresh(true);
+            // visualisation.refresh(true);
         }
 
         firstHalfRep.value = new DoublyLinkedList();
@@ -176,15 +178,10 @@ class OlByTltll {
         OlUtils.assignNewTags(firstHalfRep.value.head, halfCount, 0, sublistU);
         OlUtils.assignNewTags(secondHalfRep.value.head, halfCount, 0, sublistU);
 
-        // if (!OlUtils.availableTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()))) {
-        //     visualisation.logMessage("relabel reps (no available tag for new sublist rep)", "blue", true);
-        //     OlUtils.relabel(firstHalfRep, this.reps.length, OlUtils.calculateU(this.repN()));
-        // }
-
         secondHalfRep.tag = OlUtils.getNewTagAfter(firstHalfRep, OlUtils.calculateU(this.repN()));
         this.reps.insertAfter(firstHalfRep, secondHalfRep);
 
-        visualisation.logMessage("split sublist into 2", "green", true);
+        visualisation.logMessage("split sublist into 2", "blue", true);
         visualisation.refresh(false);
     }
 
@@ -228,7 +225,7 @@ class OlByTltll {
 
         OlUtils.assignNewTags(this.reps.head, this.reps.length, 0, OlUtils.calculateU(repN));
 
-        visualisation.refresh(true);
+        visualisation.refresh(false);
         visualisation.logMessage("evenly distributed nodes into " + this.reps.length + " sublists", "blue", false);
         visualisation.logMessage("set new (evenly distributed) tags for all reps", "blue", false);
         visualisation.logMessage("set new (evenly distributed) tags for all sublist nodes", "blue", false);

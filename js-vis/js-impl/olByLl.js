@@ -22,14 +22,14 @@ class OlByLl {
     visualisation.addMessageIndent(1);
 
     this.valueToNode.set(y, new Node(y));
-    visualisation.highlight(node => node.data().value === x, "blue",true, true);
+    visualisation.highlight(node => node.data().value === x, "blue",true, false);
     this.linkedList.insertAfter(this.valueToNode.get(x), this.valueToNode.get(y));
 
     visualisation.refresh(true);
-    visualisation.highlight(node => node.data().value === x, "blue",false, false);
+    // visualisation.highlight(node => node.data().value === x, "blue",false, false);
     visualisation.highlight(node => node.data().value === y, "green", false, false);
-    visualisation.logMessage("inserted " + y + " after " + x, "green", true);
-    visualisation.refresh(false);
+    visualisation.logMessage("inserted " + y + " after " + x, "green", false);
+    // visualisation.refresh(false);
     visualisation.addMessageIndent(-1);
     visualisation.process();
   }
@@ -60,27 +60,30 @@ class OlByLl {
     let xNode = this.valueToNode.get(x);
     let yNode = this.valueToNode.get(y);
 
+    visualisation.highlight((n => n.data().value === x), "blue", true, false);
+    visualisation.highlight((n => n.data().value === y), "blue", false, false);
+
     let result = false;
 
-    visualisation.logMessage("traverse list and search for node(" + x + "), node(" + y + ")", "blue", true);
+    visualisation.logMessage("traverse list and search for " + x + " or " + y, "blue", true);
     visualisation.addMessageIndent(1);
 
     for (let node of this.linkedList) {
       visualisation.highlight((n => n.data().value === node.value), "blue", true, true);
       if (Object.is(node, xNode)) {
-        visualisation.logMessage("found node(" + x + ") before node(" + y + ")", "blue", true);
+        visualisation.logMessage("found " + x + " before " + y, "blue", false);
         result = true;
         break;
       }
 
       if (Object.is(node, yNode)) {
-        visualisation.logMessage("found node(" + y + ") before node(" + x + ")", "blue", true);
+        visualisation.logMessage("found " + y + " before " + x, "blue", false);
         result = false;
         break;
       }
     }
     visualisation.addMessageIndent(-1);
-    visualisation.logMessage("order returned: " + result, "green", true);
+    visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " > ") + y, "green", true);
     visualisation.refresh(false);
     visualisation.addMessageIndent(-1);
     visualisation.process();

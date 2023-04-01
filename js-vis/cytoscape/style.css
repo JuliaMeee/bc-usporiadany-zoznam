@@ -73,7 +73,7 @@ option {
 .operationsInput > div {
     display: grid;
     gap: 1vh;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
+    grid-template-columns: 200px 2fr 2fr 1fr;
     align-items: center;
     justify-items: end;
 }
