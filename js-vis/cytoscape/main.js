@@ -12,7 +12,7 @@ function initializeButtonClick() {
         return;
     }
 
-    showElements(false);
+    showElements(false, initializeInput);
 
     let olType = initializeInput.olType.value;
     switch (olType) {
@@ -54,7 +54,7 @@ function insertButtonClick() {
         return;
     }
 
-    showElements(false);
+    showElements(false, insertInput);
     ol.insert(x, y);
 }
 
@@ -80,7 +80,7 @@ function deleteButtonClick() {
         return;
     }
 
-    showElements(false);
+    showElements(false, deleteInput);
     ol.delete(x);
 }
 
@@ -106,7 +106,7 @@ function orderButtonClick() {
         return;
     }
 
-    showElements(false);
+    showElements(false, orderInput);
     ol.order(x, y);
 }
 
@@ -155,15 +155,20 @@ function showElement(element, doShow) {
     }
 }
 
-function showElements(idle) {
+function showElements(idle, actionToShow) {
     for (const op of operationsControls) {
         showElement(op.start, idle);
-        showElement(op.continue, !idle);
-        showElement(op.skip, !idle);
+        showElement(op.continue, false);
+        showElement(op.skip, false);
     }
 
     for (const [key, ele] of Object.entries(other)) {
         showElement(ele, idle);
+    }
+
+    if (actionToShow) {
+        showElement(actionToShow.continue, true);
+        showElement(actionToShow.skip, true);
     }
 }
 
