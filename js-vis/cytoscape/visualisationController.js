@@ -7,7 +7,9 @@ class VisualisationController {
     messagesWindow = document.getElementById("messages")
 
     highlight(predicate, color, clearHighlight, isNewStep) {
-        this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._highlight, this, [predicate, color, clearHighlight])} );
+        if (this.visualisationOn) {
+            this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._highlight, this, [predicate, color, clearHighlight])} );
+        }
     }
     _highlight( predicate, color, clearHighlight) {
         console.log("highlight step");
@@ -27,7 +29,9 @@ class VisualisationController {
     }
 
     logMessage(text, color, isNewStep) {
-        this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._logMessage, this, [text, color])} )
+        if (this.visualisationOn) {
+            this.addStep( { isNewStep: isNewStep, func: wrapFunction(this._logMessage, this, [text, color])} );
+        }
     }
 
     logMessageInstantly(text, color) {
@@ -55,7 +59,9 @@ class VisualisationController {
     }
 
     addMessageIndent(n) {
-        this.addStep({ isNewStep: false, func: wrapFunction(this._addMessageIndent, this, [n])});
+        if (this.visualisationOn) {
+            this.addStep({isNewStep: false, func: wrapFunction(this._addMessageIndent, this, [n])});
+        }
     }
 
     _addMessageIndent(n) {
@@ -63,7 +69,9 @@ class VisualisationController {
     }
 
     refresh(isNewStep) {
-        this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph(this.treeViewOn)])});
+        if (this.visualisationOn) {
+            this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph(this.treeViewOn)])});
+        }
     }
     _refresh(properties, graphEles) {
         console.log("refresh step");
@@ -138,7 +146,7 @@ class VisualisationController {
         this.sequences.shift();
 
         if (this.sequences.length === 0) {
-            hideGroup(visualisationControls);
+            showElements(true);
         }
     }
 

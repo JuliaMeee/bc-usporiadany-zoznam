@@ -223,6 +223,10 @@ class OlToGraph {
             edges: [],
         }
 
+        console.log("toGraphTllTree nodes: ");
+        console.log(nodes);
+        console.log("u: " + u);
+
         // create layer0 tags
         let layers = [[]];
         for (let i = 0; i < u; i++) {
@@ -242,6 +246,9 @@ class OlToGraph {
             graphNode.position.x = x;
             x += OlToGraph.xOffset + graphNode.data.width / 2;
         }
+        console.log("created new layer: ");
+        console.log(layers[0]);
+
 
         // add tree layers
         let layerBelow = layers[0];

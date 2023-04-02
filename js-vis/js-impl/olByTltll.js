@@ -141,15 +141,24 @@ class OlByTltll {
             return 1;
         }
 
-        return Math.ceil(Math.log2(this.N));
+        let logN = Math.log2(this.N);
+
+        if (Math.log2(logN) % 1 === 0) {
+            // is power of 2
+            return logN;
+        }
+        return Math.pow(2, 1 + Math.floor(Math.log2(logN)));
+
+        // return Math.ceil(Math.log2(this.N));
     }
 
     repN() {
-        if (this.N === 1) {
-            return 1;
-        }
+        // if (this.N === 1) {
+        //     return 1;
+        // }
 
-        return Math.ceil(this.N / this.sublistN());
+        return this.N;
+        // return Math.ceil(this.N / this.sublistN());
     }
 
     splitSublist(sublist) {

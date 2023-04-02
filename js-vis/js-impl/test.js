@@ -170,7 +170,7 @@ function generic_ol_test1() {
         let valuesIn = [0];
 
         for (let i = 0; i < 100; i ++) {
-            let insert = valuesIn.length <= 1 || valuesOut.length > 0 && Math.random() < 0.7;
+            let insert = valuesIn.length <= 1 || (valuesOut.length > 0 && Math.random() < 0.7);
 
             if (insert) {
                 let index = Math.floor(Math.random() * valuesOut.length);
@@ -216,6 +216,7 @@ function generic_ol_test1() {
                 let y = valuesIn[j];
                 let test = ol.order(x, y);
 
+                console.log("test: " + x + " " + y);
                 assert(test);
             }
         }

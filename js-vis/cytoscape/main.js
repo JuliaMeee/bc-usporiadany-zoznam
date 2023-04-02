@@ -5,16 +5,16 @@ function initializeButtonClick() {
         return;
     }
 
-    let x = initializeXInput.value.trim();
+    let x = initializeInput.x.value.trim();
     if (x.length === 0)
     {
         visualisation.logMessage(" !! Initialize error: invalid (empty) value of x !!", "red", true);
         return;
     }
 
+    showElements(false);
 
-    hideGroup(operationsControls);
-    let olType = initializeTypeSelect.value;
+    let olType = initializeInput.olType.value;
     switch (olType) {
         case "olByLl":
             ol = new OlByLl(x);
@@ -39,8 +39,8 @@ function insertButtonClick() {
         return;
     }
 
-    let x = insertXInput.value.trim();
-    let y = insertYInput.value.trim();
+    let x = insertInput.x.value.trim();
+    let y = insertInput.y.value.trim();
     if (!ol.contains(x)) {
         visualisation.logMessageInstantly(" !! Insert error: ordered list does not contain '" + x + "' !!", "red", true);
         return;
@@ -54,7 +54,7 @@ function insertButtonClick() {
         return;
     }
 
-    hideGroup(operationsControls);
+    showElements(false);
     ol.insert(x, y);
 }
 
@@ -69,7 +69,7 @@ function deleteButtonClick() {
         return;
     }
 
-    let x = deleteXInput.value.trim();
+    let x = deleteInput.x.value.trim();
     if (!ol.contains(x)) {
         visualisation.logMessageInstantly(" !! Delete error: ordered list does not contain '" + x + "' !!", "red", true);
         return;
@@ -80,7 +80,7 @@ function deleteButtonClick() {
         return;
     }
 
-    hideGroup(operationsControls);
+    showElements(false);
     ol.delete(x);
 }
 
@@ -95,8 +95,8 @@ function orderButtonClick() {
         return;
     }
 
-    let x = orderXInput.value.trim();
-    let y = orderYInput.value.trim();
+    let x = orderInput.x.value.trim();
+    let y = orderInput.y.value.trim();
     if (!ol.contains(x)) {
         visualisation.logMessageInstantly(" !! Order error: ordered list does not contain '" + x + "' !!", "red", true);
         return;
@@ -106,14 +106,14 @@ function orderButtonClick() {
         return;
     }
 
-    hideGroup(operationsControls);
+    showElements(false);
     ol.order(x, y);
 }
 
 function skipButtonClick() {
     console.log("skip button click");
     visualisation.skip();
-    hideGroup(visualisationControls);
+    // hideGroup(visualisationControls); // TODO
 }
 
 function continueButtonClick() {
@@ -121,7 +121,7 @@ function continueButtonClick() {
     visualisation.process( false);
 }
 function treeViewButtonClick() {
-    console.log("tree view checkbox click");
+    console.log("tree view button click");
     visualisation.treeViewOn = !visualisation.treeViewOn;
     setTreeViewButtonText();
 
@@ -133,64 +133,103 @@ function treeViewButtonClick() {
 }
 
 function setTreeViewButtonText() {
-    treeViewButton.innerText = "Tree view: " + (visualisation.treeViewOn ? "on" : "off");
+    other.treeView.innerText = "Tree view: " + (visualisation.treeViewOn ? "on" : "off");
 }
 
-function hideGroup(group) {
-    if (group === operationsControls) {
-        visualisationControls.forEach(item => item.classList.remove('hidden'));
-        operationsControls.forEach(item => item.classList.add('hidden'));
-    }
+function generateButtonClick() {
+    visualisation.visualisationOn = false;
+    ol = generateOl(other.olType.value, other.alphabet.value);
+    visualisation.visualisationOn = true;
+    visualisation.refresh(false);
+    visualisation.logMessageInstantly("Generate tree", "green");
+    visualisation.process();
 
+}
+
+function showElement(element, doShow) {
+    if (doShow) {
+        element.classList.remove('hidden');
+    }
     else {
-        operationsControls.forEach(item => item.classList.remove('hidden'));
-        visualisationControls.forEach(item => item.classList.add('hidden'));
+        element.classList.add('hidden');
     }
 }
 
-// Bind buttons
-var initializeButton = document.getElementById("initializeButton");
-initializeButton.addEventListener("click", initializeButtonClick);
-var insertButton = document.getElementById("insertButton");
-insertButton.addEventListener("click", insertButtonClick);
-var deleteButton = document.getElementById("deleteButton");
-deleteButton.addEventListener("click", deleteButtonClick);
-var orderButton = document.getElementById("orderButton");
-orderButton.addEventListener("click", orderButtonClick);
+function showElements(idle) {
+    for (const op of operationsControls) {
+        showElement(op.start, idle);
+        showElement(op.continue, !idle);
+        showElement(op.skip, !idle);
+    }
 
-var skipButton = document.getElementById("skipButton");
-skipButton.addEventListener("click", skipButtonClick);
-var continueButton = document.getElementById("continueButton");
-continueButton.addEventListener("click", continueButtonClick);
+    for (const [key, ele] of Object.entries(other)) {
+        showElement(ele, idle);
+    }
+}
 
-var treeViewButton = document.getElementById("treeViewButton");
-treeViewButton.addEventListener("click", treeViewButtonClick);
+// Bind buttons and input
+
+// initilize
+const initializeInput = {x: null, start: null, continue: null, skip: null};
+initializeInput.x = document.getElementById("initializeXInput");
+initializeInput.olType = document.getElementById("initializeTypeSelect");
+initializeInput.start = document.getElementById("initializeButton");
+initializeInput.start.addEventListener("click", initializeButtonClick);
+initializeInput.continue = document.getElementById("initializeContinueButton");
+initializeInput.continue.addEventListener("click", continueButtonClick);
+initializeInput.skip = document.getElementById("initializeSkipButton");
+initializeInput.skip.addEventListener("click", skipButtonClick);
+
+// insert
+const insertInput = {x: null, y: null, start: null, continue: null, skip: null};
+insertInput.x = document.getElementById("insertXInput");
+insertInput.y = document.getElementById("insertYInput");
+insertInput.start = document.getElementById("insertButton");
+insertInput.start.addEventListener("click", insertButtonClick);
+insertInput.continue = document.getElementById("insertContinueButton");
+insertInput.continue.addEventListener("click", continueButtonClick);
+insertInput.skip = document.getElementById("insertSkipButton");
+insertInput.skip.addEventListener("click", skipButtonClick);
+
+// delete
+const deleteInput = {x: null, start: null, continue: null, skip: null};
+deleteInput.x = document.getElementById("deleteXInput");
+deleteInput.start = document.getElementById("deleteButton");
+deleteInput.start.addEventListener("click", deleteButtonClick);
+deleteInput.continue = document.getElementById("deleteContinueButton");
+deleteInput.continue.addEventListener("click", continueButtonClick);
+deleteInput.skip = document.getElementById("deleteSkipButton");
+deleteInput.skip.addEventListener("click", skipButtonClick);
+
+// order
+const orderInput = {x: null, y: null, start: null, continue: null, skip: null};
+orderInput.x = document.getElementById("orderXInput");
+orderInput.y = document.getElementById("orderYInput");
+orderInput.start = document.getElementById("orderButton");
+orderInput.start.addEventListener("click", orderButtonClick);
+orderInput.continue = document.getElementById("orderContinueButton");
+orderInput.continue.addEventListener("click", continueButtonClick);
+orderInput.skip = document.getElementById("orderSkipButton");
+orderInput.skip.addEventListener("click", skipButtonClick);
+
+const operationsControls = [
+    initializeInput,
+    insertInput,
+    deleteInput,
+    orderInput,
+];
+
+other = {treeView: null, olType: null, alphabet: null, generate: null};
+other.treeView = document.getElementById("treeViewButton");
+other.treeView.addEventListener("click", treeViewButtonClick);
 setTreeViewButtonText();
+other.olType = document.getElementById("generateTypeSelect");
+other.alphabet = document.getElementById("generateAlphabetSelect");
+other.generate = document.getElementById("generateButton");
+other.generate.addEventListener("click", generateButtonClick);
 
-var initializeXInput = document.getElementById("initializeXInput");
-var initializeTypeSelect = document.getElementById("initializeTypeSelect");
-var insertXInput = document.getElementById("insertXInput");
-var insertYInput = document.getElementById("insertYInput");
-var deleteXInput = document.getElementById("deleteXInput");
-var orderXInput = document.getElementById("orderXInput");
-var orderYInput = document.getElementById("orderYInput");
+const olPropertiesText = document.getElementById("olProperties");
 
+const cyContainer = document.getElementById("cy");
 
-var olPropertiesText = document.getElementById("olProperties");
-
-var cyContainer = document.getElementById("cy");
-
-
-var visualisationControls = [
-    continueButton,
-    skipButton,
-]
-var operationsControls = [
-    initializeButton,
-    insertButton,
-    deleteButton,
-    orderButton,
-    treeViewButton,
-]
-
-hideGroup(visualisationControls);
+showElements(true);
