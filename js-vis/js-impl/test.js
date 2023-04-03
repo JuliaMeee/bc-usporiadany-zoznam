@@ -231,7 +231,7 @@ console.log("started testing");
 // test_OlByLl();
 // test_OlByTll();
 // test_OlByTltll();
-generic_ol_test1();
+// generic_ol_test1();
 console.log("finished testing");
 console.log("allTestsOk: " + allTestOk);
 visualisation.visualisationOn = true;

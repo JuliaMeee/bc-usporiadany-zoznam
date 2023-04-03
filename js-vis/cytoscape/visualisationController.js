@@ -48,7 +48,7 @@ class VisualisationController {
 
         this.messagesWindow.insertAdjacentHTML(
             'beforeend',
-            "<span style='color: " + color + "'>" + text + "</span>"
+            "<p style='color: " + color + "'>" + text + "</p>"
         );
 
         this.messagesWindow.scrollTop = this.messagesWindow.scrollHeight;
@@ -81,7 +81,7 @@ class VisualisationController {
         graph.nodeHtmlLabel(OlToGraph.htmlLabelStyle);
         graph.style(OlToGraph.graphStyle);
 
-        graph.maxZoom(0.9);
+        graph.maxZoom(0.7);
         graph.fit(20);
     }
 

@@ -8,7 +8,7 @@ function initializeButtonClick() {
     let x = initializeInput.x.value.trim();
     if (x.length === 0)
     {
-        visualisation.logMessage(" !! Initialize error: invalid (empty) value of x !!", "red", true);
+        visualisation.logMessageInstantly(" !! Initialize error: invalid (empty) value of x !!", "red", true);
         return;
     }
 

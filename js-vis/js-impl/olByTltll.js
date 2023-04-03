@@ -261,10 +261,9 @@ class OlByTltll {
             "Ordered list by tagged linked list",
             "n: " + this.n,
             "N: " + this.N,
+            "u_r: " + OlUtils.calculateU(this.repN()),
             "N_s: " + this.sublistN(),
             "u_s: " + OlUtils.calculateU(this.sublistN()),
-            "N_r: " + this.repN(),
-            "u_r: " + OlUtils.calculateU(this.repN()),
         ]
 
         return properties;

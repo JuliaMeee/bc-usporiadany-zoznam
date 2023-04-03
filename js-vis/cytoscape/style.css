@@ -3,11 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-    --font-size: 1.5rem;
-}
-
-.hidden {
-    display: none;
+    --font-size-small: 2vh; 
+    --font-size: 2vh;
+    --font-size-large: 2.5vh;
 }
 
 body {
@@ -25,15 +23,16 @@ a {
 h2 {
     font-style: normal;
     font-weight: normal;
+    font-size: var(--font-size-large);
 }
 
 button {
-    padding: 10px 15px;
+    padding: 1vh 1vh;
     background: transparent;
     border: 1px solid white;
     color: white;
     font-family: "Inconsolata", monospace;
-    font-size: 24px;
+    font-size: var(--font-size);
 }
 
 button:hover{
@@ -44,12 +43,12 @@ input, #initializeTypeSelect, select {
     display: inline-block;
     width: 100%;
     background: transparent;
-    border: 2px dashed lightsteelblue;
+    border: 1px dashed lightsteelblue;
     color: white;
     font-style: italic;
     font-family: "Inconsolata", monospace;
-    font-size: 24px;
-    padding: 10px;
+    font-size:  var(--font-size);
+    padding: 1vh;
 
     box-sizing:border-box;
 }
@@ -65,41 +64,45 @@ option {
 
 .headline {
     text-align: center;
-    line-height: 20px;
     display: flex;
-    flex-display: row;
+    flex-direction: row;
     align-items: baseline;
     justify-content: center;
-    padding: 5px;
+    padding: 0;
     margin: 0;
 }
 
 .headline > * {
-    padding: 0px 10px;
+    padding: 0 1vh;
 }
 
 .controlPanel {
     height: 25vh;
-    padding: 15px;
+    padding: 1vh;
     display: grid;
     column-gap: 3vw;
     grid-template-columns: 3fr 1fr 3fr;
-    font-size: 26px;
+    font-size: var(--font-size);
 
 }
 
 .operationsInput {
     display: grid;
-    gap: 10px;
+    gap: 1vh;
     grid-template-rows: 1fr 1fr 1fr 1fr;
 }
 
 .operationsInput > div {
     display: grid;
     gap: 1vh;
-    grid-template-columns: 200px 2fr 2fr 1fr 1fr;
+    grid-template-columns: 15vh 1fr 1fr 15vh 10vh;
     align-items: center;
     justify-items: end;
+}
+
+.startButton {
+    display: inline-block;
+    grid-column: 4 / span 2;
 }
 
 .operationsInput > div > * {
@@ -112,12 +115,14 @@ option {
     text-align: center;
     align-self: center;
     justify-self: end;
-    font-size: 30px;
+    font-size: var(--font-size-large);
 }
+
+
 
 .visualisationInput {
     display: grid;
-    gap: 10px;
+    gap: 1vh;
     grid-template-rows: 1fr 1fr 1fr 1fr;
 }
 
@@ -131,21 +136,6 @@ option {
     height: 100%;
 }
 
-
-.visualisationInput > div > label {
-    font-size: 30px;
-}
-
-
-
-#treeViewCheckbox {
-    justify-self: center;
-    align-self: center;
-    width: 25px;
-    height: 25px;
-    accent-color: lightsteelblue;
-}
-
 #messages {
     overflow-y: scroll;
     overflow-x: scroll;
@@ -155,21 +145,24 @@ option {
     align-items: flex-start;
     justify-content: flex-start;
     min-width: 40vw;
-    min-height: 20vh;
+    /* min-height: 20vh; */
     font-family: 'Inconsolata', monospace;
     font-weight: bold;
+    font-size: var(--font-size-small);
 }
 
-#messages > span {
-    padding: 0.2rem;
+#messages > * {
+    padding: 0.2vh;
+    margin: 0;
 }
 
 #olProperties {
+    padding: 1vh 2vh;
     display: flex;
     flex-direction: row;
     background-color: white;
     color: black;
-    font-size: 30px;
+    font-size: var(--font-size);
     height: 5vh;
 }
 
@@ -187,16 +180,20 @@ option {
 
 .nodeTag {
     font-style: italic;
-    font-size: 24px;
+    font-size: 1.2rem;
     color: black;
     text-align: center;
 }
 
 .nodeValue {
     font-style: normal;
-    font-size: 30px;
+    font-size: 1.5rem;
     color: black;
     text-align: center;
+}
+
+.hidden {
+    display: none;
 }
 
 
