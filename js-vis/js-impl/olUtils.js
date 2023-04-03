@@ -4,7 +4,7 @@ class OlUtils {
         let tag = minTag;
         let node = minNode;
 
-        while (nodesCount > 0 && node !== null) {
+        while (nodesCount > 0 && node) {
             node.tag = tag;
             node = node.next;
             tag += tagOffset;
@@ -16,7 +16,7 @@ class OlUtils {
         let minTag = xNode.tag + 1;
         let maxTag = u - 1;
 
-        if (xNode.next !== null) {
+        if (xNode.next) {
             maxTag = xNode.next.tag - 1;
         }
 
@@ -27,7 +27,7 @@ class OlUtils {
         let minTag = xNode.tag + 1;
         let maxTag = u - 1;
 
-        if (xNode.next !== null) {
+        if (xNode.next) {
             maxTag = xNode.next.tag - 1;
         }
 

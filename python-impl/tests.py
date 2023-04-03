@@ -178,10 +178,10 @@ def generic_ol_test1():
     
 
 def main():
-    # test_DLL()
-    # test_OLByLL()
-    # test_OLByTLL()
-    # test_OLByTLTLL()
+    test_DLL()
+    test_OLByLL()
+    test_OLByTLL()
+    test_OLByTLTLL()
     generic_ol_test1()
     
 

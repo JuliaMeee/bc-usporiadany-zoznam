@@ -1,5 +1,6 @@
 from ol_by_tll import OLByTLL
 from doubly_linked_list import DoublyLinkedList, TaggedNode, TaggedNodeWithRep
+from ol_utils import *
 import math
 
 class OLByTLTLL(OLByTLL):
@@ -22,19 +23,19 @@ class OLByTLTLL(OLByTLL):
     def insert(self, x, y):
         x_node = self.value_to_node[x]
         
-        if (self.violates_invariant_1(self.n + 1, self.N)):
+        if (violates_invariant_1(self.n + 1, self.N)):
             self.rebuild()
         
         x_sublist = x_node.rep.value
-        if (self.violates_invariant_2(len(x_sublist) + 1, self.sublist_N())):
+        if (violates_invariant_2(len(x_sublist) + 1, self.sublist_N())):
             self.split_sublist(x_sublist)
             x_sublist = x_node.rep.value
         
-        sublist_u = self.calculate_u(self.sublist_N())
-        if (not self.available_tag_after(x_node, sublist_u)):
-            self.relabel(x_node, len(x_sublist), sublist_u)
+        sublist_u = calculate_u(self.sublist_N())
+        if (not available_tag_after(x_node, sublist_u)):
+            relabel(x_node, len(x_sublist), sublist_u)
         
-        y_node = TaggedNodeWithRep(y, self.get_new_tag_after(x_node, sublist_u))
+        y_node = TaggedNodeWithRep(y, get_new_tag_after(x_node, sublist_u))
         self.value_to_node[y] = y_node
         x_sublist.insertAfter(x_node, y_node)
         y_node.rep = x_node.rep
@@ -42,12 +43,13 @@ class OLByTLTLL(OLByTLL):
     
     def delete(self, x):
         x_node = self.value_to_node.pop(x)
+        
+        if (violates_invariant_1(self.n - 1, self.N)):
+            self.rebuild()
+            
         x_sublist = x_node.rep.value
         
-        if (self.violates_invariant_1(self.n - 1, self.N)):
-            self.rebuild()
-        
-        if (self.violates_invariant_2(len(x_sublist) - 1, self.sublist_N())):
+        if (violates_invariant_2(len(x_sublist) - 1, self.sublist_N())):
             self.reps.remove(x_node.rep)
         
         x_sublist.remove(x_node)
@@ -62,20 +64,26 @@ class OLByTLTLL(OLByTLL):
         return x_node.rep.tag < y_node.rep.tag
     
     def sublist_N(self):
+        # sublist_N = (log2(N)) rounded up to the closest power of two
         if (self.N == 1):
             return 1
-        return int(math.log2(self.N))
+        
+        logN = math.log2(self.N)
+        
+        if (math.log2(logN) % 1 == 0): # is a power of 2
+            return int(logN)
+        
+        return int(math.pow(2, math.ceil(math.log2(logN))));
     
     def rep_N(self):
-        if (self.N == 1):
-            return 1
-        return int(self.N / self.sublist_N())
-    
-    def violates_invariant_2(self, n_sublist, N_sublist):
-        return not (0 < n_sublist <= 2 * N_sublist)
+        return self.N;
     
     def split_sublist(self, sublist):
         first_half_rep = sublist.head.rep
+        
+        if not available_tag_after(first_half_rep, calculate_u(self.rep_N())):
+            relabel(first_half_rep, len(self.reps), calculate_u(self.rep_N()))
+        
         first_half_rep.value = DoublyLinkedList()
         second_half_rep = TaggedNode(DoublyLinkedList(), 0)
         
@@ -90,14 +98,11 @@ class OLByTLTLL(OLByTLL):
             
             node = next_node
         
-        sublist_u = self.calculate_u(self.sublist_N())
-        self.assign_new_tags(first_half_rep.value.head, half_count, 0, sublist_u)
-        self.assign_new_tags(second_half_rep.value.head, half_count, 0, sublist_u)  
+        sublist_u = calculate_u(self.sublist_N())
+        assign_new_tags(first_half_rep.value.head, half_count, 0, sublist_u)
+        assign_new_tags(second_half_rep.value.head, half_count, 0, sublist_u)  
         
-        if not self.available_tag_after(first_half_rep, self.calculate_u(self.rep_N())):
-            self.relabel(first_half_rep, len(self.reps), self.calculate_u(self.rep_N()))
-        
-        second_half_rep.tag = self.get_new_tag_after(first_half_rep, self.calculate_u(self.rep_N()))
+        second_half_rep.tag = get_new_tag_after(first_half_rep, calculate_u(self.rep_N()))
         self.reps.insertAfter(first_half_rep, second_half_rep)
     
     def rebuild(self):
@@ -125,16 +130,16 @@ class OLByTLTLL(OLByTLL):
                         break
                     node = old_rep.value.head
             
-            self.assign_new_tags(new_rep.value.head, len(new_rep.value), 0, self.calculate_u(sublist_N))
+            assign_new_tags(new_rep.value.head, len(new_rep.value), 0, calculate_u(sublist_N))
             self.reps.append(new_rep)
         
-        self.assign_new_tags(self.reps.head, len(self.reps), 0, self.calculate_u(rep_N))
+        assign_new_tags(self.reps.head, len(self.reps), 0, calculate_u(rep_N))
     
     def __repr__(self):
         sublist_N = self.sublist_N()
         rep_N = self.rep_N()
-        sublist_u = self.calculate_u(sublist_N)
-        rep_u = self.calculate_u(rep_N)
+        sublist_u = calculate_u(sublist_N)
+        rep_u = calculate_u(rep_N)
         text = "OLByTLTLL: N:" + str(self.N) + " n:" + str(self.n) + " subl_N:" + str(sublist_N) + " subl_u:" + str(sublist_u) + " rep_N:" + str(rep_N) + " rep_u:" + str(rep_u)
         for rep in self.reps:
             text += " ->  ((" + "[" + str(rep.tag) + "] n:" + str(len(rep.value)) + "))"

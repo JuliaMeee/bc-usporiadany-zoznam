@@ -1,3 +1,0 @@
-regex:
-
- *(insert|order) *\( *([a-zA-Z0-9 ]+) *, *([a-zA-Z0-9]+) *\) *| *(delete) *\( *([a-zA-Z0-9]+) *\) *

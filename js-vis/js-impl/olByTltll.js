@@ -147,7 +147,7 @@ class OlByTltll {
             // is power of 2
             return logN;
         }
-        return Math.pow(2, 1 + Math.floor(Math.log2(logN)));
+        return Math.pow(2, Math.ceil(Math.log2(logN)));
 
         // return Math.ceil(Math.log2(this.N));
     }
@@ -197,10 +197,9 @@ class OlByTltll {
     rebuild() {
         this.N = this.n;
         visualisation.logMessage("set new N = n =" + this.N, "blue", true);
-        visualisation.logMessage("set new N_s = log(N) = " + this.sublistN(), "blue", false);
-        visualisation.logMessage("set new u_s = 2 * N_s ^ 2 = " + OlUtils.calculateU(this.sublistN()), "blue", false);
-        visualisation.logMessage("set new N_r = N / N_s = " + this.repN(), "blue", false);
-        visualisation.logMessage("set new u_r = 2 * N_r ^ 2 = " + OlUtils.calculateU(this.repN()), "blue", false);
+        visualisation.logMessage("set new u_r = max(N * 4, N ^ 2) = " + OlUtils.calculateU(this.repN()), "blue", false);
+        visualisation.logMessage("set new N_s = log(N) ceil to a power of 2 = " + this.sublistN(), "blue", false);
+        visualisation.logMessage("set new u_s = max(N_s * 4, N_s ^ 2) = " + OlUtils.calculateU(this.sublistN()), "blue", false);
 
         let sublistN = this.sublistN();
         let repN = this.repN();
