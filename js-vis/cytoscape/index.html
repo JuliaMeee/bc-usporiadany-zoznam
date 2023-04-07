@@ -6,8 +6,6 @@
     <link rel="icon" type="image/x-icon" href="../asstes/images/ol-favicon.png">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.15.2/cytoscape.min.js"></script>
-    <!--        <script src="http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js"></script>-->
-    <!--        <script src="cytoscape-node-html-label.js"></script>-->
 
 </head>
 <body>
@@ -25,33 +23,33 @@
                     <option value="olByTll">tagged linked list</option>
                     <option value="olByTltll">two-level tagged linked list</option>
                 </select>
-                <button id="initializeButton" class="startButton" type="button">Start</button>
-                <button id="initializeContinueButton" class="continueButton" type="button">Continue</button>
-                <button id="initializeSkipButton" class="skipButton" type="button">Skip</button>
+                <button id="initializeButton" class="startButton" type="button">▶</button>
+                <button id="initializeContinueButton" class="continueButton" type="button">▶</button>
+                <button id="initializeSkipButton" class="skipButton" type="button">▶▶</button>
             </div>
             <div>
                 <label for="insertButton">Insert:</label>
                 <input id="insertXInput" type="text" placeholder="x">
                 <input id="insertYInput" type="text" placeholder="y">
-                <button id="insertButton" class="startButton" type="button">Start</button>
-                <button id="insertContinueButton" class="continueButton" type="button">Continue</button>
-                <button id="insertSkipButton" class="skipButton" type="button">Skip</button>
+                <button id="insertButton" class="startButton" type="button">▶</button>
+                <button id="insertContinueButton" class="continueButton" type="button">▶</button>
+                <button id="insertSkipButton" class="skipButton" type="button">▶▶</button>
             </div>
             <div>
                 <label for="deleteButton">Delete:</label>
                 <input id="deleteXInput" type="text" placeholder="x">
                 <div></div>
-                <button id="deleteButton" class="startButton" type="button">Start</button>
-                <button id="deleteContinueButton" class="continueButton" type="button">Continue</button>
-                <button id="deleteSkipButton" class="skipButton" type="button">Skip</button>
+                <button id="deleteButton" class="startButton" type="button">▶</button>
+                <button id="deleteContinueButton" class="continueButton" type="button">▶</button>
+                <button id="deleteSkipButton" class="skipButton" type="button">▶▶</button>
             </div>
             <div>
                 <label for="orderButton">Order:</label>
                 <input id="orderXInput" type="text" placeholder="x">
                 <input id="orderYInput" type="text" placeholder="y">
-                <button id="orderButton" class="startButton" type="button">Start</button>
-                <button id="orderContinueButton" class="continueButton" type="button">Continue</button>
-                <button id="orderSkipButton" class="skipButton" type="button">Skip</button>
+                <button id="orderButton" class="startButton" type="button">▶</button>
+                <button id="orderContinueButton" class="continueButton" type="button">▶</button>
+                <button id="orderSkipButton" class="skipButton" type="button">▶▶</button>
             </div>
         </div>
         <div class="visualisationInput">
@@ -89,9 +87,8 @@
 <!-- credits https://github.com/kaluginserg/cytoscape-node-html-label -->
 
 <script src="utils.js"></script>
-<script src="layoutOptions.js"></script>
 <script src="olToGraph.js"></script>
-<script src="visualisationController.js"></script>
+<script src="visualisation.js"></script>
 <script src="main.js"></script>
 
 <script src="../js-impl/doublyLinkedList.js"></script>

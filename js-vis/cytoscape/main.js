@@ -156,13 +156,13 @@ function showElement(element, doShow) {
 }
 
 function showElements(idle, actionToShow) {
-    for (const op of operationsControls) {
+    for (let op of operationsControls) {
         showElement(op.start, idle);
         showElement(op.continue, false);
         showElement(op.skip, false);
     }
 
-    for (const [key, ele] of Object.entries(other)) {
+    for (let [key, ele] of Object.entries(other)) {
         showElement(ele, idle);
     }
 
@@ -171,6 +171,11 @@ function showElements(idle, actionToShow) {
         showElement(actionToShow.skip, true);
     }
 }
+
+// Globally used variables
+var visualisation = new Visualisation();
+var ol = null;
+var graph = null;
 
 // Bind buttons and input
 

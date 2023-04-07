@@ -1,22 +1,16 @@
-const graphTypeLl = "graphTypeLl";
-const graphTypeTll = "graphTypeTll";
-const graphTypeTllTree = "graphTypeTllTree";
-const graphTypeTltll = "graphTypeTltll";
-const graphTypeTltllTree = "graphTypeTltllTree";
-
 const nodeTypeTag = 'nodeTypeTag';
 const nodeTypeTagValue = 'nodeTypeTagValue';
 const nodeTypeValue = 'nodeTypeValue';
 
 const rootTreeId = -1;
 
-class OlToGraph {
-    static xOffset = 20;
-    static xSize = 100;
-    static yOffset = 30;
-    static ySize = 50;
-    static nodeFontSize = 24;
+const xOffset = 20;
+const xSize = 100;
+const yOffset = 30;
+const ySize = 50;
+const nodeFontSize = 24;
 
+class OlToGraph {
     static graphStyle = [ // the stylesheet for the graph
         {
             selector: 'node',
@@ -124,7 +118,7 @@ class OlToGraph {
             value = "sublistRep";
         }
 
-        let height = OlToGraph.ySize * (nodeClass === nodeTypeTagValue ? 1.5 : 1);
+        let height = ySize * (nodeClass === nodeTypeTagValue ? 1.5 : 1);
         let graphNode = {
             group: 'nodes',
             data: {
@@ -136,11 +130,11 @@ class OlToGraph {
                 color: (nodeClass !== nodeTypeTag ? '#EAEAEA' : '#fff'),
                 highlight: 'none',
                 height: height,
-                fontSize: OlToGraph.nodeFontSize,
+                fontSize: nodeFontSize,
             },
             position: {
                 x: 0,
-                y: (nodeClass === nodeTypeTagValue ? OlToGraph.ySize/4  : 0),
+                y: (nodeClass === nodeTypeTagValue ? ySize/4  : 0),
             },
             classes: nodeClass,
         };
@@ -164,7 +158,7 @@ class OlToGraph {
             let graphNode = OlToGraph.createNode(treeId, 0, null, node.value, false, 0);
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
-            x += OlToGraph.xOffset + graphNode.data.width / 2;
+            x += xOffset + graphNode.data.width / 2;
 
             graphEles.nodes.push(graphNode);
 
@@ -197,7 +191,7 @@ class OlToGraph {
             let graphNode = OlToGraph.createNode(treeId, 0, node.tag, node.value, false, 0);
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
-            x += OlToGraph.xOffset + graphNode.data.width / 2;
+            x += xOffset + graphNode.data.width / 2;
 
             graphEles.nodes.push(graphNode);
 
@@ -244,7 +238,7 @@ class OlToGraph {
             let graphNode = layers[0][i];
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
-            x += OlToGraph.xOffset + graphNode.data.width / 2;
+            x += xOffset + graphNode.data.width / 2;
         }
         console.log("created new layer: ");
         console.log(layers[0]);
@@ -260,7 +254,7 @@ class OlToGraph {
                 let childLeft = layerBelow[i * 2];
                 let childRight = layerBelow[i * 2 + 1];
                 graphNode.position.x = (childLeft.position.x + childRight.position.x) / 2;
-                graphNode.position.y = layers.length * (-OlToGraph.ySize - OlToGraph.yOffset) - OlToGraph.yOffset;
+                graphNode.position.y = layers.length * (-ySize - yOffset) - yOffset;
                 layer.push(graphNode);
                 graphEles.edges.push({
                     group: 'edges',
@@ -351,12 +345,12 @@ class OlToGraph {
         for (let i = 0; i < repsGraph.nodes.length; i++) {
             let repGraphNode = repsGraph.nodes[i];
             repGraphNode.position.x = xShift + repGraphNode.data.width / 2;
-            repGraphNode.position.y = - OlToGraph.yOffset * 2 - OlToGraph.ySize;
+            repGraphNode.position.y = - yOffset * 2 - ySize;
             for (let graphNode of sublistGraphs[i].nodes) {
                 graphNode.position.x += xShift;
             }
 
-            xShift += repGraphNode.data.width + OlToGraph.xOffset * 2;
+            xShift += repGraphNode.data.width + xOffset * 2;
         }
 
         // put everything into one graph
@@ -416,7 +410,7 @@ class OlToGraph {
         }
 
         // set positions for rep tree layer0 + sublist trees
-        let yShift = (1 + Math.log2(sublistU)) * (OlToGraph.yOffset + OlToGraph.ySize) + 2 * OlToGraph.yOffset;
+        let yShift = (1 + Math.log2(sublistU)) * (yOffset + ySize) + 2 * yOffset;
         let x = 0;
         for (let repGraphNode of repsGraph.nodes.filter(node => node.data.level === 0)) {
             x += repGraphNode.data.width / 2;
@@ -432,7 +426,7 @@ class OlToGraph {
                 });
             }
 
-            x += OlToGraph.xOffset + repGraphNode.data.width / 2;
+            x += xOffset + repGraphNode.data.width / 2;
         }
 
         // set positions for higher rep tree layers
@@ -460,7 +454,7 @@ class OlToGraph {
                 let childLeft = graphNodes.find(node => node.data.level === i - 1 && node.data.tag === graphNode.data.tag * 2);
                 let childRight = graphNodes.find(node => node.data.level === i - 1 && node.data.tag === graphNode.data.tag * 2 + 1);
                 graphNode.position.x = (childLeft.position.x + childRight.position.x) / 2;
-                graphNode.position.y = i * (-OlToGraph.ySize - OlToGraph.yOffset) - OlToGraph.yOffset;
+                graphNode.position.y = i * (-ySize - yOffset) - yOffset;
             }
         }
     }
@@ -485,7 +479,7 @@ class OlToGraph {
 
     static calculateNodeWidth(data) {
         let labelLength = Math.max((data.value === null ? 0 : data.value.toString().length), data.tagText.toString().length);
-        return Math.max(OlToGraph.xSize, OlToGraph.nodeFontSize * labelLength * 0.63 + 20);
+        return Math.max(xSize, nodeFontSize * labelLength * 0.63 + 20);
     }
 
     static assignNodeId(data) {

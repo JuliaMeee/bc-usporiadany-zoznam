@@ -12,16 +12,16 @@ Vizualizér ovládame cez horný panel. Naľavo nájdeme riadky Initialize, Inse
 
 #### Initialize
 
-Usporiadaný zoznam treba najprv inicializovať: v riadku 'Initialize' vyplníme počiatočnú hodnotu x, vyberieme štruktúru, ktorou chceme usporiadaný zoznam implementovať, a stlačíme 'Start'.
+Usporiadaný zoznam treba najprv inicializovať: v riadku 'Initialize' vyplníme počiatočnú hodnotu x, vyberieme štruktúru, ktorou chceme usporiadaný zoznam implementovať, a stlačíme '▶'.
 
 #### Insert
-Do usporiadaného zoznamu vieme vložiť novú hodnotu: v riadku 'Insert' vyplníme hodnotu x (za ktorú chceme vkladať), hodnotu y (ktorú chceme vložiť) a stlačíme 'Start'. Po zahájení operácie sa vieme posúvať po krokoch tlačítkom 'Continue' alebo dokončiť operáciu instantne tlačítkom 'Finish'.
+Do usporiadaného zoznamu vieme vložiť novú hodnotu: v riadku 'Insert' vyplníme hodnotu x (za ktorú chceme vkladať), hodnotu y (ktorú chceme vložiť) a stlačíme '▶'. Po zahájení operácie sa vieme posúvať po krokoch tlačítkom '▶' alebo dokončiť operáciu instantne tlačítkom '▶▶'.
 
 #### Delete
-Z usporiadaného zoznamu môžeme hodnoty odstrániť: v riadku 'Delete' vyplníme hodnotu x, ktorú chceme odstrániť, a stlačíme 'Start'. Po zahájení operácie sa vieme posúvať po krokoch tlačítkom 'Continue' alebo dokončiť operáciu instantne tlačítkom 'Finish'.
+Z usporiadaného zoznamu môžeme hodnoty odstrániť: v riadku 'Delete' vyplníme hodnotu x, ktorú chceme odstrániť, a stlačíme '▶'. Po zahájení operácie sa vieme posúvať po krokoch tlačítkom '▶' alebo dokončiť operáciu instantne tlačítkom '▶▶'.
 
 #### Order
-Usporiadaný zoznam dokáže vyhodnotiť usporiadanie 2 prvkov: v riadku 'Order' vyplníme hodnoty x, y a stlačíme 'Start'. Po zahájení operácie sa vieme posúvať po krokoch tlačítkom 'Continue' alebo dokončiť operáciu instantne tlačítkom 'Finish'.
+Usporiadaný zoznam dokáže vyhodnotiť usporiadanie 2 prvkov: v riadku 'Order' vyplníme hodnoty x, y a stlačíme '▶'. Po zahájení operácie sa vieme posúvať po krokoch tlačítkom '▶' alebo dokončiť operáciu instantne tlačítkom '▶▶'.
 
 #### Generate random
 Pri generovaní nového neprázdneho usporiadaného zoznamu máme možnosť vybrať si štruktúru, ktorou chceme usporiadaný zoznam implementovať, a hodnoty ktorými bude plnený. Následne stlačíme 'Generate random' a vykreslí sa nám nový usporiadaný zoznam.

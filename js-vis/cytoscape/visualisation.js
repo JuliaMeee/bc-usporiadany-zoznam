@@ -1,4 +1,4 @@
-class VisualisationController {
+class Visualisation {
     sequences = []
     processing = false
     messageIndent = 0
@@ -161,9 +161,3 @@ class VisualisationController {
         }
     }
 }
-
-var visualisation = new VisualisationController();
-
-var ol = null;
-
-var graph = null;
