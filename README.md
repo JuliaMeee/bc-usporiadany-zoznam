@@ -25,3 +25,11 @@ Usporiadaný zoznam dokáže vyhodnotiť usporiadanie 2 prvkov: v riadku 'Order'
 
 #### Generate random
 Pri generovaní nového neprázdneho usporiadaného zoznamu máme možnosť vybrať si štruktúru, ktorou chceme usporiadaný zoznam implementovať, a hodnoty ktorými bude plnený. Následne stlačíme 'Generate random' a vykreslí sa nám nový usporiadaný zoznam.
+
+
+### Využité zdroje
+Shuffle array:
+https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+
+Node html labels:
+https://github.com/kaluginserg/cytoscape-node-html-label
