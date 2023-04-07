@@ -12,15 +12,11 @@ class Visualisation {
         }
     }
     _highlight( predicate, color, clearHighlight) {
-        console.log("highlight step");
         for (let node of graph.nodes()){
             if (predicate(node)) {
-                console.log("YES predicate: ");
-                console.log(node.data());
                 node.data().highlight = color;
             }
             else if (clearHighlight) {
-                console.log("clear highlight");
                 node.data().highlight = 'none';
             }
         }
@@ -74,7 +70,6 @@ class Visualisation {
         }
     }
     _refresh(properties, graphEles) {
-        console.log("refresh step");
         this._setOlProperiesText(properties);
 
         graph = OlToGraph.buildGraph(graphEles.nodes, graphEles.edges);
@@ -113,7 +108,6 @@ class Visualisation {
             return;
         }
         if (this.processing) {
-            console.log("Error: visualisation already processing.");
             return;
         }
         if (!this.sequences || this.sequences.length === 0) {

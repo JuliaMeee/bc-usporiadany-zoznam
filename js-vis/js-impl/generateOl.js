@@ -14,7 +14,7 @@ function generateOl(olType, alphabet) {
             valuesOut = animals;
             break;
         default:
-            console.log("generating random ol with invalid alphabet");
+            console.log("error: generating random ol with invalid alphabet");
             return;
     }
 
@@ -43,15 +43,10 @@ function generateOl(olType, alphabet) {
     for (let i = 0; i < operationsCount; i ++) {
         let insert = valuesIn.length <= 1 || (valuesOut.length > 0 && Math.random() < 0.7);
 
-        console.log(ol.toString());
-        console.log(ol);
-        console.log("insert: " + insert);
-
         if (insert) {
             let val = valuesOut.shift();
             let valBeforeIndex = Math.floor(Math.random() * valuesIn.length);
             let valBefore = valuesIn[valBeforeIndex];
-            console.log("val: " + val + " valBefore: " + valBefore);
 
             ol.insert(valBefore, val);
             valuesIn.push(val);
@@ -60,8 +55,6 @@ function generateOl(olType, alphabet) {
             let index = Math.floor(Math.random() * valuesIn.length);
             let val = valuesIn[index];
             valuesIn.splice(index, 1);
-
-            console.log("val: " + val);
 
             ol.delete(val);
             valuesOut.push(val);

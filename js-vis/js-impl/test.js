@@ -225,7 +225,7 @@ function generic_ol_test1() {
     console.log("generic test finished");
 }
 visualisation.visualisationOn = false;
-console.log("started testing");
+console.log("tests:");
 
 // test_Dll();
 // test_OlByLl();

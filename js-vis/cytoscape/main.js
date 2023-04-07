@@ -137,6 +137,7 @@ function setTreeViewButtonText() {
 }
 
 function generateButtonClick() {
+    console.log("generate random button click");
     visualisation.visualisationOn = false;
     ol = generateOl(other.olType.value, other.alphabet.value);
     visualisation.visualisationOn = true;

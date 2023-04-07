@@ -37,8 +37,6 @@ class OlUtils {
 
     static relabel(xNode, n, u, treeIdForHighlight = rootTreeId) {
         let T = this.calculateT(n, u);
-        console.log("relabel treeIdForHighlight: " + treeIdForHighlight);
-        console.log("relabel node tag: " + xNode.tag);
 
         // visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), xNode.tag, xNode.tag + 1) && node.data().level === 0 && node.data().treeId === treeIdForHighlight, "blue", true, true);
         visualisation.logMessage("overflow constant T = " + T, "blue", false);
@@ -74,15 +72,11 @@ class OlUtils {
 
         this.assignNewTags(interval.minNode, interval.nodesCount, interval.minTag, interval.maxTagExcl - 1);
 
-        console.log("end of relabel result: ");
-        console.log(ol.toString());
-        console.log(ol);
         visualisation.refresh(false);
         visualisation.highlight(node => OlToGraph.isGaphNodeTagInInterval(node.data(), minTag, maxTagExcl, treeIdForHighlight), "blue", true, false);
     }
 
     static calculateT(n, u) {
-        console.log("calculateT with: n:", n, " u:", u);
         let treeLevel = this.getVirtualTreeLevel(u);
         let T = Math.max(1.001, Math.exp(Math.log(u / n) / treeLevel) - 0.0001);
 

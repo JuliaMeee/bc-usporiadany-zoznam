@@ -217,10 +217,6 @@ class OlToGraph {
             edges: [],
         }
 
-        console.log("toGraphTllTree nodes: ");
-        console.log(nodes);
-        console.log("u: " + u);
-
         // create layer0 tags
         let layers = [[]];
         for (let i = 0; i < u; i++) {
@@ -240,8 +236,6 @@ class OlToGraph {
             graphNode.position.x = x;
             x += xOffset + graphNode.data.width / 2;
         }
-        console.log("created new layer: ");
-        console.log(layers[0]);
 
 
         // add tree layers
@@ -277,8 +271,6 @@ class OlToGraph {
             }
 
             layers.push(layer);
-            console.log("created new layer: ");
-            console.log(layer);
             layerBelow = layer;
         }
 
@@ -291,10 +283,6 @@ class OlToGraph {
     }
 
     static toGraphTltll(reps, treeId = rootTreeId) {
-        console.log("toGraphTltll");
-        console.log("reps (input):");
-        console.log(reps);
-
         // make sublist nodes and edges
         let sublistGraphs = [];
         for (let rep of reps) {
@@ -304,12 +292,6 @@ class OlToGraph {
         // make reps nodes and edges
         let repToSublistEdges = [];
         let repsGraph = OlToGraph.toGraphTll(reps, treeId);
-
-
-        console.log("reps graph: ");
-        console.log(repsGraph);
-        console.log("sublist graphs: ");
-        console.log(sublistGraphs);
 
         for (let i = 0; i < repsGraph.nodes.length; i++) {
             let repGraphNode = repsGraph.nodes[i];
@@ -371,8 +353,6 @@ class OlToGraph {
     }
 
     static toGraphTltllTree(reps, repsU, sublistU, treeId = rootTreeId) {
-        console.log("toGraphTltllTree");
-
         // make sublist tree nodes and edges
         let sublistGraphs = [];
         for (let rep of reps) {
