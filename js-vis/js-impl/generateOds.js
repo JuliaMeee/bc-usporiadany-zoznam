@@ -1,4 +1,4 @@
-function generateOl(olType, alphabet) {
+function generateOds(odsType, alphabet) {
     visualisation.visualisationOn = false;
 
     let valuesOut = null;
@@ -14,7 +14,7 @@ function generateOl(olType, alphabet) {
             valuesOut = animals;
             break;
         default:
-            console.log("error: generating random ol with invalid alphabet");
+            console.log("error: generating random order data structure with invalid alphabet");
             return;
     }
 
@@ -22,19 +22,19 @@ function generateOl(olType, alphabet) {
     let initValue = valuesOut.shift();
     let valuesIn = [initValue];
 
-    let ol = null;
-    switch (olType) {
-        case "olByLl":
-            ol = new OlByLl(initValue);
+    let ods = null;
+    switch (odsType) {
+        case "odsByLl":
+            ods = new OdsByLl(initValue);
             break;
-        case "olByTll":
-            ol = new OlByTll(initValue);
+        case "odsByTll":
+            ods = new OdsByTll(initValue);
             break;
-        case "olByTltll":
-            ol = new OlByTltll(initValue);
+        case "odsByTltll":
+            ods = new OdsByTltll(initValue);
             break;
         default:
-            console.log("generating random ol with invalid type");
+            console.log("generating random order data structure with invalid type");
             return;
     }
 
@@ -48,7 +48,7 @@ function generateOl(olType, alphabet) {
             let valBeforeIndex = Math.floor(Math.random() * valuesIn.length);
             let valBefore = valuesIn[valBeforeIndex];
 
-            ol.insert(valBefore, val);
+            ods.insert(valBefore, val);
             valuesIn.push(val);
 
         } else {
@@ -56,13 +56,13 @@ function generateOl(olType, alphabet) {
             let val = valuesIn[index];
             valuesIn.splice(index, 1);
 
-            ol.delete(val);
+            ods.delete(val);
             valuesOut.push(val);
         }
     }
     visualisation.visualisationOn = true;
 
-    return ol;
+    return ods;
 }
 
 // credits: https://gist.github.com/ruanbekker/a1506f06aa1df06c5a9501cb393626ea

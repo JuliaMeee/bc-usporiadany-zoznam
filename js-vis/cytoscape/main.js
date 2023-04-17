@@ -14,16 +14,16 @@ function initializeButtonClick() {
 
     showElements(false, initializeInput);
 
-    let olType = initializeInput.olType.value;
-    switch (olType) {
-        case "olByLl":
-            ol = new OlByLl(x);
+    let odsType = initializeInput.odsType.value;
+    switch (odsType) {
+        case "odsByLl":
+            ods = new OdsByLl(x);
             break;
-        case "olByTll":
-            ol = new OlByTll(x);
+        case "odsByTll":
+            ods = new OdsByTll(x);
             break;
-        case "olByTltll":
-            ol = new OlByTltll(x);
+        case "odsByTltll":
+            ods = new OdsByTltll(x);
             break;
     }
 }
@@ -34,28 +34,32 @@ function insertButtonClick() {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
         return;
     }
-    if (!ol) {
-        visualisation.logMessageInstantly(" !! Insert error: ordered list has not been initialized !!", "red", true);
+    if (!ods) {
+        visualisation.logMessageInstantly(" !! Insert error: ODS has not been initialized !!", "red", true);
         return;
     }
 
     let x = insertInput.x.value.trim();
     let y = insertInput.y.value.trim();
-    if (!ol.contains(x)) {
-        visualisation.logMessageInstantly(" !! Insert error: ordered list does not contain '" + x + "' !!", "red", true);
+    if (x.length === 0) {
+        visualisation.logMessageInstantly(" !! Insert error: invalid (empty) value of x !!", "red", true);
+        return;
+    }
+    if (!ods.contains(x)) {
+        visualisation.logMessageInstantly(" !! Insert error: the ODS does not contain '" + x + "' !!", "red", true);
         return;
     }
     if (y.length === 0) {
         visualisation.logMessageInstantly(" !! Insert error: invalid (empty) value of y !!", "red", true);
         return;
     }
-    if (ol.contains(y)) {
-        visualisation.logMessageInstantly(" !! Insert error: ordered list already contains '" + y + "' !!", "red", true);
+    if (ods.contains(y)) {
+        visualisation.logMessageInstantly(" !! Insert error: the ODS already contains '" + y + "' !!", "red", true);
         return;
     }
 
     showElements(false, insertInput);
-    ol.insert(x, y);
+    ods.insert(x, y);
 }
 
 function deleteButtonClick() {
@@ -64,24 +68,28 @@ function deleteButtonClick() {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
         return;
     }
-    if (!ol) {
-        visualisation.logMessageInstantly(" !! Delete error: ordered list has not been initialized !!", "red", true);
+    if (!ods) {
+        visualisation.logMessageInstantly(" !! Delete error: ODS has not been initialized !!", "red", true);
         return;
     }
 
     let x = deleteInput.x.value.trim();
-    if (!ol.contains(x)) {
-        visualisation.logMessageInstantly(" !! Delete error: ordered list does not contain '" + x + "' !!", "red", true);
+    if (x.length === 0) {
+        visualisation.logMessageInstantly(" !! Insert error: invalid (empty) value of x !!", "red", true);
+        return;
+    }
+    if (!ods.contains(x)) {
+        visualisation.logMessageInstantly(" !! Delete error: the ODS does not contain '" + x + "' !!", "red", true);
         return;
     }
 
-    if (ol.getNumberOfElements() < 2) {
+    if (ods.getNumberOfElements() < 2) {
         visualisation.logMessageInstantly(" !! Delete error: cannot reduce number of elements to 0 !!", "red", true);
         return;
     }
 
     showElements(false, deleteInput);
-    ol.delete(x);
+    ods.delete(x);
 }
 
 function orderButtonClick() {
@@ -90,24 +98,32 @@ function orderButtonClick() {
         visualisation.logMessageInstantly("!! Visualisation is busy !!", "orange");
         return;
     }
-    if (!ol) {
-        visualisation.logMessageInstantly(" !! Order error: ordered list has not been initialized !!", "red", true);
+    if (!ods) {
+        visualisation.logMessageInstantly(" !! Order error: ODS has not been initialized !!", "red", true);
         return;
     }
 
     let x = orderInput.x.value.trim();
     let y = orderInput.y.value.trim();
-    if (!ol.contains(x)) {
-        visualisation.logMessageInstantly(" !! Order error: ordered list does not contain '" + x + "' !!", "red", true);
+    if (x.length === 0) {
+        visualisation.logMessageInstantly(" !! Insert error: invalid (empty) value of x !!", "red", true);
         return;
     }
-    if (!ol.contains(y)) {
-        visualisation.logMessageInstantly(" !! Order error: ordered list does not contain '" + y + "' !!", "red", true);
+    if (y.length === 0) {
+        visualisation.logMessageInstantly(" !! Insert error: invalid (empty) value of y !!", "red", true);
+        return;
+    }
+    if (!ods.contains(x)) {
+        visualisation.logMessageInstantly(" !! Order error: the ODS does not contain '" + x + "' !!", "red", true);
+        return;
+    }
+    if (!ods.contains(y)) {
+        visualisation.logMessageInstantly(" !! Order error: the ODS does not contain '" + y + "' !!", "red", true);
         return;
     }
 
     showElements(false, orderInput);
-    ol.order(x, y);
+    ods.order(x, y);
 }
 
 function skipButtonClick() {
@@ -125,7 +141,7 @@ function treeViewButtonClick() {
     visualisation.treeViewOn = !visualisation.treeViewOn;
     setTreeViewButtonText();
 
-    if (ol) {
+    if (ods) {
         visualisation.addSequence();
         visualisation.refresh(false);
         visualisation.process(true);
@@ -139,7 +155,7 @@ function setTreeViewButtonText() {
 function generateButtonClick() {
     console.log("generate random button click");
     visualisation.visualisationOn = false;
-    ol = generateOl(other.olType.value, other.alphabet.value);
+    ods = generateOds(other.odsType.value, other.alphabet.value);
     visualisation.visualisationOn = true;
     visualisation.refresh(false);
     visualisation.logMessageInstantly("Generate tree", "green");
@@ -175,7 +191,7 @@ function showElements(idle, actionToShow) {
 
 // Globally used variables
 var visualisation = new Visualisation();
-var ol = null;
+var ods = null;
 var graph = null;
 
 // Bind buttons and input
@@ -183,7 +199,7 @@ var graph = null;
 // initilize
 const initializeInput = {x: null, start: null, continue: null, skip: null};
 initializeInput.x = document.getElementById("initializeXInput");
-initializeInput.olType = document.getElementById("initializeTypeSelect");
+initializeInput.odsType = document.getElementById("initializeTypeSelect");
 initializeInput.start = document.getElementById("initializeButton");
 initializeInput.start.addEventListener("click", initializeButtonClick);
 initializeInput.continue = document.getElementById("initializeContinueButton");
@@ -230,16 +246,16 @@ const operationsControls = [
     orderInput,
 ];
 
-other = {treeView: null, olType: null, alphabet: null, generate: null};
+other = {treeView: null, odsType: null, alphabet: null, generate: null};
 other.treeView = document.getElementById("treeViewButton");
 other.treeView.addEventListener("click", treeViewButtonClick);
 setTreeViewButtonText();
-other.olType = document.getElementById("generateTypeSelect");
+other.odsType = document.getElementById("generateTypeSelect");
 other.alphabet = document.getElementById("generateAlphabetSelect");
 other.generate = document.getElementById("generateButton");
 other.generate.addEventListener("click", generateButtonClick);
 
-const olPropertiesText = document.getElementById("olProperties");
+const odsPropertiesText = document.getElementById("odsProperties");
 
 const cyContainer = document.getElementById("cy");
 

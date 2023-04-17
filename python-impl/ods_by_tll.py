@@ -1,10 +1,10 @@
-from doubly_linked_list import TaggedNode, DoublyLinkedList
-from ol_utils import *
+from linked_list import TaggedNode, LinkedList
+from ods_utils import *
 import math
 
-class OLByTLL:
+class OdsByTll:
     def __init__(self, x):
-        self.linked_list = DoublyLinkedList()
+        self.linked_list = LinkedList()
         self.value_to_node = dict()
         self.n = 1
         self.N = 2

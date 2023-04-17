@@ -8,13 +8,13 @@ function assert(value) {
     }
 }
 
-function test_Dll() {
+function testLl() {
     let nodes = [];
     for (let i = 0; i < 5; i++) {
         nodes.push(new Node(i))
     }
 
-    let list = new DoublyLinkedList();
+    let list = new LinkedList();
     list.insert(nodes[1]);
     list.insertAfter(nodes[1], nodes[4]);
     list.insertAfter(nodes[1], nodes[2]);
@@ -28,141 +28,141 @@ function test_Dll() {
 
     assert(list.length === 4);
 
-    console.log("test_Dll done");
+    console.log("testLl done");
 }
 
-function test_OlByLl() {
-    let ol = new OlByLl(0);
-    ol.insert(0, 3);
-    ol.insert(0, 1);
-    ol.insert(1, 2);
-    ol.insert(3, 4);
-    console.log(ol);
+function testOdsByLl() {
+    let ods = new OdsByLl(0);
+    ods.insert(0, 3);
+    ods.insert(0, 1);
+    ods.insert(1, 2);
+    ods.insert(3, 4);
+    console.log(ods);
 
-    assert(ol.order(0, 1));
+    assert(ods.order(0, 1));
 
-    assert(ol.order(1, 2));
+    assert(ods.order(1, 2));
 
-    assert(ol.order(2, 3));
+    assert(ods.order(2, 3));
 
-    assert(ol.order(3, 4));
+    assert(ods.order(3, 4));
 
-    assert(!ol.order(4, 3));
+    assert(!ods.order(4, 3));
 
-    ol.delete(0);
-    ol.delete(2);
-    ol.delete(4);
+    ods.delete(0);
+    ods.delete(2);
+    ods.delete(4);
 
-    assert(ol.order(1, 3));
+    assert(ods.order(1, 3));
 
-    console.log("test_OlByLl done");
+    console.log("testOdsByLl done");
 }
 
-function test_OlByTll() {
-    let ol = new OlByTll(0);
-    console.log(ol);
-    ol.insert(0, 3);
-    console.log(ol);
-    ol.insert(0, 1);
-    console.log(ol);
-    ol.insert(1, 2);
-    console.log(ol);
-    ol.insert(3, 4);
-    console.log(ol);
+function testOdsByTll() {
+    let ods = new OdsByTll(0);
+    console.log(ods);
+    ods.insert(0, 3);
+    console.log(ods);
+    ods.insert(0, 1);
+    console.log(ods);
+    ods.insert(1, 2);
+    console.log(ods);
+    ods.insert(3, 4);
+    console.log(ods);
 
-    assert(ol.order(0, 1));
+    assert(ods.order(0, 1));
 
-    assert(ol.order(1, 2));
+    assert(ods.order(1, 2));
 
-    assert(ol.order(2, 3));
+    assert(ods.order(2, 3));
 
-    assert(ol.order(3, 4));
+    assert(ods.order(3, 4));
 
-    assert(!ol.order(4, 3));
+    assert(!ods.order(4, 3));
 
-    ol.insert(3, 3.5);
-    console.log(ol);
-    ol.insert(3, 3.2);
-    console.log(ol);
-    ol.delete(3.2);
-    console.log(ol);
-    ol.delete(3.5);
-    console.log(ol);
-    ol.delete(3);
-    console.log(ol);
-    ol.delete(1);
-    console.log(ol);
-    ol.delete(4);
-    console.log(ol);
-    ol.insert(0, 1);
-    console.log(ol);
-    ol.insert(0, 0.5);
-    console.log(ol);
-    ol.insert(0, 0.4);
-    console.log(ol);
-    ol.insert(0, 0.3);
-    console.log(ol);
-    ol.insert(0, 0.2);
-    console.log(ol);
-    ol.insert(0, 0.1);
-    console.log(ol);
-    console.log("test_OlByTll done");
+    ods.insert(3, 3.5);
+    console.log(ods);
+    ods.insert(3, 3.2);
+    console.log(ods);
+    ods.delete(3.2);
+    console.log(ods);
+    ods.delete(3.5);
+    console.log(ods);
+    ods.delete(3);
+    console.log(ods);
+    ods.delete(1);
+    console.log(ods);
+    ods.delete(4);
+    console.log(ods);
+    ods.insert(0, 1);
+    console.log(ods);
+    ods.insert(0, 0.5);
+    console.log(ods);
+    ods.insert(0, 0.4);
+    console.log(ods);
+    ods.insert(0, 0.3);
+    console.log(ods);
+    ods.insert(0, 0.2);
+    console.log(ods);
+    ods.insert(0, 0.1);
+    console.log(ods);
+    console.log("testOdsByTll done");
 }
 
-function test_OlByTltll() {
-    let ol = new OlByTltll(0);
-    console.log(ol);
-    ol.insert(0, 3);
-    console.log(ol);
-    ol.insert(0, 1);
-    console.log(ol);
-    ol.insert(1, 2);
-    console.log(ol);
-    ol.insert(3, 4);
-    console.log(ol);
+function testOdsByTltll() {
+    let ods = new OdsByTltll(0);
+    console.log(ods);
+    ods.insert(0, 3);
+    console.log(ods);
+    ods.insert(0, 1);
+    console.log(ods);
+    ods.insert(1, 2);
+    console.log(ods);
+    ods.insert(3, 4);
+    console.log(ods);
 
-    assert(ol.order(0, 1));
+    assert(ods.order(0, 1));
 
-    assert(ol.order(1, 2));
+    assert(ods.order(1, 2));
 
-    assert(ol.order(2, 3));
+    assert(ods.order(2, 3));
 
-    assert(ol.order(3, 4));
+    assert(ods.order(3, 4));
 
-    assert(!ol.order(4, 3));
+    assert(!ods.order(4, 3));
 
-    ol.insert(3, 3.5);
-    console.log(ol);
-    ol.insert(3, 3.2);
-    console.log(ol);
-    ol.delete(3.2);
-    console.log(ol);
-    ol.delete(3.5);
-    console.log(ol);
-    ol.delete(3);
-    console.log(ol);
-    ol.delete(1);
-    console.log(ol);
-    ol.delete(4);
-    console.log(ol);
-    ol.insert(0, 1);
-    console.log(ol);
-    ol.insert(0, 0.5);
-    console.log(ol);
-    ol.insert(0, 0.4);
-    console.log(ol);
-    ol.insert(0, 0.3);
-    console.log(ol);
-    ol.insert(0, 0.2);
-    console.log(ol);
-    ol.insert(0, 0.1);
-    console.log(ol);
-    console.log("test_OlByTltll done");
+    ods.insert(3, 3.5);
+    console.log(ods);
+    ods.insert(3, 3.2);
+    console.log(ods);
+    ods.delete(3.2);
+    console.log(ods);
+    ods.delete(3.5);
+    console.log(ods);
+    ods.delete(3);
+    console.log(ods);
+    ods.delete(1);
+    console.log(ods);
+    ods.delete(4);
+    console.log(ods);
+    ods.insert(0, 1);
+    console.log(ods);
+    ods.insert(0, 0.5);
+    console.log(ods);
+    ods.insert(0, 0.4);
+    console.log(ods);
+    ods.insert(0, 0.3);
+    console.log(ods);
+    ods.insert(0, 0.2);
+    console.log(ods);
+    ods.insert(0, 0.1);
+    console.log(ods);
+    console.log("testOdsByTltll done");
 }
 
-function generic_ol_test1() {
+function genericOdsTest() {
 
-    for (let ol of [new OlByLl(0), new OlByTll(0), new OlByTltll(0)]) {
+    for (let ods of [new OdsByLl(0), new OdsByTll(0), new OdsByTltll(0)]) {
         let valuesOut = [];
         for (let i = 0; i < 1000; i++) {
             valuesOut.push(i)
@@ -177,21 +177,21 @@ function generic_ol_test1() {
                 let val = valuesOut[index];
                 valuesOut.splice(index, 1);
 
-                let can_insert = false;
-                let val_before = 0;
+                let canInsert = false;
+                let valBefore = 0;
 
                 for (let vi in valuesIn) {
                     let v = valuesIn[vi];
                     if (v < val) {
-                        val_before = v;
-                        can_insert = true;
+                        valBefore = v;
+                        canInsert = true;
                     } else {
                         break;
                     }
                 }
 
-                if (can_insert) {
-                    ol.insert(val_before, val);
+                if (canInsert) {
+                    ods.insert(valBefore, val);
                     valuesIn.push(val);
                     console.log("inserted: ", val);
                 } else {
@@ -202,19 +202,19 @@ function generic_ol_test1() {
                 let index = Math.floor(Math.random() * valuesIn.length);
                 let val = valuesIn[index];
                 valuesIn.splice(index, 1);
-                ol.delete(val);
+                ods.delete(val);
                 valuesOut.push(val);
                 console.log("deleted: ", val);
             }
 
-            console.log(ol.toString());
-            console.log(ol);
+            console.log(ods.toString());
+            console.log(ods);
             valuesIn = valuesIn.sort((a, b) => a - b);
 
             for (let j = 1; j < valuesIn.length; j++) {
                 let x = valuesIn[j - 1];
                 let y = valuesIn[j];
-                let test = ol.order(x, y);
+                let test = ods.order(x, y);
 
                 console.log("test: " + x + " " + y);
                 assert(test);
@@ -226,12 +226,12 @@ function generic_ol_test1() {
 }
 visualisation.visualisationOn = false;
 console.log("tests:");
-
-// test_Dll();
-// test_OlByLl();
-// test_OlByTll();
-// test_OlByTltll();
-// generic_ol_test1();
+// Note: Uncomment following lines to start tests on page refresh
+// testLl();
+// testOdsByLl();
+// testOdsByTll();
+// testOdsByTltll();
+// genericOdsTest();
 console.log("finished testing");
 console.log("allTestsOk: " + allTestOk);
 visualisation.visualisationOn = true;

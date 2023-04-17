@@ -33,88 +33,88 @@ class TaggedNodeWithRep extends TaggedNode {
 
 }
 
-class DoublyLinkedList {
+class LinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
         this.length = 0;
     }
 
-    insert(x_node) {
-        if (!x_node) {
+    insert(xNode) {
+        if (!xNode) {
             return;
         }
 
-        let y_node = this.head;
-        this.head = x_node;
-        x_node.prev = null;
-        x_node.next = y_node;
+        let yNode = this.head;
+        this.head = xNode;
+        xNode.prev = null;
+        xNode.next = yNode;
 
-        if (y_node) {
-            y_node.prev = x_node;
+        if (yNode) {
+            yNode.prev = xNode;
         } else {
-            this.tail = x_node;
+            this.tail = xNode;
         }
 
         this.length++;
     }
 
-    append(x_node) {
-        if (!x_node) {
+    append(xNode) {
+        if (!xNode) {
             return;
         }
 
-        let y_node = this.tail;
-        this.tail = x_node;
-        x_node.next = null;
-        x_node.prev = y_node;
+        let yNode = this.tail;
+        this.tail = xNode;
+        xNode.next = null;
+        xNode.prev = yNode;
 
-        if (y_node) {
-            y_node.next = x_node;
+        if (yNode) {
+            yNode.next = xNode;
         } else {
-            this.head = x_node;
+            this.head = xNode;
         }
 
         this.length++;
     }
 
-    insertAfter(x_node, y_node) {
-        if (!x_node || !y_node) {
+    insertAfter(xNode, yNode) {
+        if (!xNode || !yNode) {
             return;
         }
 
-        let z_node = x_node.next;
-        x_node.next = y_node;
-        y_node.prev = x_node;
-        y_node.next = z_node;
+        let zNode = xNode.next;
+        xNode.next = yNode;
+        yNode.prev = xNode;
+        yNode.next = zNode;
 
-        if (z_node) {
-            z_node.prev = y_node;
+        if (zNode) {
+            zNode.prev = yNode;
         } else {
-            this.tail = y_node;
+            this.tail = yNode;
         }
 
         this.length++;
     }
 
-    remove(x_node) {
-        if (!x_node) {
+    remove(xNode) {
+        if (!xNode) {
             return;
         }
 
-        let w_node = x_node.prev;
-        let y_node = x_node.next;
+        let wNode = xNode.prev;
+        let yNode = xNode.next;
 
-        if (w_node) {
-            w_node.next = y_node;
+        if (wNode) {
+            wNode.next = yNode;
         } else {
-            this.head = y_node;
+            this.head = yNode;
         }
 
-        if (y_node) {
-            y_node.prev = w_node;
+        if (yNode) {
+            yNode.prev = wNode;
         } else {
-            this.tail = w_node;
+            this.tail = wNode;
         }
 
         this.length--;

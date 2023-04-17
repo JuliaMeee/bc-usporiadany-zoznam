@@ -25,7 +25,7 @@ class TaggedNodeWithRep(TaggedNode):
     def __repr(self):
         return "[" + str(self.tag) + "]" + str(self.value)
 
-class DoublyLinkedList:
+class LinkedList:
     def __init__(self):
         self.head = None
         self.tail = None

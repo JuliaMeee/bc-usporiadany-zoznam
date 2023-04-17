@@ -1,8 +1,8 @@
-from doubly_linked_list import Node, DoublyLinkedList
+from linked_list import Node, LinkedList
 
-class OLByLL:
+class OdsByLl:
     def __init__(self, x):
-        self.linked_list = DoublyLinkedList()
+        self.linked_list = LinkedList()
         self.value_to_node = dict()
 
         self.value_to_node[x] = Node(x)

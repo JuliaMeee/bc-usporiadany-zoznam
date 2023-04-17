@@ -21,7 +21,7 @@ class Visualisation {
             }
         }
 
-        graph.style(OlToGraph.graphStyle);
+        graph.style(OdsToGraph.graphStyle);
     }
 
     logMessage(text, color, isNewStep) {
@@ -66,15 +66,15 @@ class Visualisation {
 
     refresh(isNewStep) {
         if (this.visualisationOn) {
-            this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ol.getProperties(), ol.toGraph(this.treeViewOn)])});
+            this.addStep({ isNewStep: isNewStep, func: wrapFunction(this._refresh, this, [ods.getProperties(), ods.toGraph(this.treeViewOn)])});
         }
     }
     _refresh(properties, graphEles) {
-        this._setOlProperiesText(properties);
+        this._setOdsProperiesText(properties);
 
-        graph = OlToGraph.buildGraph(graphEles.nodes, graphEles.edges);
-        graph.nodeHtmlLabel(OlToGraph.htmlLabelStyle);
-        graph.style(OlToGraph.graphStyle);
+        graph = OdsToGraph.buildGraph(graphEles.nodes, graphEles.edges);
+        graph.nodeHtmlLabel(OdsToGraph.htmlLabelStyle);
+        graph.style(OdsToGraph.graphStyle);
 
         graph.maxZoom(0.7);
         graph.fit(20);
@@ -144,14 +144,14 @@ class Visualisation {
         }
     }
 
-    _setOlProperiesText(properties)
+    _setOdsProperiesText(properties)
     {
-        olPropertiesText.innerHTML = "";
+        odsPropertiesText.innerHTML = "";
 
         for (let i = 0; i < properties.length; i++) {
             const propertyDiv = document.createElement("div");
             propertyDiv.innerText = properties[i];
-            olPropertiesText.appendChild(propertyDiv);
+            odsPropertiesText.appendChild(propertyDiv);
         }
     }
 }

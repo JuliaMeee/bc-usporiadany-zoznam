@@ -19,9 +19,9 @@
                 <label for="initializeButton">Initialize:</label>
                 <input id="initializeXInput" type="text" placeholder="x">
                 <select id="initializeTypeSelect">
-                    <option value="olByTltll">two-level tagged linked list</option>
-                    <option value="olByTll">tagged linked list</option>
-                    <option value="olByLl">linked list</option>
+                    <option value="odsByTltll">two-level tagged linked list</option>
+                    <option value="odsByTll">tagged linked list</option>
+                    <option value="odsByLl">linked list</option>
                 </select>
                 <button id="initializeButton" class="startButton" type="button">▶</button>
                 <button id="initializeContinueButton" class="continueButton" type="button">▶</button>
@@ -55,9 +55,9 @@
         <div class="visualisationInput">
             <div>
                 <select id="generateTypeSelect">
-                    <option value="olByTltll">two-level tagged linked list</option>
-                    <option value="olByTll">tagged linked list</option>
-                    <option value="olByLl">linked list</option>
+                    <option value="odsByTltll">two-level tagged linked list</option>
+                    <option value="odsByTll">tagged linked list</option>
+                    <option value="odsByLl">linked list</option>
                 </select>
             </div>
             <div>
@@ -76,7 +76,7 @@
         </div>
         <div id="messages" class="menu"></div>
     </div>
-    <div id="olProperties">
+    <div id="odsProperties">
     </div>
     <div class="container" id="cy">
     </div>
@@ -87,16 +87,16 @@
 <!-- credits https://github.com/kaluginserg/cytoscape-node-html-label -->
 
 <script src="utils.js"></script>
-<script src="olToGraph.js"></script>
+<script src="odsToGraph.js"></script>
 <script src="visualisation.js"></script>
 <script src="main.js"></script>
 
-<script src="../js-impl/doublyLinkedList.js"></script>
-<script src="../js-impl/olByLl.js"></script>
-<script src="../js-impl/olByTll.js"></script>
-<script src="../js-impl/olByTltll.js"></script>
-<script src="../js-impl/olUtils.js"></script>
+<script src="../js-impl/linkedList.js"></script>
+<script src="../js-impl/odsByLl.js"></script>
+<script src="../js-impl/odsByTll.js"></script>
+<script src="../js-impl/odsByTltll.js"></script>
+<script src="../js-impl/odsUtils.js"></script>
 <script src="../js-impl/test.js"></script>
-<script src="../js-impl/generateOl.js"></script>
+<script src="../js-impl/generateOds.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
-# Vizualizér usporiadaného zoznamu (order data structure)
+# Vizualizér usporiadaného zoznamu (order data structure/ODS)
 
-Vizualizér má pomôcť lepšie pochopiť algoritmy pre prácu s upsporiadaným zoznamom (order data structure)  z článku 'Two Simplified Algorithms for Maintaining Order in a List' (https://erikdemaine.org/papers/DietzSleator_ESA2002/paper.pdf).
+Vizualizér má pomôcť lepšie pochopiť algoritmy pre prácu s upsporiadaným zoznamom (order data structure/ODS)  z článku 'Two Simplified Algorithms for Maintaining Order in a List' (https://erikdemaine.org/papers/DietzSleator_ESA2002/paper.pdf).
 
 ## Spustenie
 
@@ -28,6 +28,9 @@ Pri generovaní nového neprázdneho usporiadaného zoznamu máme možnosť vybr
 
 #### Tree view: on/off
 Stlačením 'Tree view: on/off' môžeme zapnúť alebo vypnúť zobrazenie virtuálneho stromu.
+
+#### Validné hodnoty
+Vizualizér je case sensitive, t.j. rozlišuje medzi hodnotami "Ahoj" a "ahoj". Nepodporuje vkladanie hodnôt pozostávajúcich čisto z bielych znakov (medzera, tabulátor, nový riadok).
 
 ### Využité zdroje
 Algoritmy pre prácu s usporiadaným zoznamom:

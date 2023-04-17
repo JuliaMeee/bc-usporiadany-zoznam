@@ -1,17 +1,17 @@
-from ol_by_tll import OLByTLL
-from doubly_linked_list import DoublyLinkedList, TaggedNode, TaggedNodeWithRep
-from ol_utils import *
+from ods_by_tll import OdsByTll
+from linked_list import LinkedList, TaggedNode, TaggedNodeWithRep
+from ods_utils import *
 import math
 
-class OLByTLTLL(OLByTLL):
+class OdsByTltll(OdsByTll):
     def __init__(self, x):
-        self.reps = DoublyLinkedList()
+        self.reps = LinkedList()
         self.value_to_node = dict()
         
         x_node = TaggedNodeWithRep(x, 0)
         self.value_to_node[x] = x_node
         
-        x_rep = TaggedNode(DoublyLinkedList(), 0)
+        x_rep = TaggedNode(LinkedList(), 0)
         x_rep.value.insert(x_node)
         x_node.rep = x_rep
         
@@ -84,8 +84,8 @@ class OLByTLTLL(OLByTLL):
         if not available_tag_after(first_half_rep, calculate_u(self.rep_N())):
             relabel(first_half_rep, len(self.reps), calculate_u(self.rep_N()))
         
-        first_half_rep.value = DoublyLinkedList()
-        second_half_rep = TaggedNode(DoublyLinkedList(), 0)
+        first_half_rep.value = LinkedList()
+        second_half_rep = TaggedNode(LinkedList(), 0)
         
         half_count = len(sublist) // 2 # should equal sublist_N
         
@@ -113,10 +113,10 @@ class OLByTLTLL(OLByTLL):
         
         old_rep = self.reps.head
         node = old_rep.value.head
-        self.reps = DoublyLinkedList()        
+        self.reps = LinkedList()
         
         while node is not None:
-            new_rep = TaggedNode(DoublyLinkedList())
+            new_rep = TaggedNode(LinkedList())
             
             for i in range(0, sublist_N):                
                 next_node = node.next

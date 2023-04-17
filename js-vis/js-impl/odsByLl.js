@@ -1,16 +1,16 @@
-class OlByLl {
+class OdsByLl {
   constructor(x) {
-    ol = this;
+    ods = this;
     visualisation.clearMessages();
     visualisation.addSequence();
     visualisation.logMessage("Initialize(" + x + ")", "blue", false);
     visualisation.addMessageIndent(1);
-    this.linkedList = new DoublyLinkedList();
+    this.linkedList = new LinkedList();
     this.valueToNode = new Map();
     this.valueToNode.set(x, new Node(x));
     this.linkedList.insert(this.valueToNode.get(x));
     visualisation.refresh(false);
-    visualisation.logMessage("initialized new ordered list with value " + x, "green", false);
+    visualisation.logMessage("initialized new ODS with value " + x, "green", false);
     visualisation.addMessageIndent(-1);
     visualisation.process();
   }
@@ -91,7 +91,7 @@ class OlByLl {
   }
 
   toString() {
-    return "OlByLl " + this.linkedList.toString();
+    return "OdsByLl " + this.linkedList.toString();
   }
 
   contains(x) {
@@ -104,7 +104,7 @@ class OlByLl {
 
   getProperties() {
     let properties = [
-        "Ordered list by linked list",
+        "ODS by linked list",
         "n: " + this.linkedList.length,
     ]
 
@@ -112,7 +112,7 @@ class OlByLl {
   }
 
   toGraph() {
-    return OlToGraph.toGraphLl(this.linkedList);
+    return OdsToGraph.toGraphLl(this.linkedList);
   }
 
 }

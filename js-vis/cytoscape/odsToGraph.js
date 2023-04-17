@@ -10,7 +10,7 @@ const yOffset = 30;
 const ySize = 50;
 const nodeFontSize = 24;
 
-class OlToGraph {
+class OdsToGraph {
     static graphStyle = [ // the stylesheet for the graph
         {
             selector: 'node',
@@ -114,7 +114,7 @@ class OlToGraph {
             nodeClass = nodeTypeTagValue;
         }
 
-        if (value instanceof DoublyLinkedList) {
+        if (value instanceof LinkedList) {
             value = "sublistRep";
         }
 
@@ -125,7 +125,7 @@ class OlToGraph {
                 treeId: treeId,
                 value: value,
                 tag: tag,
-                tagText: (binaryTagText ? OlToGraph.tagToBinaryString(tag, level, binaryTagLength) : (tag === null ? '' : tag)),
+                tagText: (binaryTagText ? OdsToGraph.tagToBinaryString(tag, level, binaryTagLength) : (tag === null ? '' : tag)),
                 level: level,
                 color: (nodeClass !== nodeTypeTag ? '#EAEAEA' : '#fff'),
                 highlight: 'none',
@@ -139,8 +139,8 @@ class OlToGraph {
             classes: nodeClass,
         };
 
-        OlToGraph.assignNodeId(graphNode.data);
-        graphNode.data.width = OlToGraph.calculateNodeWidth(graphNode.data);
+        OdsToGraph.assignNodeId(graphNode.data);
+        graphNode.data.width = OdsToGraph.calculateNodeWidth(graphNode.data);
 
         return graphNode;
     }
@@ -155,7 +155,7 @@ class OlToGraph {
         let lastNode = null;
 
         for (let node of nodes) {
-            let graphNode = OlToGraph.createNode(treeId, 0, null, node.value, false, 0);
+            let graphNode = OdsToGraph.createNode(treeId, 0, null, node.value, false, 0);
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
             x += xOffset + graphNode.data.width / 2;
@@ -188,7 +188,7 @@ class OlToGraph {
         let lastNode = null;
 
         for (let node of nodes) {
-            let graphNode = OlToGraph.createNode(treeId, 0, node.tag, node.value, false, 0);
+            let graphNode = OdsToGraph.createNode(treeId, 0, node.tag, node.value, false, 0);
             x += graphNode.data.width / 2;
             graphNode.position.x = x;
             x += xOffset + graphNode.data.width / 2;
@@ -220,12 +220,12 @@ class OlToGraph {
         // create layer0 tags
         let layers = [[]];
         for (let i = 0; i < u; i++) {
-            layers[0].push(OlToGraph.createNode(treeId, 0, i, null, true, Math.log2(u)));
+            layers[0].push(OdsToGraph.createNode(treeId, 0, i, null, true, Math.log2(u)));
         }
 
         // add layer0 values
         for (let node of nodes) {
-            layers[0][node.tag] = OlToGraph.createNode(treeId, 0, node.tag, node.value, true, Math.log2(u));;
+            layers[0][node.tag] = OdsToGraph.createNode(treeId, 0, node.tag, node.value, true, Math.log2(u));;
         }
 
         // set layer0 positions
@@ -244,7 +244,7 @@ class OlToGraph {
             let layer = [];
 
             for (let i = 0; i < layerBelow.length / 2; i++) {
-                let graphNode = OlToGraph.createNode(treeId, layers.length, i, null, true, Math.log2(u));
+                let graphNode = OdsToGraph.createNode(treeId, layers.length, i, null, true, Math.log2(u));
                 let childLeft = layerBelow[i * 2];
                 let childRight = layerBelow[i * 2 + 1];
                 graphNode.position.x = (childLeft.position.x + childRight.position.x) / 2;
@@ -286,12 +286,12 @@ class OlToGraph {
         // make sublist nodes and edges
         let sublistGraphs = [];
         for (let rep of reps) {
-            sublistGraphs.push(OlToGraph.toGraphTll(rep.value, rep.tag));
+            sublistGraphs.push(OdsToGraph.toGraphTll(rep.value, rep.tag));
         }
 
         // make reps nodes and edges
         let repToSublistEdges = [];
-        let repsGraph = OlToGraph.toGraphTll(reps, treeId);
+        let repsGraph = OdsToGraph.toGraphTll(reps, treeId);
 
         for (let i = 0; i < repsGraph.nodes.length; i++) {
             let repGraphNode = repsGraph.nodes[i];
@@ -356,10 +356,10 @@ class OlToGraph {
         // make sublist tree nodes and edges
         let sublistGraphs = [];
         for (let rep of reps) {
-            sublistGraphs.push(OlToGraph.toGraphTllTree(rep.value, sublistU, rep.tag));
+            sublistGraphs.push(OdsToGraph.toGraphTllTree(rep.value, sublistU, rep.tag));
         }
 
-        let repsGraph = OlToGraph.toGraphTllTree(reps, repsU, treeId);
+        let repsGraph = OdsToGraph.toGraphTllTree(reps, repsU, treeId);
 
         // link reps to sublist trees (add edges)
         let repToSublistEdges = [];
@@ -410,7 +410,7 @@ class OlToGraph {
         }
 
         // set positions for higher rep tree layers
-        OlToGraph.setHigherLevelNodesPositions(repsGraph.nodes, Math.log2(repsU) + 1)
+        OdsToGraph.setHigherLevelNodesPositions(repsGraph.nodes, Math.log2(repsU) + 1)
 
         // put everything into one graph
         let graph = {
