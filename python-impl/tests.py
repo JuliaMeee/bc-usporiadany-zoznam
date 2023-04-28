@@ -182,7 +182,8 @@ def main():
     test_OdsByLl()
     test_OdsByTll()
     test_OdsByTltll()
-    genericOdsTest()
+    for i in range (0, 50):
+        genericOdsTest()
     
 
 if __name__ == "__main__":

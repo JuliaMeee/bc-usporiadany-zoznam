@@ -31,13 +31,13 @@ class OdsByTltll {
         let xNode = this.valueToNode.get(x);
         visualisation.highlight(node => node.data().value === x, "blue", true, false);
 
-        if (OdsUtils.violatesInvariant1(this.n + 1, this.N)) {
-            visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n + 1 > 2 * N, violating invariant 1)", "blue", true);
-            visualisation.addMessageIndent(1);
-            this.rebuild();
-            visualisation.addMessageIndent(-1);
-            visualisation.highlight(node => node.data().value === x, "blue",true,  false);
-        }
+        // if (OdsUtils.violatesInvariant1(this.n + 1, this.N)) {
+        //     visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n + 1 > 2 * N, violating invariant 1)", "blue", true);
+        //     visualisation.addMessageIndent(1);
+        //     this.rebuild();
+        //     visualisation.addMessageIndent(-1);
+        //     visualisation.highlight(node => node.data().value === x, "blue",true,  false);
+        // }
 
         let xSublist = xNode.rep.value;
 
@@ -68,6 +68,14 @@ class OdsByTltll {
 
         visualisation.refresh(true);
         visualisation.highlight(node => node.data().value === y, "green", false, false);
+
+        if (OdsUtils.violatesInvariant1(this.n, this.N)) {
+            visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", n > 2 * N, violating invariant 1)", "blue", false);
+            visualisation.addMessageIndent(1);
+            this.rebuild();
+            visualisation.addMessageIndent(-1);
+        }
+
         visualisation.logMessage("inserted " + y + " after " + x , "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -80,13 +88,13 @@ class OdsByTltll {
         visualisation.highlight((node => node.data().value === x), "red", true, false);
         let xNode = this.valueToNode.get(x);
 
-        if (OdsUtils.violatesInvariant1(this.n - 1, this.N)) {
-            visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 < n - 1, violating invariant 1)", "blue", true);
-            visualisation.addMessageIndent(1);
-            this.rebuild();
-            visualisation.addMessageIndent(-1);
-            visualisation.highlight((node => node.data().value === x), "red", false, false);
-        }
+        // if (OdsUtils.violatesInvariant1(this.n - 1, this.N)) {
+        //     visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 < n - 1, violating invariant 1)", "blue", true);
+        //     visualisation.addMessageIndent(1);
+        //     this.rebuild();
+        //     visualisation.addMessageIndent(-1);
+        //     visualisation.highlight((node => node.data().value === x), "red", false, false);
+        // }
 
         let xSublist = xNode.rep.value;
 
@@ -101,6 +109,14 @@ class OdsByTltll {
         this.n -= 1;
 
         visualisation.refresh(true);
+
+        if (OdsUtils.violatesInvariant1(this.n, this.N)) {
+            visualisation.logMessage("rebuild (n = " + this.n + ", N = " + this.N + ", N / 2 > n, violating invariant 1)", "blue", false);
+            visualisation.addMessageIndent(1);
+            this.rebuild();
+            visualisation.addMessageIndent(-1);
+        }
+
         visualisation.logMessage("deleted " + x, "green", false);
         visualisation.addMessageIndent(-1);
         visualisation.process();
@@ -141,13 +157,15 @@ class OdsByTltll {
             return 1;
         }
 
-        let logN = Math.log2(this.N);
+        return Math.ceil(Math.log2(this.N));
 
-        if (Math.log2(logN) % 1 === 0) {
-            // is power of 2
-            return logN;
-        }
-        return Math.pow(2, Math.ceil(Math.log2(logN)));
+        // let logN = Math.log2(this.N);
+        //
+        // if (Math.log2(logN) % 1 === 0) {
+        //     // is power of 2
+        //     return logN;
+        // }
+        // return Math.pow(2, Math.ceil(Math.log2(logN)));
 
         // return Math.ceil(Math.log2(this.N));
     }
@@ -196,10 +214,10 @@ class OdsByTltll {
 
     rebuild() {
         this.N = this.n;
-        visualisation.logMessage("set new N = n =" + this.N, "blue", true);
-        visualisation.logMessage("set new u_r = max(N * 4, N ^ 2) = " + OdsUtils.calculateU(this.repN()), "blue", false);
-        visualisation.logMessage("set new N_s = log(N) ceil to a power of 2 = " + this.sublistN(), "blue", false);
-        visualisation.logMessage("set new u_s = max(N_s * 4, N_s ^ 2) = " + OdsUtils.calculateU(this.sublistN()), "blue", false);
+        visualisation.logMessage("set new N = n = " + this.N, "blue", true);
+        visualisation.logMessage("set new u_r = max(N * 4, ceilToPowerOf2(N ^ 2)) = " + OdsUtils.calculateU(this.repN()), "blue", false);
+        visualisation.logMessage("set new N_s = ceil(log(N)) = " + this.sublistN(), "blue", false);
+        visualisation.logMessage("set new u_s = max(N_s * 4, ceilToPowerOf2(N_s ^ 2)) = " + OdsUtils.calculateU(this.sublistN()), "blue", false);
 
         let sublistN = this.sublistN();
         let repN = this.repN();
@@ -258,7 +276,7 @@ class OdsByTltll {
 
     getProperties() {
         let properties = [
-            "ODS by tagged linked list",
+            "ODS by two-level tagged linked list",
             "n: " + this.n,
             "N: " + this.N,
             "u_r: " + OdsUtils.calculateU(this.repN()),

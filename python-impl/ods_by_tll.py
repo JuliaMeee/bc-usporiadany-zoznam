@@ -16,9 +16,6 @@ class OdsByTll:
     def insert(self, x, y):        
         x_node = self.value_to_node[x]
         
-        if (violates_invariant_1(self.n + 1, self.N)):
-            self.rebuild()
-        
         if (not available_tag_after(x_node, self.u)):
             relabel(x_node, self.n, self.u)
         
@@ -26,14 +23,17 @@ class OdsByTll:
         self.value_to_node[y] = y_node
         self.linked_list.insertAfter(x_node, y_node)
         self.n += 1
+        
+        if (violates_invariant_1(self.n, self.N)):
+            self.rebuild()
     
     def delete(self, x):
-        if (violates_invariant_1(self.n - 1, self.N)):
-            self.rebuild()
-        
         x_node = self.value_to_node.pop(x)
         self.linked_list.remove(x_node)
         self.n -= 1
+        
+        if (violates_invariant_1(self.n, self.N)):
+            self.rebuild()
     
     def order(self, x, y):
         x_node = self.value_to_node[x]

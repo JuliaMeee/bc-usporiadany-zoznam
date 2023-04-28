@@ -23,9 +23,6 @@ class OdsByTltll(OdsByTll):
     def insert(self, x, y):
         x_node = self.value_to_node[x]
         
-        if (violates_invariant_1(self.n + 1, self.N)):
-            self.rebuild()
-        
         x_sublist = x_node.rep.value
         if (violates_invariant_2(len(x_sublist) + 1, self.sublist_N())):
             self.split_sublist(x_sublist)
@@ -40,12 +37,12 @@ class OdsByTltll(OdsByTll):
         x_sublist.insertAfter(x_node, y_node)
         y_node.rep = x_node.rep
         self.n += 1
+        
+        if (violates_invariant_1(self.n, self.N)):
+            self.rebuild()
     
     def delete(self, x):
         x_node = self.value_to_node.pop(x)
-        
-        if (violates_invariant_1(self.n - 1, self.N)):
-            self.rebuild()
             
         x_sublist = x_node.rep.value
         
@@ -54,6 +51,9 @@ class OdsByTltll(OdsByTll):
         
         x_sublist.remove(x_node)
         self.n -= 1
+        
+        if (violates_invariant_1(self.n, self.N)):
+            self.rebuild()
     
     def order(self, x, y):
         x_node = self.value_to_node[x]
@@ -67,16 +67,10 @@ class OdsByTltll(OdsByTll):
         return x_node.rep.tag < y_node.rep.tag
     
     def sublist_N(self):
-        # sublist_N = (log2(N)) rounded up to the closest power of two
         if (self.N == 1):
             return 1
         
-        logN = math.log2(self.N)
-        
-        if (math.log2(logN) % 1 == 0): # is a power of 2
-            return int(logN)
-        
-        return int(math.pow(2, math.ceil(math.log2(logN))));
+        return math.ceil(math.log2(self.N))
     
     def rep_N(self):
         return self.N;
