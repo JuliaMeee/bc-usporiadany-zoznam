@@ -39,6 +39,9 @@ class OdsByTll:
         x_node = self.value_to_node[x]
         y_node = self.value_to_node[y]
         
+        if (x == y):
+            return False
+        
         return x_node.tag < y_node.tag
    
     def rebuild(self):

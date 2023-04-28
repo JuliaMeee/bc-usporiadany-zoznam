@@ -21,6 +21,9 @@ class OdsByLl:
     def order(self, x, y):
         x_node = self.value_to_node[x]
         y_node = self.value_to_node[y]
+
+        if x == y:
+            return False
         
         for node in self.linked_list:
             if (node is x_node):

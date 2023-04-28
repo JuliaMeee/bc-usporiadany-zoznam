@@ -121,7 +121,7 @@ class OdsByTltll {
             visualisation.logMessage(x + ".rep.tag == " + y + ".rep.tag", "blue", true);
             visualisation.addMessageIndent(1);
             result = xNode.tag < yNode.tag;
-            visualisation.logMessage(x + ".tag " + (result ? "<" : ">") + " " + y + ".tag", "blue", true);
+            visualisation.logMessage(x + ".tag " + (result ? "<" : ">=") + " " + y + ".tag", "blue", true);
             visualisation.addMessageIndent(-1);
         }
 
@@ -130,7 +130,7 @@ class OdsByTltll {
             visualisation.logMessage(x + ".rep.tag " + (result ? "<" : ">") + " " + y + ".rep.tag", "blue", true);
         }
 
-        visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " > ") + y, "green", true);
+        visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " >= ") + y, "green", true);
         visualisation.addMessageIndent(-1);
         visualisation.process();
         return result;

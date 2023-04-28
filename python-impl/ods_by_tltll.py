@@ -59,6 +59,9 @@ class OdsByTltll(OdsByTll):
         x_node = self.value_to_node[x]
         y_node = self.value_to_node[y]
         
+        if (x == y):
+            return False
+        
         if (x_node.rep.tag == y_node.rep.tag):
             return x_node.tag < y_node.tag
         return x_node.rep.tag < y_node.rep.tag

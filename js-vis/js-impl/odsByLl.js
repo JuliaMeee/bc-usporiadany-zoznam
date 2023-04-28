@@ -65,25 +65,31 @@ class OdsByLl {
 
     let result = false;
 
-    visualisation.logMessage("traverse list and search for " + x + " or " + y, "blue", true);
-    visualisation.addMessageIndent(1);
+    if (x !== y) {
+      visualisation.logMessage("traverse list and search for " + x + " or " + y, "blue", true);
+      visualisation.addMessageIndent(1);
 
-    for (let node of this.linkedList) {
-      visualisation.highlight((n => n.data().value === node.value), "blue", true, true);
-      if (Object.is(node, xNode)) {
-        visualisation.logMessage("found " + x + " before " + y, "blue", false);
-        result = true;
-        break;
-      }
+      for (let node of this.linkedList) {
+        visualisation.highlight((n => n.data().value === node.value), "blue", true, true);
+        if (Object.is(node, xNode)) {
+          visualisation.logMessage("found " + x + " before " + y, "blue", false);
+          result = true;
+          break;
+        }
 
-      if (Object.is(node, yNode)) {
-        visualisation.logMessage("found " + y + " before " + x, "blue", false);
-        result = false;
-        break;
+        if (Object.is(node, yNode)) {
+          visualisation.logMessage("found " + y + " before " + x, "blue", false);
+          result = false;
+          break;
+        }
       }
+      visualisation.addMessageIndent(-1);
     }
-    visualisation.addMessageIndent(-1);
-    visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " > ") + y, "green", true);
+    else {
+      visualisation.logMessage("equal input values " + x + " == " + y, "blue", true);
+    }
+
+    visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " >= ") + y, "green", true);
     visualisation.refresh(false);
     visualisation.addMessageIndent(-1);
     visualisation.process();

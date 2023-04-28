@@ -91,9 +91,9 @@ class OdsByTll {
         let yNode = this.valueToNode.get(y);
 
         let result = xNode.tag < yNode.tag;
-        visualisation.logMessage(x + ".tag " + (result ? "<" : ">") + " " + y + ".tag", "blue", true);
+        visualisation.logMessage(x + ".tag " + (result ? "<" : ">=") + " " + y + ".tag", "blue", true);
 
-        visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " > ") + y, "green", true);
+        visualisation.logMessage("order returned: " + result + ", " + x + (result? " < " : " >= ") + y, "green", true);
         visualisation.addMessageIndent(-1);
         visualisation.process();
         return result;
