@@ -1,3 +1,4 @@
+<!-- markdown-emoji-disable -->
 # Vizualizér usporiadaného zoznamu (order data structure/ODS)
 
 Vizualizér má pomôcť lepšie pochopiť algoritmy pre prácu s upsporiadaným zoznamom (order data structure/ODS)  z článku 'Two Simplified Algorithms for Maintaining Order in a List' (https://erikdemaine.org/papers/DietzSleator_ESA2002/paper.pdf).
