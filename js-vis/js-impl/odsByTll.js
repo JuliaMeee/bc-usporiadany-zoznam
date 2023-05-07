@@ -119,7 +119,7 @@ class OdsByTll {
         this.N = this.n;
         this.u = OdsUtils.calculateU(this.N);
         visualisation.logMessage("set new N = n = " + this.N, "blue", true);
-        visualisation.logMessage("set new u = max(N * 4, ceilToPowerOf2(N ^ 2)) = " + this.u, "blue", false);
+        visualisation.logMessage("set new u =  ceilToPowerOf2(max(N * 4, N ^ 2)) = " + this.u, "blue", false);
         OdsUtils.assignNewTags(this.linkedList.head, this.n, 0, this.u);
         visualisation.refresh(false);
         visualisation.logMessage("set new (evenly distributed) tags for all nodes", "blue", false);

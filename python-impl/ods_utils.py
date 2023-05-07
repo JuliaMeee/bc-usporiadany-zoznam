@@ -50,7 +50,8 @@ def relabel(x_node, n, u):
     assign_new_tags(interval.min_node, interval.nodes_count, interval.min_tag, interval.max_tag_excl - 1)
     
 def calculate_u(N):
-    return max(int(math.pow(2, math.ceil(math.log2(math.pow(N, 2))))), 4 * N);
+    return int(math.pow(2, math.ceil(math.log2(max(math.pow(N, 2), 4 * N)))))
+    # return max(int(math.pow(2, math.ceil(math.log2(math.pow(N, 2))))), 4 * N);
     
 def get_virtual_tree_level(u):
     return math.log2(u)

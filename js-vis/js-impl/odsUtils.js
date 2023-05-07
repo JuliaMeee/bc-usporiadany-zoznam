@@ -105,7 +105,8 @@ class OdsUtils {
 
     static calculateU(N) {
         // return Math.max(Math.pow(N, 2), 4 * N);
-        return Math.max(4 * N, Math.pow(2, Math.ceil(Math.log2(Math.pow(N, 2)))));
+        return Math.pow(2, Math.ceil(Math.log2(Math.max(4 * N, Math.pow(N, 2)))));
+        // return Math.max(4 * N, Math.pow(2, Math.ceil(Math.log2(Math.pow(N, 2)))));
     }
 }
 

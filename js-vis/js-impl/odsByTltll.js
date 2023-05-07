@@ -50,7 +50,7 @@ class OdsByTltll {
             visualisation.highlight(node => node.data().value === x,"blue",  true, false);
         }
 
-        let sublistU = OdsUtils.calculateU(this.sublistN());
+        let sublistU = this.sublistU();
 
         if (!OdsUtils.availableTagAfter(xNode, sublistU)) {
             visualisation.logMessage("relabel (no available tag after " + x, "blue", true);
@@ -157,7 +157,7 @@ class OdsByTltll {
             return 1;
         }
 
-        return Math.ceil(Math.log2(this.N));
+        return Math.floor(Math.log2(this.N));
 
         // let logN = Math.log2(this.N);
         //
@@ -170,6 +170,10 @@ class OdsByTltll {
         // return Math.ceil(Math.log2(this.N));
     }
 
+    sublistU(){
+        return OdsUtils.calculateU(this.N);
+    }
+
     repN() {
         // if (this.N === 1) {
         //     return 1;
@@ -179,12 +183,16 @@ class OdsByTltll {
         // return Math.ceil(this.N / this.sublistN());
     }
 
+    repU() {
+        return OdsUtils.calculateU(this.N);
+    }
+
     splitSublist(sublist) {
         let firstHalfRep = sublist.head.rep;
 
-        if (!OdsUtils.availableTagAfter(firstHalfRep, OdsUtils.calculateU(this.repN()))) {
+        if (!OdsUtils.availableTagAfter(firstHalfRep, this.repU())) {
             visualisation.logMessage("relabel reps (no available tag for new sublist rep)", "blue", true);
-            OdsUtils.relabel(firstHalfRep, this.reps.length, OdsUtils.calculateU(this.repN()));
+            OdsUtils.relabel(firstHalfRep, this.reps.length, this.repU());
             // visualisation.refresh(true);
         }
 
@@ -201,11 +209,11 @@ class OdsByTltll {
             node = nextNode;
         }
 
-        let sublistU = OdsUtils.calculateU(this.sublistN());
+        let sublistU = this.sublistU();
         OdsUtils.assignNewTags(firstHalfRep.value.head, halfCount, 0, sublistU);
         OdsUtils.assignNewTags(secondHalfRep.value.head, halfCount, 0, sublistU);
 
-        secondHalfRep.tag = OdsUtils.getNewTagAfter(firstHalfRep, OdsUtils.calculateU(this.repN()));
+        secondHalfRep.tag = OdsUtils.getNewTagAfter(firstHalfRep, this.repU());
         this.reps.insertAfter(firstHalfRep, secondHalfRep);
 
         visualisation.logMessage("split sublist into 2", "blue", true);
@@ -215,9 +223,9 @@ class OdsByTltll {
     rebuild() {
         this.N = this.n;
         visualisation.logMessage("set new N = n = " + this.N, "blue", true);
-        visualisation.logMessage("set new u_r = max(N * 4, ceilToPowerOf2(N ^ 2)) = " + OdsUtils.calculateU(this.repN()), "blue", false);
+        visualisation.logMessage("set new u_r = ceilToPowerOf2(max(N * 4, N ^ 2)) = " + this.repU(), "blue", false);
         visualisation.logMessage("set new N_s = ceil(log(N)) = " + this.sublistN(), "blue", false);
-        visualisation.logMessage("set new u_s = max(N_s * 4, ceilToPowerOf2(N_s ^ 2)) = " + OdsUtils.calculateU(this.sublistN()), "blue", false);
+        visualisation.logMessage("set new u_s = max(N_s * 4, ceilToPowerOf2(N_s ^ 2)) = " + this.sublistU(), "blue", false);
 
         let sublistN = this.sublistN();
         let repN = this.repN();
@@ -245,11 +253,11 @@ class OdsByTltll {
                 }
             }
 
-            OdsUtils.assignNewTags(newRep.value.head, newRep.value.length, 0, OdsUtils.calculateU(sublistN));
+            OdsUtils.assignNewTags(newRep.value.head, newRep.value.length, 0, this.sublistU());
             this.reps.append(newRep);
         }
 
-        OdsUtils.assignNewTags(this.reps.head, this.reps.length, 0, OdsUtils.calculateU(repN));
+        OdsUtils.assignNewTags(this.reps.head, this.reps.length, 0, this.repU());
 
         visualisation.refresh(false);
         visualisation.logMessage("evenly distributed nodes into " + this.reps.length + " sublists", "blue", false);
@@ -279,9 +287,9 @@ class OdsByTltll {
             "ODS by two-level tagged linked list",
             "n: " + this.n,
             "N: " + this.N,
-            "u_r: " + OdsUtils.calculateU(this.repN()),
+            "u_r: " + this.repU(),
             "N_s: " + this.sublistN(),
-            "u_s: " + OdsUtils.calculateU(this.sublistN()),
+            "u_s: " + this.sublistU(),
         ]
 
         return properties;
@@ -289,7 +297,7 @@ class OdsByTltll {
 
     toGraph(treeViewOn) {
         if (treeViewOn) {
-            return OdsToGraph.toGraphTltllTree(this.reps, OdsUtils.calculateU(this.repN()), OdsUtils.calculateU(this.sublistN()));
+            return OdsToGraph.toGraphTltllTree(this.reps, this.repU(), this.sublistU());
         }
         return OdsToGraph.toGraphTltll(this.reps);
     }
